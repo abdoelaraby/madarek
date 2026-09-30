@@ -1,6 +1,8 @@
 # مدارك — Madarek
 
-منصة دورات عربية (نسخة تجريبية) مبنية من تصميم Claude Design، ومربوطة بقاعدة بيانات Supabase.
+منصة السناتر أونلاين لمواد البكالوريا المصرية والثانوية العامة (نسخة تجريبية) — مبنية من تصميم Claude Design ومربوطة بـSupabase.
+
+الطالب يقدر يشتري: حصة، باب، مادة كاملة، أكتر من مادة (خصم تلقائي)، أو اشتراك «مدارك بلس» الشهري اللي بيفتح كل المواد. والسناتر ليها صفحات وباقات وفورم تسجيل (`center_applications`).
 
 - الموقع: static site (HTML + React UMD runtime) — مفيش build step على Vercel.
 - البيانات: Supabase project `madarek` (قراءة عامة عن طريق RLS، والكتابة مسموحة بس في `teacher_applications`).
@@ -17,4 +19,4 @@ python3 src/build.py
 ده بيطلع `index.html` جديد في الجذر.
 
 ## الصفحات
-الروابط بتشتغل بالـhash: `#/courses`، `#/course/<slug>`، `#/learn/<course-id>`، `#/student`، `#/teacher-home`، `#/admin`، `#/pricing` …
+الروابط بتشتغل بالـhash: `#/courses`، `#/course/<slug>`، `#/centers`، `#/center/<slug>`، `#/for-centers`، `#/pricing`، `#/checkout`، `#/learn/<course-id>`، `#/student`، `#/teacher-home`، `#/admin` …

@@ -4,6 +4,8 @@
   var C = window.MADAREK || {};
   var tables = {
     categories:'categories?select=*&order=position',
+    centers:'centers?select=*&order=students_count.desc',
+    studentSubs:'student_subscriptions?select=*',
     teachers:'teachers?select=*&order=id',
     courses:'courses?select=*&order=created_at.desc',
     sections:'course_sections?select=*&order=course_id,position',

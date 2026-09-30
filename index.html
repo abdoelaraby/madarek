@@ -98,15 +98,22 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <sc-if value="{{ showHeaderSearch }}">
           <div style="display:flex;align-items:center;gap:8px;height:42px;padding:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:999px;min-width:220px;max-width:340px;flex:1">
             <span style="width:14px;height:14px;border:2px solid var(--muted);border-radius:999px;display:inline-block;flex:0 0 auto"></span>
-            <input aria-label="ابحث في الدورات والمدرسين" placeholder="ابحث عن دورة أو مدرس…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" sc-camel-on-key-down="{{ searchKey }}" style="border:0;background:transparent;outline:none;flex:1;min-width:0;color:var(--ink)">
+            <input aria-label="ابحث في الدورات والمدرسين" placeholder="ابحث عن مادة أو مدرس أو سنتر…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" sc-camel-on-key-down="{{ searchKey }}" style="border:0;background:transparent;outline:none;flex:1;min-width:0;color:var(--ink)">
           </div>
         </sc-if>
 
         <sc-if value="{{ showPublicCtas }}">
           <div style="display:flex;align-items:center;gap:8px">
             <button type="button" sc-camel-on-click="{{ goLogin }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;white-space:nowrap;flex:0 0 auto;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:all var(--dur)" style-hover="border-color:var(--primary);color:var(--primary)">دخول</button>
-            <button type="button" sc-camel-on-click="{{ goTeach }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;white-space:nowrap;flex:0 0 auto;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer;transition:background var(--dur)" style-hover="background:var(--primary-600)" style-focus="outline:3px solid var(--primary-100);outline-offset:2px">ابدأ التدريس</button>
+            <button type="button" sc-camel-on-click="{{ goTeach }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;white-space:nowrap;flex:0 0 auto;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer;transition:background var(--dur)" style-hover="background:var(--primary-600)" style-focus="outline:3px solid var(--primary-100);outline-offset:2px">سجّل سنترك</button>
           </div>
+        </sc-if>
+
+        <sc-if value="{{ hasCartItems }}">
+          <button type="button" sc-camel-on-click="{{ goCart }}" aria-label="السلة" style="position:relative;height:44px;padding:0 12px;border:1px solid var(--border);background:#fff;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:14px;color:var(--ink);flex:0 0 auto">
+            <span>السلة</span>
+            <span style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;display:grid;place-items:center">{{ cartCount }}</span>
+          </button>
         </sc-if>
 
         <sc-if value="{{ showPublicBurger }}">
@@ -139,7 +146,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <div style="border-top:1px solid var(--border);background:#fff;padding:12px 16px 16px;animation:fadeUp var(--dur) ease both">
           <div style="display:flex;align-items:center;gap:8px;height:46px;padding:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:12px;margin-bottom:10px">
             <span style="width:14px;height:14px;border:2px solid var(--muted);border-radius:999px;display:inline-block;flex:0 0 auto"></span>
-            <input aria-label="ابحث في الكورسات" placeholder="ابحث عن كورس أو مدرس…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" sc-camel-on-key-down="{{ searchKey }}" style="border:0;background:transparent;outline:none;flex:1;min-width:0;color:var(--ink);font-size:16px">
+            <input aria-label="ابحث في الكورسات" placeholder="ابحث عن مادة أو مدرس أو سنتر…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" sc-camel-on-key-down="{{ searchKey }}" style="border:0;background:transparent;outline:none;flex:1;min-width:0;color:var(--ink);font-size:16px">
           </div>
           <nav style="display:grid;gap:2px">
             <sc-for list="{{ publicNav }}" as="n" hint-placeholder-count="4">
@@ -148,7 +155,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </nav>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
             <button type="button" sc-camel-on-click="{{ goLogin }}" style="height:46px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;color:var(--ink-2);cursor:pointer">دخول</button>
-            <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:46px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer">ابدأ التدريس</button>
+            <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:46px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer">سجّل سنترك</button>
           </div>
         </div>
       </sc-if>
@@ -196,12 +203,12 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <div>
           <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:32px;align-items:center;padding:44px 0 8px">
             <div>
-              <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--teal-50);color:var(--teal);border:1px solid var(--teal-100);border-radius:999px;font-size:13px;font-weight:600">منصة مصرية للتعلّم أونلاين مع مدرسين موثّقين</div>
-              <h1 style="font-size:clamp(30px,4.2vw,46px);line-height:1.25;margin:16px 0 12px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">ذاكر صح واتعلم مهارة جديدة — مع مدرس تثق فيه.</h1>
-              <p style="font-size:17px;color:var(--muted);max-width:52ch;margin:0 0 24px;text-wrap:pretty">من الثانوية العامة لمهارات سوق العمل: اشترِ الكورس اللي محتاجه بس، ادفع بفودافون كاش أو فوري، وتابع تقدمك درس بدرس. ولو إنت مدرس، اعمل كورساتك وبيعها باشتراك شهري واضح.</p>
+              <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--teal-50);color:var(--teal);border:1px solid var(--teal-100);border-radius:999px;font-size:13px;font-weight:600">البكالوريا المصرية والثانوية العامة — من أقوى سناتر مصر</div>
+              <h1 style="font-size:clamp(30px,4.2vw,46px);line-height:1.25;margin:16px 0 12px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">كل سناتر الثانوي في مكان واحد. ذاكر من البيت.</h1>
+              <p style="font-size:17px;color:var(--muted);max-width:52ch;margin:0 0 24px;text-wrap:pretty">حصص مسجلة من سناتر حقيقية لمواد أولى وتانية وتالتة ثانوي. اشتري حصة، أو باب، أو مادة كاملة، أو أكتر من مادة بخصم — أو اشترك في مدارك بلس وافتح كل المواد.</p>
               <div style="display:flex;flex-wrap:wrap;gap:12px">
-                <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:50px;padding:0 26px;border:0;background:var(--primary);color:#fff;border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;box-shadow:var(--sh-2);transition:background var(--dur)" style-hover="background:var(--primary-600)">استكشف الكورسات</button>
-                <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:50px;padding:0 26px;border:1px solid var(--border-2);background:#fff;color:var(--ink);border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;transition:all var(--dur)" style-hover="border-color:var(--primary);color:var(--primary)">انضم كمدرس</button>
+                <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:50px;padding:0 26px;border:0;background:var(--primary);color:#fff;border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;box-shadow:var(--sh-2);transition:background var(--dur)" style-hover="background:var(--primary-600)">تصفح المواد</button>
+                <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:50px;padding:0 26px;border:1px solid var(--border-2);background:#fff;color:var(--ink);border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;transition:all var(--dur)" style-hover="border-color:var(--primary);color:var(--primary)">عندي سنتر</button>
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:28px">
                 <sc-for list="{{ heroStats }}" as="h" hint-placeholder-count="3">
@@ -224,56 +231,114 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             </div>
           </section>
 
-          <section style="padding:48px 0 0">
-            <h2 style="font-size:24px;margin:0 0 4px">تصفّح بحسب التخصص</h2>
-            <p style="color:var(--muted);margin:0 0 18px;font-size:15px">اختار المجال وشوف كورساته ومدرسينه.</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:12px">
-              <sc-for list="{{ catCards }}" as="c" hint-placeholder-count="6">
-                <button type="button" sc-camel-on-click="{{ c.go }}" style="{{ c.style }}" style-hover="transform:translateY(-2px);box-shadow:var(--sh-2)">
-                  <span style="{{ c.chip }}"></span>
-                  <span style="font-weight:600;font-size:15px;color:var(--ink)">{{ c.name }}</span>
-                  <span style="font-size:13px;color:var(--muted)">{{ c.count }}</span>
+          <section style="padding:44px 0 0">
+            <h2 style="font-size:24px;margin:0 0 4px">اختار صفّك</h2>
+            <p style="color:var(--muted);margin:0 0 16px;font-size:15px">مواد البكالوريا المصرية والثانوية العامة من أولى لتالتة ثانوي.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px">
+              <sc-for list="{{ gradeCards }}" as="g" hint-placeholder-count="3">
+                <button type="button" sc-camel-on-click="{{ g.go }}" style="{{ g.style }}" style-hover="transform:translateY(-2px);box-shadow:var(--sh-2)">
+                  <span style="display:flex;align-items:center;gap:12px"><span style="{{ g.num }}">{{ g.numText }}</span><span style="font-weight:700;font-size:17px;color:var(--ink)">{{ g.name }}</span></span>
+                  <span style="font-size:13px;color:var(--muted)">{{ g.sub }}</span>
+                  <span style="font-size:13px;font-weight:600;color:var(--primary-700)">{{ g.count }} ←</span>
                 </button>
               </sc-for>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--muted);margin:18px 0 8px">أو اختار مسارك</div>
+            <div class="md-scroll" style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ catCards }}" as="c" hint-placeholder-count="5">
+                <button type="button" sc-camel-on-click="{{ c.go }}" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:1px solid var(--border);background:#fff;border-radius:999px;cursor:pointer;white-space:nowrap;flex:0 0 auto" style-hover="border-color:var(--primary)">
+                  <span style="{{ c.chip }}"></span>
+                  <span style="font-weight:600;font-size:14px;color:var(--ink)">{{ c.name }}</span>
+                  <span style="font-size:12px;color:var(--muted)">{{ c.count }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:44px 0 0">
+            <h2 style="font-size:24px;margin:0 0 4px">اشتري بالطريقة اللي تناسبك</h2>
+            <p style="color:var(--muted);margin:0 0 16px;font-size:15px">مش لازم تدفع تمن المادة كلها — ادفع على قد اللي محتاجه.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:12px">
+              <sc-for list="{{ buyWays }}" as="b" hint-placeholder-count="5">
+                <div style="{{ b.style }}">
+                  <span style="font-size:12px;font-weight:700;color:var(--muted)">{{ b.num }}</span>
+                  <span style="font-weight:700;font-size:16px">{{ b.k }}</span>
+                  <span style="font-weight:700;font-size:15px;color:var(--primary-700)">{{ b.v }}</span>
+                  <span style="font-size:13px;color:var(--muted)">{{ b.d }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">
+              <button type="button" sc-camel-on-click="{{ goSubscribe }}" style="height:46px;padding:0 20px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer">شوف اشتراك مدارك بلس</button>
+              <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:46px;padding:0 20px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;cursor:pointer">تصفح المواد</button>
             </div>
           </section>
 
           <section style="padding:48px 0 0">
             <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:18px">
               <div>
-                <h2 style="font-size:24px;margin:0 0 4px">كورسات مميزة</h2>
+                <h2 style="font-size:24px;margin:0 0 4px">المواد الأكثر طلبًا</h2>
                 <p style="color:var(--muted);margin:0;font-size:15px">الأكثر مبيعًا الشهر ده.</p>
               </div>
-              <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:40px;padding:0 16px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer" style-hover="border-color:var(--primary);color:var(--primary)">كل الكورسات ←</button>
+              <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:40px;padding:0 16px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer" style-hover="border-color:var(--primary);color:var(--primary)">كل المواد ←</button>
             </div>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
               <sc-for list="{{ featured }}" as="c" hint-placeholder-count="4">
                 <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-1);display:flex;flex-direction:column;transition:transform var(--dur),box-shadow var(--dur)" style-hover="transform:translateY(-3px);box-shadow:var(--sh-2)">
-                  <div style="{{ c.cover }}">
-                    <span style="{{ c.catChip }}">{{ c.catName }}</span>
-                  </div>
-                  <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1">
+                  <button type="button" sc-camel-on-click="{{ c.open }}" aria-label="{{ c.title }}" style="display:block;width:100%;border:0;padding:0;background:none;cursor:pointer">
+                    <div style="{{ c.cover }}"><span style="{{ c.gradeChip }}">{{ c.level }}</span><span style="{{ c.catChip }}">{{ c.catName }}</span></div>
+                  </button>
+                  <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1">
                     <h3 style="font-size:16px;margin:0;line-height:1.5;text-wrap:pretty">{{ c.title }}</h3>
-                    <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }}</div>
-                    <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink-2)">
+                    <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }} · <span style="color:var(--ink-2);font-weight:600">{{ c.centerName }}</span></div>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)">
                       <span style="color:var(--amber);font-weight:600">★ {{ c.rating }}</span>
-                      <span style="color:var(--muted)">({{ c.reviews }})</span>
-                      <span style="color:var(--border-2)">·</span>
-                      <span>{{ c.metaText }}</span>
+                      <span style="color:var(--border-2)">·</span><span>{{ c.metaText }}</span>
                     </div>
                     <div style="flex:1"></div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px;border-top:1px solid var(--border)">
-                      <span style="font-weight:700;font-size:17px">{{ c.priceText }}</span>
-                      <button type="button" sc-camel-on-click="{{ c.open }}" style="height:38px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
-                    </div>
+                    <sc-if value="{{ c.bought }}">
+                      <div style="padding-top:6px">
+                        <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px"><span style="{{ c.progressBar }}"></span></div>
+                        <button type="button" sc-camel-on-click="{{ c.resume }}" style="width:100%;height:42px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer">كمّل المذاكرة · {{ c.progressText }}</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ c.notBought }}">
+                      <div style="padding-top:8px;border-top:1px solid var(--border)">
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">{{ c.partsText }}</div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                          <span style="font-weight:700;font-size:17px">{{ c.priceText }} <span style="font-size:12px;font-weight:500;color:var(--muted)">المادة</span></span>
+                          <button type="button" sc-camel-on-click="{{ c.open }}" style="height:40px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;flex:0 0 auto" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
+                        </div>
+                        <sc-if value="{{ c.partial }}"><div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--teal)">✓ عندك أجزاء من المادة دي</div></sc-if>
+                      </div>
+                    </sc-if>
                   </div>
                 </article>
+
               </sc-for>
             </div>
           </section>
 
-          <section style="padding:48px 0 0">
-            <h2 style="font-size:24px;margin:0 0 18px">مدرسون مميزون</h2>
+          <section style="padding:44px 0 0">
+            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:16px">
+              <div>
+                <h2 style="font-size:24px;margin:0 0 4px">سناتر على مدارك</h2>
+                <p style="color:var(--muted);margin:0;font-size:15px">نفس مدرسين السنتر اللي بتحضر عندهم — من البيت.</p>
+              </div>
+              <button type="button" sc-camel-on-click="{{ goCenters }}" style="height:40px;padding:0 16px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer" style-hover="border-color:var(--primary);color:var(--primary)">كل السناتر ←</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:12px">
+              <sc-for list="{{ homeCentersList }}" as="x" hint-placeholder-count="3">
+                <button type="button" sc-camel-on-click="{{ x.open }}" style="display:flex;align-items:center;gap:12px;text-align:start;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer" style-hover="border-color:var(--primary)">
+                  <span style="{{ x.logo }}">{{ x.initial }}</span>
+                  <span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:16px;color:var(--ink)">{{ x.name }}</span><span style="font-size:13px;color:var(--muted)">{{ x.city }} · {{ x.n }} · ★ {{ x.rating }}</span></span>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:44px 0 0">
+            <h2 style="font-size:24px;margin:0 0 18px">مدرسين مميزين</h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:16px">
               <sc-for list="{{ topTeachers }}" as="t" hint-placeholder-count="4">
                 <button type="button" sc-camel-on-click="{{ t.open }}" style="text-align:start;background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;cursor:pointer;display:flex;flex-direction:column;gap:10px;box-shadow:var(--sh-1);transition:transform var(--dur)" style-hover="transform:translateY(-3px)">
@@ -287,45 +352,45 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </section>
 
           <section style="padding:48px 0 0">
-            <h2 style="font-size:24px;margin:0 0 18px">كيف تتعلّم في مدارك؟</h2>
+            <h2 style="font-size:24px;margin:0 0 18px">إزاي بتذاكر على مدارك؟</h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px">
               <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                 <span style="width:34px;height:34px;border-radius:10px;background:var(--primary-50);color:var(--primary-700);display:grid;place-items:center;font-weight:700">1</span>
-                <h3 style="font-size:17px;margin:12px 0 6px">اختر دورة واشترِها</h3>
-                <p style="margin:0;color:var(--muted);font-size:14px">تدفع لدورة واحدة فقط، ولا تحتاج أي اشتراك كطالب.</p>
+                <h3 style="font-size:17px;margin:12px 0 6px">اختار صفّك ومادتك</h3>
+                <p style="margin:0;color:var(--muted);font-size:14px">من السنتر والمدرس اللي بتثق فيه — واشتري الجزء اللي محتاجه بس.</p>
               </div>
               <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                 <span style="width:34px;height:34px;border-radius:10px;background:var(--teal-50);color:var(--teal);display:grid;place-items:center;font-weight:700">2</span>
-                <h3 style="font-size:17px;margin:12px 0 6px">تعلّم بخطة واضحة</h3>
-                <p style="margin:0;color:var(--muted);font-size:14px">دروس مرتبة، ملفات، واجبات، وحفظ لموضع المشاهدة.</p>
+                <h3 style="font-size:17px;margin:12px 0 6px">ذاكر بالحصة والباب</h3>
+                <p style="margin:0;color:var(--muted);font-size:14px">حصص مرتبة، ملخصات PDF، وامتحان بعد كل باب على نظام البكالوريا.</p>
               </div>
               <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                 <span style="width:34px;height:34px;border-radius:10px;background:var(--amber-50);color:var(--amber);display:grid;place-items:center;font-weight:700">3</span>
-                <h3 style="font-size:17px;margin:12px 0 6px">أنهِ واحصل على شهادة</h3>
-                <p style="margin:0;color:var(--muted);font-size:14px">شهادة إتمام قابلة للتحقق عند إكمال متطلبات الدورة.</p>
+                <h3 style="font-size:17px;margin:12px 0 6px">تابع مستواك</h3>
+                <p style="margin:0;color:var(--muted);font-size:14px">درجاتك وتقدمك قدامك، وتقرير أسبوعي لولي الأمر.</p>
               </div>
             </div>
           </section>
 
           <section style="margin:48px 0 0;background:var(--ink);color:#fff;border-radius:24px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:28px;align-items:center">
             <div>
-              <h2 style="font-size:26px;margin:0 0 10px">أنت مدرس؟ ابنِ مصدر دخل من خبرتك.</h2>
-              <p style="margin:0 0 20px;color:#CBD5E1;font-size:15px">أدوات إنشاء الدورات، إدارة الطلاب، والتحصيل المالي — باشتراك شهري واضح وعمولة معلنة.</p>
+              <h2 style="font-size:26px;margin:0 0 10px">عندك سنتر؟ خلّي حصصك تبيع وإنت نايم.</h2>
+              <p style="margin:0 0 20px;color:#CBD5E1;font-size:15px">ارفع حصص السنتر المسجلة، والطلاب من كل المحافظات يشتروا بالحصة أو الباب أو المادة. تحصيل وتحويلات شهرية وتقارير لولي الأمر.</p>
               <div style="display:flex;flex-wrap:wrap;gap:12px">
-                <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:46px;padding:0 22px;border:0;background:#fff;color:var(--ink);border-radius:12px;font-weight:600;cursor:pointer">ابدأ الانضمام</button>
-                <button type="button" sc-camel-on-click="{{ goPricing }}" style="height:46px;padding:0 22px;border:1px solid #475569;background:transparent;color:#fff;border-radius:12px;font-weight:600;cursor:pointer" style-hover="border-color:#fff">شاهد الباقات</button>
+                <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:46px;padding:0 22px;border:0;background:#fff;color:var(--ink);border-radius:12px;font-weight:600;cursor:pointer">سجّل سنترك</button>
+                <button type="button" sc-camel-on-click="{{ goForCenters }}" style="height:46px;padding:0 22px;border:1px solid #475569;background:transparent;color:#fff;border-radius:12px;font-weight:600;cursor:pointer" style-hover="border-color:#fff">باقات السناتر</button>
               </div>
             </div>
             <div style="display:grid;gap:10px">
-              <div style="background:#1E293B;border-radius:14px;padding:14px"><div style="font-size:13px;color:#94A3B8">إجمالي مبيعاتك</div><div style="font-size:22px;font-weight:700">612,450 ج.م</div></div>
-              <div style="background:#1E293B;border-radius:14px;padding:14px"><div style="font-size:13px;color:#94A3B8">صافي مستحقاتك بعد العمولة</div><div style="font-size:22px;font-weight:700;color:#5EEAD4">551,205 ج.م</div></div>
+              <div style="background:#1E293B;border-radius:14px;padding:14px"><div style="font-size:13px;color:#94A3B8">مبيعات سنتر النخبة من أول ما انضم</div><div style="font-size:22px;font-weight:700">612,450 ج.م</div></div>
+              <div style="background:#1E293B;border-radius:14px;padding:14px"><div style="font-size:13px;color:#94A3B8">صافي بعد عمولة 8%</div><div style="font-size:22px;font-weight:700;color:#5EEAD4">563,454 ج.م</div></div>
               <div style="font-size:12px;color:#94A3B8;font-family:'IBM Plex Mono',monospace">أرقام توضيحية للعرض فقط</div>
             </div>
           </section>
 
           <section style="padding:48px 0 0">
-            <h2 style="font-size:24px;margin:0 0 6px">آراء الطلاب</h2>
-            <p style="color:var(--muted);margin:0 0 18px;font-size:14px;font-family:'IBM Plex Mono',monospace">[ بيانات توضيحية — ليست آراء حقيقية ]</p>
+            <h2 style="font-size:24px;margin:0 0 6px">آراء الطلاب وأولياء الأمور</h2>
+            <p style="color:var(--muted);margin:0 0 18px;font-size:14px;font-family:'IBM Plex Mono',monospace">[ بيانات تجريبية ]</p>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px">
               <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
                 <blockquote style="margin:0;background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
@@ -360,13 +425,13 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         </sc-if>
         <sc-if value="{{ isCourses }}">
         <div style="padding:28px 0 0">
-          <h1 style="font-size:28px;margin:0 0 6px">استكشف الدورات</h1>
-          <p style="color:var(--muted);margin:0 0 20px;font-size:15px">اشترِ الدورة التي تحتاجها فقط — لا اشتراك مطلوب على الطالب.</p>
+          <h1 style="font-size:28px;margin:0 0 6px">مواد البكالوريا والثانوية العامة</h1>
+          <p style="color:var(--muted);margin:0 0 20px;font-size:15px">اختار صفّك ومسارك وسنترك. اشتري المادة كاملة أو باب أو حصة — أو افتح كل حاجة بمدارك بلس.</p>
 
           <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px">
             <div style="display:flex;align-items:center;gap:8px;height:46px;padding:0 16px;background:#fff;border:1px solid var(--border);border-radius:14px;flex:1;min-width:220px">
               <span style="width:14px;height:14px;border:2px solid var(--muted);border-radius:999px;flex:0 0 auto"></span>
-              <input aria-label="ابحث في الدورات" placeholder="ابحث باسم الدورة أو المدرس…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" style="border:0;outline:none;background:transparent;flex:1;min-width:0">
+              <input aria-label="ابحث في المواد" placeholder="ابحث باسم المادة أو المدرس أو السنتر…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" style="border:0;outline:none;background:transparent;flex:1;min-width:0">
             </div>
             <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)">
               ترتيب
@@ -380,21 +445,23 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </div>
 
           <sc-if value="{{ showFilters }}">
-            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;display:grid;gap:16px">
+            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:16px;display:grid;gap:14px">
               <div>
-                <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">التخصص</div>
-                <div style="display:flex;flex-wrap:wrap;gap:8px">
-                  <sc-for list="{{ filterCatPills }}" as="f" hint-placeholder-count="6"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for>
-                </div>
+                <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">الصف</div>
+                <div class="md-scroll" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ gradePills }}" as="f" hint-placeholder-count="3"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
               </div>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:16px">
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">المسار</div>
+                <div class="md-scroll" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ filterCatPills }}" as="f" hint-placeholder-count="5"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
+              </div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">السنتر</div>
+                <div class="md-scroll" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ centerPills }}" as="f" hint-placeholder-count="6"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px">
                 <div>
-                  <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">المستوى</div>
-                  <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ levelPills }}" as="f" hint-placeholder-count="3"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
-                </div>
-                <div>
-                  <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">السعر</div>
-                  <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ pricePills }}" as="f" hint-placeholder-count="3"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
+                  <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">سعر المادة</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ pricePills }}" as="f" hint-placeholder-count="2"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
                 </div>
                 <div>
                   <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">التقييم</div>
@@ -420,8 +487,8 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           <sc-if value="{{ noResults }}">
             <div style="background:#fff;border:1px dashed var(--border-2);border-radius:20px;padding:48px 24px;text-align:center">
               <div style="width:56px;height:56px;border-radius:16px;background:var(--bg);margin:0 auto 14px;display:grid;place-items:center;color:var(--muted);font-size:22px">؟</div>
-              <h3 style="margin:0 0 6px;font-size:18px">لا توجد دورات مطابقة</h3>
-              <p style="margin:0 0 18px;color:var(--muted);font-size:15px">جرّب توسيع الفلاتر أو البحث بكلمة أعم مثل «تصميم» أو «برمجة».</p>
+              <h3 style="margin:0 0 6px;font-size:18px">مفيش مواد مطابقة</h3>
+              <p style="margin:0 0 18px;color:var(--muted);font-size:15px">جرّب تشيل فلتر أو تدور بكلمة أعم زي «فيزياء» أو «تاريخ».</p>
               <button type="button" sc-camel-on-click="{{ clearFilters }}" style="height:44px;padding:0 20px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:600;cursor:pointer">مسح الفلاتر</button>
             </div>
           </sc-if>
@@ -429,31 +496,36 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
             <sc-for list="{{ filteredCards }}" as="c" hint-placeholder-count="6">
               <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-1);display:flex;flex-direction:column;transition:transform var(--dur),box-shadow var(--dur)" style-hover="transform:translateY(-3px);box-shadow:var(--sh-2)">
-                <div style="{{ c.cover }}">
-                  <span style="{{ c.catChip }}">{{ c.catName }}</span>
-                </div>
-                <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1">
-                  <h3 style="font-size:16px;margin:0;line-height:1.5;text-wrap:pretty">{{ c.title }}</h3>
-                  <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }} · {{ c.level }}</div>
-                  <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)">
-                    <span style="color:var(--amber);font-weight:600">★ {{ c.rating }}</span>
-                    <span style="color:var(--border-2)">·</span><span>{{ c.metaText }}</span>
+                  <button type="button" sc-camel-on-click="{{ c.open }}" aria-label="{{ c.title }}" style="display:block;width:100%;border:0;padding:0;background:none;cursor:pointer">
+                    <div style="{{ c.cover }}"><span style="{{ c.gradeChip }}">{{ c.level }}</span><span style="{{ c.catChip }}">{{ c.catName }}</span></div>
+                  </button>
+                  <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1">
+                    <h3 style="font-size:16px;margin:0;line-height:1.5;text-wrap:pretty">{{ c.title }}</h3>
+                    <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }} · <span style="color:var(--ink-2);font-weight:600">{{ c.centerName }}</span></div>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)">
+                      <span style="color:var(--amber);font-weight:600">★ {{ c.rating }}</span>
+                      <span style="color:var(--border-2)">·</span><span>{{ c.metaText }}</span>
+                    </div>
+                    <div style="flex:1"></div>
+                    <sc-if value="{{ c.bought }}">
+                      <div style="padding-top:6px">
+                        <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px"><span style="{{ c.progressBar }}"></span></div>
+                        <button type="button" sc-camel-on-click="{{ c.resume }}" style="width:100%;height:42px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer">كمّل المذاكرة · {{ c.progressText }}</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ c.notBought }}">
+                      <div style="padding-top:8px;border-top:1px solid var(--border)">
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">{{ c.partsText }}</div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                          <span style="font-weight:700;font-size:17px">{{ c.priceText }} <span style="font-size:12px;font-weight:500;color:var(--muted)">المادة</span></span>
+                          <button type="button" sc-camel-on-click="{{ c.open }}" style="height:40px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;flex:0 0 auto" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
+                        </div>
+                        <sc-if value="{{ c.partial }}"><div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--teal)">✓ عندك أجزاء من المادة دي</div></sc-if>
+                      </div>
+                    </sc-if>
                   </div>
-                  <div style="flex:1"></div>
-                  <sc-if value="{{ c.bought }}">
-                    <div>
-                      <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px"><span style="{{ c.progressBar }}"></span></div>
-                      <button type="button" sc-camel-on-click="{{ c.resume }}" style="width:100%;height:40px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer">متابعة التعلم · {{ c.progressText }}</button>
-                    </div>
-                  </sc-if>
-                  <sc-if value="{{ c.notBought }}">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px;border-top:1px solid var(--border)">
-                      <span style="font-weight:700;font-size:17px">{{ c.priceText }}</span>
-                      <button type="button" sc-camel-on-click="{{ c.open }}" style="height:38px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
-                    </div>
-                  </sc-if>
-                </div>
-              </article>
+                </article>
+
             </sc-for>
           </div>
         </div>
@@ -461,11 +533,12 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
         <sc-if value="{{ isCourseDetail }}">
         <div style="padding:18px 0 0">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px;align-items:start">
+          <div class="md-detail" style="display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start">
             <div style="min-width:0">
               <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">
                 <span style="{{ cd.catChip }}">{{ cd.catName }}</span>
                 <span style="padding:5px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--ink-2)">{{ cd.level }}</span>
+                <button type="button" sc-camel-on-click="{{ cd.openCenter }}" style="padding:5px 12px;border-radius:999px;background:#fff;border:1px solid var(--border-2);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer">🏫 {{ cd.centerName }} — {{ cd.centerCity }}</button>
               </div>
               <h1 style="font-size:clamp(24px,3.4vw,34px);margin:0 0 10px;line-height:1.35;text-wrap:pretty">{{ cd.title }}</h1>
               <p style="color:var(--muted);font-size:16px;margin:0 0 14px;max-width:60ch;text-wrap:pretty">{{ cd.sum }}</p>
@@ -486,15 +559,27 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               <sc-if value="{{ cd.noPromo }}">
                 <div style="{{ cd.cover }}"></div>
               </sc-if>
+              <sc-if value="{{ cd.mobileBar }}">
+                <div style="margin-top:14px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px">
+                  <div style="font-weight:700;font-size:15px;margin-bottom:10px">اشتري بالطريقة اللي تناسبك</div>
+                  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+                    <button type="button" sc-camel-on-click="{{ cd.buy }}" style="text-align:start;padding:10px 12px;border:1px solid var(--primary);background:var(--primary-50);border-radius:12px;cursor:pointer"><span style="display:block;font-size:12px;color:var(--primary-700);font-weight:600">المادة كاملة</span><span style="font-weight:700;font-size:16px;color:var(--ink)">{{ cd.priceText }}</span></button>
+                    <button type="button" sc-camel-on-click="{{ cd.subscribe }}" style="text-align:start;padding:10px 12px;border:1px solid var(--border);background:#fff;border-radius:12px;cursor:pointer"><span style="display:block;font-size:12px;color:var(--muted);font-weight:600">مدارك بلس / شهر</span><span style="font-weight:700;font-size:16px;color:var(--ink)">{{ cd.subFrom }}</span></button>
+                    <button type="button" sc-camel-on-click="{{ cd.goCurriculum }}" style="text-align:start;padding:10px 12px;border:1px solid var(--border);background:#fff;border-radius:12px;cursor:pointer"><span style="display:block;font-size:12px;color:var(--muted);font-weight:600">باب واحد</span><span style="font-weight:700;font-size:16px;color:var(--ink)">{{ cd.chapterFrom }}</span></button>
+                    <button type="button" sc-camel-on-click="{{ cd.goCurriculum }}" style="text-align:start;padding:10px 12px;border:1px solid var(--border);background:#fff;border-radius:12px;cursor:pointer"><span style="display:block;font-size:12px;color:var(--muted);font-weight:600">حصة واحدة</span><span style="font-weight:700;font-size:16px;color:var(--ink)">{{ cd.lessonFrom }}</span></button>
+                  </div>
+                  <div style="font-size:12px;color:var(--teal);font-weight:600;margin-top:8px">{{ cd.bundleHint }}</div>
+                </div>
+              </sc-if>
 
-              <div style="border-bottom:1px solid var(--border);margin:24px 0 20px;display:flex;flex-wrap:wrap">
+              <div id="md-curr" style="border-bottom:1px solid var(--border);margin:24px 0 20px;display:flex;flex-wrap:wrap;scroll-margin-top:84px">
                 <sc-for list="{{ cd.tabs }}" as="t" hint-placeholder-count="4"><button type="button" sc-camel-on-click="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button></sc-for>
               </div>
 
               <sc-if value="{{ cd.tabOverview }}">
                 <div style="display:grid;gap:20px">
                   <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
-                    <h2 style="font-size:18px;margin:0 0 12px">ماذا ستتعلم؟</h2>
+                    <h2 style="font-size:18px;margin:0 0 12px">هتتعلم إيه؟</h2>
                     <ul style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:10px">
                       <sc-for list="{{ cd.outcomes }}" as="o" hint-placeholder-count="4">
                         <li style="display:flex;gap:10px;font-size:15px;color:var(--ink-2)"><span style="color:var(--teal);font-weight:700">✓</span><span>{{ o.t }}</span></li>
@@ -509,7 +594,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
                       </ul>
                     </section>
                     <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
-                      <h2 style="font-size:17px;margin:0 0 10px">لمن هذه الدورة؟</h2>
+                      <h2 style="font-size:17px;margin:0 0 10px">المادة دي لمين؟</h2>
                       <ul style="margin:0;padding-inline-start:18px;color:var(--muted);font-size:15px;display:grid;gap:6px">
                         <sc-for list="{{ cd.audience }}" as="o" hint-placeholder-count="3"><li>{{ o.t }}</li></sc-for>
                       </ul>
@@ -524,15 +609,20 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
                     <div style="background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden">
                       <button type="button" sc-camel-on-click="{{ sec.toggle }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:16px;background:none;border:0;cursor:pointer;text-align:start">
                         <span style="{{ sec.icon }}">+</span>
-                        <span style="flex:1;font-weight:600;font-size:16px;color:var(--ink)">{{ sec.title }}</span>
-                        <span style="font-size:13px;color:var(--muted)">{{ sec.metaText }}</span>
+                        <span style="flex:1;min-width:0"><span style="display:block;font-weight:600;font-size:16px;color:var(--ink)">{{ sec.title }}</span><span style="font-size:13px;color:var(--muted)">{{ sec.metaText }}</span></span>
                       </button>
+                      <sc-if value="{{ sec.canBuy }}">
+                        <div style="display:flex;justify-content:flex-end;padding:0 16px 12px;margin-top:-6px"><button type="button" sc-camel-on-click="{{ sec.buy }}" style="{{ sec.buyStyle }}">{{ sec.buyText }}</button></div>
+                      </sc-if>
+                      <sc-if value="{{ sec.owned }}">
+                        <div style="padding:0 16px 12px;margin-top:-6px;font-size:13px;font-weight:600;color:var(--teal);text-align:end">✓ الباب ده مفتوح ليك</div>
+                      </sc-if>
                       <sc-if value="{{ sec.open }}">
                         <div style="border-top:1px solid var(--border)">
                           <sc-for list="{{ sec.lessons }}" as="l" hint-placeholder-count="3">
                             <button type="button" sc-camel-on-click="{{ l.click }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 16px;background:none;border:0;border-bottom:1px solid var(--bg);cursor:pointer;text-align:start" style-hover="background:var(--bg)">
                               <span style="{{ l.mark }}">{{ l.markText }}</span>
-                              <span style="flex:1;font-size:15px;color:var(--ink-2)">{{ l.title }}</span>
+                              <span style="flex:1;min-width:0;font-size:15px;color:var(--ink-2)">{{ l.title }}</span>
                               <span style="{{ l.tag }}">{{ l.tagText }}</span>
                               <span style="font-size:13px;color:var(--muted);min-width:46px;text-align:end">{{ l.minText }}</span>
                             </button>
@@ -578,7 +668,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </section>
 
               <section style="margin-top:28px">
-                <h2 style="font-size:20px;margin:0 0 14px">دورات ذات صلة</h2>
+                <h2 style="font-size:20px;margin:0 0 14px">مواد تانية لنفس الصف</h2>
                 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:14px">
                   <sc-for list="{{ cd.related }}" as="c" hint-placeholder-count="3">
                     <button type="button" sc-camel-on-click="{{ c.open }}" style="text-align:start;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:6px" style-hover="border-color:var(--primary)">
@@ -591,29 +681,49 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </section>
             </div>
 
-            <aside style="position:sticky;top:88px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--sh-2);max-width:380px;width:100%">
-              <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
-                <span style="font-size:30px;font-weight:700">{{ cd.priceText }}</span>
-                <sc-if value="{{ cd.hasOld }}"><span style="color:var(--muted);text-decoration:line-through;font-size:16px">{{ cd.oldText }}</span></sc-if>
-              </div>
-              <div style="font-size:13px;color:var(--muted);margin-bottom:16px">{{ cd.accessText }} · سعر توضيحي</div>
-              <sc-if value="{{ cd.notBought }}">
-                <button type="button" sc-camel-on-click="{{ cd.buy }}" style="width:100%;height:50px;border:0;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:background var(--dur)" style-hover="background:var(--primary-600)">اشترِ الدورة الآن</button>
-              </sc-if>
+            <aside class="md-buybox" style="position:sticky;top:88px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--sh-2);width:100%">
               <sc-if value="{{ cd.bought }}">
-                <button type="button" sc-camel-on-click="{{ cd.cont }}" style="width:100%;height:50px;border:0;border-radius:14px;background:var(--teal);color:#fff;font-weight:700;font-size:16px;cursor:pointer">متابعة التعلم</button>
+                <div>
+                  <div style="font-weight:700;font-size:18px;margin-bottom:4px">المادة مفتوحة ليك ✓</div>
+                  <div style="font-size:13px;color:var(--muted);margin-bottom:14px">{{ cd.accessText }}</div>
+                  <button type="button" sc-camel-on-click="{{ cd.cont }}" style="width:100%;height:50px;border:0;border-radius:14px;background:var(--teal);color:#fff;font-weight:700;font-size:16px;cursor:pointer">كمّل المذاكرة</button>
+                </div>
               </sc-if>
-              <div style="margin-top:16px;display:grid;gap:10px;font-size:14px;color:var(--ink-2)">
-                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ cd.metaText }} بجودة متعددة</span></div>
-                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>ملفات وتمارين قابلة للتنزيل</span></div>
-                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>شهادة إتمام عند إكمال الدورة</span></div>
-                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>أسئلة وأجوبة مع المدرس</span></div>
+              <sc-if value="{{ cd.notBought }}">
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px">المادة كاملة</div>
+                  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px">
+                    <span style="font-size:30px;font-weight:700">{{ cd.priceText }}</span>
+                    <sc-if value="{{ cd.hasOld }}"><span style="color:var(--muted);text-decoration:line-through;font-size:16px">{{ cd.oldText }}</span></sc-if>
+                  </div>
+                  <div style="font-size:13px;color:var(--muted);margin-bottom:14px">{{ cd.accessText }}</div>
+                  <button type="button" sc-camel-on-click="{{ cd.buy }}" style="width:100%;height:50px;border:0;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:background var(--dur)" style-hover="background:var(--primary-600)">اشتري المادة كاملة</button>
+                  <button type="button" sc-camel-on-click="{{ cd.addSubject }}" style="width:100%;min-height:44px;margin-top:8px;border:1px solid var(--primary);border-radius:14px;background:var(--primary-50);color:var(--primary-700);font-weight:600;font-size:14px;cursor:pointer;padding:6px 10px">{{ cd.addSubjectText }}</button>
+                  <div style="font-size:12px;color:var(--teal);font-weight:600;margin-top:8px;text-align:center">{{ cd.bundleHint }}</div>
+
+                  <sc-if value="{{ cd.hasParts }}">
+                    <button type="button" sc-camel-on-click="{{ cd.goCurriculum }}" style="display:flex;width:100%;align-items:center;gap:10px;margin-top:14px;padding:12px;border:1px dashed var(--border-2);border-radius:14px;background:var(--bg);cursor:pointer;text-align:start">
+                      <span style="flex:1"><span style="display:block;font-weight:700;font-size:14px;color:var(--ink)">محتاج جزء بس؟</span><span style="font-size:13px;color:var(--muted)">باب بـ{{ cd.chapterFrom }} · حصة بـ{{ cd.lessonFrom }}</span></span>
+                      <span style="color:var(--primary);font-weight:700">←</span>
+                    </button>
+                  </sc-if>
+
+                  <div style="margin-top:12px;padding:14px;border-radius:14px;background:linear-gradient(135deg,var(--primary-50),#fff);border:1px solid var(--primary-100)">
+                    <div style="font-weight:700;font-size:15px;color:var(--primary-700)">أو كل المواد بـ{{ cd.subFrom }} في الشهر</div>
+                    <div style="font-size:13px;color:var(--ink-2);margin:4px 0 10px">اشتراك مدارك بلس بيفتحلك كل المواد من كل السناتر.</div>
+                    <button type="button" sc-camel-on-click="{{ cd.subscribe }}" style="height:40px;padding:0 16px;border:0;border-radius:10px;background:var(--ink);color:#fff;font-weight:600;font-size:14px;cursor:pointer">شوف الاشتراك</button>
+                  </div>
+                </div>
+              </sc-if>
+              <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:grid;gap:8px;font-size:13px;color:var(--ink-2)">
+                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ cd.metaText }} مسجلة من {{ cd.centerName }}</span></div>
+                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>امتحان بعد كل باب وملخصات PDF</span></div>
+                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>فودافون كاش · إنستاباي · فوري · كارت</span></div>
               </div>
-              <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)">شراء هذه الدورة لا يمنح وصولًا لبقية الدورات.</div>
             </aside>
           </div>
         </div>
-        </sc-if>
+                </sc-if>
 
         <sc-if value="{{ isTeachers }}">
         <div style="padding:28px 0 0">
@@ -705,70 +815,259 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
         <sc-if value="{{ isPricing }}">
         <div style="padding:28px 0 0">
-          <div style="text-align:center;max-width:640px;margin:0 auto 24px">
-            <h1 style="font-size:30px;margin:0 0 10px">باقات المدرسين</h1>
-            <p style="color:var(--muted);font-size:16px;margin:0 0 18px">الاشتراك للمدرس فقط، ويمنحه أدوات إنشاء الدورات وبيعها وإدارة الطلاب. الطالب لا يحتاج اشتراكًا.</p>
-            <div style="display:inline-flex;align-items:center;gap:12px;padding:8px 14px;background:#fff;border:1px solid var(--border);border-radius:999px">
-              <span style="font-size:14px;font-weight:600">شهري</span>
-              <button type="button" sc-camel-on-click="{{ toggleYearly }}" role="switch" aria-checked="{{ yearly }}" aria-label="التبديل بين الشهري والسنوي" style="{{ yearlyStyle }}"><span style="{{ knobStyle }}"></span></button>
-              <span style="font-size:14px;font-weight:600">سنوي <span style="color:var(--teal)">(شهران مجانًا)</span></span>
-            </div>
+          <div style="text-align:center;max-width:680px;margin:0 auto 22px">
+            <span style="display:inline-flex;padding:6px 14px;background:var(--primary-50);color:var(--primary-700);border-radius:999px;font-size:13px;font-weight:600">للطلاب</span>
+            <h1 style="font-size:clamp(26px,4vw,34px);margin:12px 0 10px">مدارك بلس — كل المواد باشتراك واحد</h1>
+            <p style="color:var(--muted);font-size:16px;margin:0">اشتراك بيفتحلك كل مواد البكالوريا والثانوية العامة من كل السناتر والمدرسين على المنصة. أو اشتري حصة أو باب أو مادة لوحدها.</p>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(268px,100%),1fr));gap:16px;align-items:start">
-            <sc-for list="{{ planCards }}" as="p" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;align-items:start">
+            <sc-for list="{{ studentPlanCards }}" as="p" hint-placeholder-count="3">
               <div style="{{ p.style }}">
-                <sc-if value="{{ p.best }}"><span style="align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;font-weight:600">الأكثر اختيارًا</span></sc-if>
-                <h2 style="margin:0;font-size:21px">{{ p.name }}</h2>
+                <sc-if value="{{ p.best }}"><span style="align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;font-weight:600">الأوفر</span></sc-if>
+                <h2 style="margin:0;font-size:20px">{{ p.name }}</h2>
                 <div style="color:var(--muted);font-size:14px">{{ p.desc }}</div>
-                <div><span style="font-size:30px;font-weight:700">{{ p.priceText }}</span> <span style="color:var(--muted);font-size:14px">/ {{ p.cycleText }}</span></div>
+                <div><span style="font-size:30px;font-weight:700">{{ p.priceText }}</span> <span style="color:var(--muted);font-size:14px">/ {{ p.cycle }}</span></div>
+                <div style="font-size:13px;font-weight:600;color:var(--teal)">{{ p.note }}</div>
                 <div style="display:grid;gap:8px;font-size:14px;color:var(--ink-2)">
-                  <sc-for list="{{ p.limits }}" as="l" hint-placeholder-count="4">
-                    <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ l.t }}</span></div>
-                  </sc-for>
+                  <sc-for list="{{ p.limits }}" as="l" hint-placeholder-count="4"><div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ l.t }}</span></div></sc-for>
                 </div>
-                <button type="button" sc-camel-on-click="{{ p.pick }}" style="{{ p.btnStyle }}">اختر {{ p.name }}</button>
+                <button type="button" sc-camel-on-click="{{ p.pick }}" style="{{ p.btnStyle }}">{{ p.btnText }}</button>
               </div>
             </sc-for>
           </div>
-          <section style="margin-top:28px;background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden">
-            <div style="padding:18px 20px;border-bottom:1px solid var(--border);font-weight:600;font-size:17px">مقارنة الباقات</div>
-            <div style="overflow-x:auto">
-              <sc-raw-table style="width:100%;border-collapse:collapse;min-width:520px">
-                <sc-raw-thead>
-                  <sc-raw-tr style="background:var(--bg);font-size:13px;color:var(--muted)">
-                    <sc-raw-th style="text-align:start;padding:12px 20px;font-weight:600">الميزة</sc-raw-th>
-                    <sc-raw-th style="text-align:start;padding:12px;font-weight:600">البداية</sc-raw-th>
-                    <sc-raw-th style="text-align:start;padding:12px;font-weight:600">الاحتراف</sc-raw-th>
-                    <sc-raw-th style="text-align:start;padding:12px;font-weight:600">الأكاديمية</sc-raw-th>
-                  </sc-raw-tr>
-                </sc-raw-thead>
-                <sc-raw-tbody>
-                  <sc-for list="{{ compareRows }}" as="r" hint-placeholder-count="6">
-                    <sc-raw-tr style="border-top:1px solid var(--border);font-size:14px">
-                      <sc-raw-td style="padding:12px 20px;color:var(--ink-2)">{{ r.label }}</sc-raw-td>
-                      <sc-raw-td style="padding:12px">{{ r.a }}</sc-raw-td>
-                      <sc-raw-td style="padding:12px;background:var(--primary-50);font-weight:600">{{ r.b }}</sc-raw-td>
-                      <sc-raw-td style="padding:12px">{{ r.c }}</sc-raw-td>
-                    </sc-raw-tr>
-                  </sc-for>
-                </sc-raw-tbody>
-              </sc-raw-table>
+
+          <section style="margin-top:32px">
+            <h2 style="font-size:22px;margin:0 0 4px">مش عايز اشتراك؟ اشتري على قد احتياجك</h2>
+            <p style="color:var(--muted);margin:0 0 16px;font-size:15px">كل مادة مقسمة أبواب وحصص، وكل جزء ليه سعره.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:12px">
+              <sc-for list="{{ buyWays }}" as="b" hint-placeholder-count="5">
+                <div style="{{ b.style }}">
+                  <span style="font-weight:700;font-size:16px">{{ b.k }}</span>
+                  <span style="font-weight:700;font-size:15px;color:var(--primary-700)">{{ b.v }}</span>
+                  <span style="font-size:13px;color:var(--muted)">{{ b.d }}</span>
+                </div>
+              </sc-for>
             </div>
           </section>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px;margin-top:16px">
-            <div style="background:var(--amber-50);border:1px solid #FDE68A;border-radius:16px;padding:18px">
-              <div style="font-weight:600;margin-bottom:6px">العمولة</div>
-              <p style="margin:0;font-size:14px;color:var(--ink-2)">تُحسب العمولة على كل عملية بيع بحسب باقتك، وتظهر مفصّلة في صفحة الأرباح.</p>
+
+          <section style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px">
+            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
+              <h3 style="margin:0 0 12px;font-size:17px">خصم أكتر من مادة</h3>
+              <div style="display:grid;gap:8px">
+                <sc-for list="{{ bundleRows }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:10px;font-size:15px"><span>{{ r.k }}</span><span style="font-weight:700;color:var(--teal)">{{ r.v }}</span></div>
+                </sc-for>
+              </div>
+              <p style="margin:12px 0 0;font-size:13px;color:var(--muted)">الخصم بيتحسب لوحده في السلة على المواد الكاملة.</p>
             </div>
-            <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px">
-              <div style="font-weight:600;margin-bottom:6px">الإلغاء</div>
-              <p style="margin:0;font-size:14px;color:var(--ink-2)">يمكنك الإلغاء في أي وقت. تتوقف المبيعات الجديدة بعد انتهاء المدة، ويستمر وصول من اشترى سابقًا.</p>
+            <div style="background:var(--ink);color:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px">
+              <h3 style="margin:0;font-size:17px">عندك سنتر أو بتدرّس؟</h3>
+              <p style="margin:0;color:#CBD5E1;font-size:14px">اعرض حصص سنترك على مدارك وبيعها بكل الطرق دي — وخد نصيبك من اشتراك مدارك بلس كمان.</p>
+              <button type="button" sc-camel-on-click="{{ goForCenters }}" style="align-self:flex-start;height:44px;padding:0 18px;border:0;background:#fff;color:var(--ink);border-radius:12px;font-weight:600;cursor:pointer">باقات السناتر ←</button>
             </div>
-            <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px">
-              <div style="font-weight:600;margin-bottom:6px">الأسعار توضيحية</div>
-              <p style="margin:0;font-size:14px;color:var(--ink-2)">أرقام هذه النسخة للعرض فقط، ولا تُنفَّذ أي عملية دفع حقيقية.</p>
-            </div>
+          </section>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isCenters }}">
+        <div style="padding:28px 0 0">
+          <h1 style="font-size:28px;margin:0 0 6px">السناتر على مدارك</h1>
+          <p style="color:var(--muted);margin:0 0 20px;font-size:15px">سناتر موثّقة من محافظات مختلفة — كل سنتر بمدرسينه وحصصه المسجلة.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:16px">
+            <sc-for list="{{ centerCards }}" as="x" hint-placeholder-count="6">
+              <article style="background:#fff;border:1px solid var(--border);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--sh-1)">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="{{ x.logo }}">{{ x.initial }}</span>
+                  <div style="flex:1;min-width:0"><h2 style="margin:0;font-size:18px">{{ x.name }}</h2><div style="font-size:13px;color:var(--muted)">{{ x.city }}</div></div>
+                  <span style="font-weight:700;color:var(--amber);font-size:14px;white-space:nowrap">★ {{ x.rating }}</span>
+                </div>
+                <p style="margin:0;font-size:14px;color:var(--ink-2);text-wrap:pretty">{{ x.desc }}</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <sc-for list="{{ x.subjects }}" as="t"><span style="padding:3px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--ink-2)">{{ t.t }}</span></sc-for>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)"><span>{{ x.teachersText }}</span><span>{{ x.subjectsText }}</span><span>{{ x.students }}</span><span>{{ x.since }}</span></div>
+                <button type="button" sc-camel-on-click="{{ x.open }}" style="height:44px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:12px;font-weight:600;cursor:pointer" style-hover="background:var(--primary);color:#fff">صفحة السنتر</button>
+              </article>
+            </sc-for>
           </div>
+          <section style="margin-top:28px;background:var(--ink);color:#fff;border-radius:22px;padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+            <div style="max-width:560px"><h2 style="margin:0 0 6px;font-size:22px">عندك سنتر؟ خلّيه أونلاين النهارده.</h2><p style="margin:0;color:#CBD5E1;font-size:15px">بيع حصصك المسجلة بالحصة والباب والمادة، وخد نصيبك من الاشتراكات.</p></div>
+            <button type="button" sc-camel-on-click="{{ goForCenters }}" style="height:48px;padding:0 22px;border:0;background:#fff;color:var(--ink);border-radius:12px;font-weight:700;cursor:pointer">سجّل سنترك</button>
+          </section>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isCenter }}">
+        <div style="padding:18px 0 0">
+          <div style="{{ ctr.band }}"></div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;margin:-36px 0 0;padding:0 16px">
+            <span style="{{ ctr.logo }}">{{ ctr.initial }}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;justify-content:space-between;margin:12px 0 18px">
+            <div style="min-width:0;flex:1 1 320px">
+              <h1 style="font-size:clamp(24px,4vw,32px);margin:0 0 4px">{{ ctr.name }}</h1>
+              <div style="font-size:14px;color:var(--muted)">{{ ctr.city }} · {{ ctr.address }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:14px;color:var(--ink-2)"><span style="color:var(--amber);font-weight:700">★ {{ ctr.rating }}</span><span>{{ ctr.students }}</span><span>{{ ctr.since }}</span></div>
+              <p style="margin:12px 0 0;color:var(--ink-2);font-size:15px;max-width:70ch;text-wrap:pretty">{{ ctr.desc }}</p>
+            </div>
+            <button type="button" sc-camel-on-click="{{ ctr.filter }}" style="height:46px;padding:0 20px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer">كل مواد السنتر</button>
+          </div>
+          <h2 style="font-size:20px;margin:0 0 12px">مدرسين السنتر</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:12px;margin-bottom:24px">
+            <sc-for list="{{ ctr.teachers }}" as="t" hint-placeholder-count="3">
+              <button type="button" sc-camel-on-click="{{ t.open }}" style="display:flex;align-items:center;gap:12px;text-align:start;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer" style-hover="border-color:var(--primary)">
+                <span style="{{ t.avatar }}">{{ t.initial }}</span>
+                <span style="min-width:0"><span style="display:block;font-weight:700;color:var(--ink)">{{ t.name }}</span><span style="font-size:13px;color:var(--muted)">{{ t.title }} · ★ {{ t.rating }}</span></span>
+              </button>
+            </sc-for>
+          </div>
+          <h2 style="font-size:20px;margin:0 0 12px">مواد السنتر على مدارك</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
+            <sc-for list="{{ ctr.courses }}" as="c" hint-placeholder-count="3">
+<article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-1);display:flex;flex-direction:column;transition:transform var(--dur),box-shadow var(--dur)" style-hover="transform:translateY(-3px);box-shadow:var(--sh-2)">
+                  <button type="button" sc-camel-on-click="{{ c.open }}" aria-label="{{ c.title }}" style="display:block;width:100%;border:0;padding:0;background:none;cursor:pointer">
+                    <div style="{{ c.cover }}"><span style="{{ c.gradeChip }}">{{ c.level }}</span><span style="{{ c.catChip }}">{{ c.catName }}</span></div>
+                  </button>
+                  <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1">
+                    <h3 style="font-size:16px;margin:0;line-height:1.5;text-wrap:pretty">{{ c.title }}</h3>
+                    <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }} · <span style="color:var(--ink-2);font-weight:600">{{ c.centerName }}</span></div>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)">
+                      <span style="color:var(--amber);font-weight:600">★ {{ c.rating }}</span>
+                      <span style="color:var(--border-2)">·</span><span>{{ c.metaText }}</span>
+                    </div>
+                    <div style="flex:1"></div>
+                    <sc-if value="{{ c.bought }}">
+                      <div style="padding-top:6px">
+                        <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px"><span style="{{ c.progressBar }}"></span></div>
+                        <button type="button" sc-camel-on-click="{{ c.resume }}" style="width:100%;height:42px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer">كمّل المذاكرة · {{ c.progressText }}</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ c.notBought }}">
+                      <div style="padding-top:8px;border-top:1px solid var(--border)">
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">{{ c.partsText }}</div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                          <span style="font-weight:700;font-size:17px">{{ c.priceText }} <span style="font-size:12px;font-weight:500;color:var(--muted)">المادة</span></span>
+                          <button type="button" sc-camel-on-click="{{ c.open }}" style="height:40px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;flex:0 0 auto" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
+                        </div>
+                        <sc-if value="{{ c.partial }}"><div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--teal)">✓ عندك أجزاء من المادة دي</div></sc-if>
+                      </div>
+                    </sc-if>
+                  </div>
+                </article>
+
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isForCenters }}">
+        <div style="padding:28px 0 0">
+          <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:28px;align-items:center">
+            <div>
+              <span style="display:inline-flex;padding:6px 14px;background:var(--amber-50);color:var(--amber);border-radius:999px;font-size:13px;font-weight:600">للسناتر والمدرسين</span>
+              <h1 style="font-size:clamp(28px,4.2vw,42px);line-height:1.3;margin:14px 0 10px">سنترك أونلاين في أسبوع — من غير ما تبني منصة.</h1>
+              <p style="font-size:16px;color:var(--muted);margin:0 0 20px;max-width:56ch">ارفع حصص السنتر المسجلة لمواد البكالوريا والثانوية العامة، والطلاب يشتروا بالحصة أو الباب أو المادة أو من اشتراك مدارك بلس. إنت بتدرّس، وإحنا بنبيع ونحصّل ونحمي الفيديو.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:10px">
+                <a href="#md-cform" style="display:inline-flex;align-items:center;height:50px;padding:0 24px;background:var(--primary);color:#fff;border-radius:14px;font-weight:700;text-decoration:none">سجّل سنترك مجانًا</a>
+                <button type="button" sc-camel-on-click="{{ goCenters }}" style="height:50px;padding:0 22px;border:1px solid var(--border-2);background:#fff;border-radius:14px;font-weight:600;cursor:pointer">شوف السناتر الموجودة</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+              <sc-for list="{{ b2b.stats }}" as="x" hint-placeholder-count="3">
+                <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center"><div style="font-size:clamp(20px,3vw,26px);font-weight:700;color:var(--primary-700)">{{ x.v }}</div><div style="font-size:12px;color:var(--muted);margin-top:4px">{{ x.k }}</div></div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:40px 0 0">
+            <h2 style="font-size:24px;margin:0 0 16px">ليه السناتر بتختار مدارك؟</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:12px">
+              <sc-for list="{{ b2b.props }}" as="x" hint-placeholder-count="6">
+                <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px">
+                  <span style="width:32px;height:32px;border-radius:10px;background:var(--primary-50);color:var(--primary-700);display:grid;place-items:center;font-weight:700;font-size:14px">{{ x.num }}</span>
+                  <h3 style="font-size:16px;margin:10px 0 6px">{{ x.h }}</h3>
+                  <p style="margin:0;color:var(--muted);font-size:14px">{{ x.p }}</p>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:40px 0 0">
+            <h2 style="font-size:24px;margin:0 0 16px">إزاي بتبدأ؟</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px">
+              <sc-for list="{{ b2b.steps }}" as="x" hint-placeholder-count="4">
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;gap:12px">
+                  <span style="width:32px;height:32px;border-radius:999px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;flex:0 0 auto">{{ x.num }}</span>
+                  <span><span style="display:block;font-weight:700;margin-bottom:4px">{{ x.h }}</span><span style="font-size:14px;color:var(--muted)">{{ x.p }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:40px 0 0">
+            <div style="text-align:center;max-width:640px;margin:0 auto 18px">
+              <h2 style="font-size:26px;margin:0 0 8px">باقات السناتر</h2>
+              <p style="color:var(--muted);font-size:15px;margin:0 0 14px">اشتراك شهري أو سنوي + عمولة معلنة على كل عملية بيع.</p>
+              <div style="display:inline-flex;align-items:center;gap:12px;padding:8px 14px;background:#fff;border:1px solid var(--border);border-radius:999px">
+                <span style="font-size:14px;font-weight:600">شهري</span>
+                <button type="button" sc-camel-on-click="{{ toggleYearly }}" role="switch" aria-checked="{{ yearly }}" aria-label="التبديل بين الشهري والسنوي" style="{{ yearlyStyle }}"><span style="{{ knobStyle }}"></span></button>
+                <span style="font-size:14px;font-weight:600">سنوي <span style="color:var(--teal)">(شهرين هدية)</span></span>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;align-items:start">
+              <sc-for list="{{ planCards }}" as="p" hint-placeholder-count="3">
+                <div style="{{ p.style }}">
+                  <sc-if value="{{ p.best }}"><span style="align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;font-weight:600">الأكثر اختيارًا</span></sc-if>
+                  <h3 style="margin:0;font-size:21px">{{ p.name }}</h3>
+                  <div style="color:var(--muted);font-size:14px">{{ p.desc }}</div>
+                  <div><span style="font-size:30px;font-weight:700">{{ p.priceText }}</span> <span style="color:var(--muted);font-size:14px">/ {{ p.cycleText }}</span></div>
+                  <div style="display:grid;gap:8px;font-size:14px;color:var(--ink-2)">
+                    <sc-for list="{{ p.limits }}" as="l" hint-placeholder-count="4"><div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ l.t }}</span></div></sc-for>
+                  </div>
+                  <button type="button" sc-camel-on-click="{{ p.pick }}" style="{{ p.btnStyle }}">اختار {{ p.name }}</button>
+                </div>
+              </sc-for>
+            </div>
+            <section style="margin-top:18px;background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid var(--border);font-weight:600;font-size:17px">مقارنة الباقات</div>
+              <div class="md-tablewrap" style="overflow-x:auto">
+                <sc-raw-table style="width:100%;border-collapse:collapse;min-width:520px">
+                  <sc-raw-thead><sc-raw-tr style="background:var(--bg);font-size:13px;color:var(--muted)"><sc-raw-th style="text-align:start;padding:12px 20px;font-weight:600">الميزة</sc-raw-th><sc-raw-th style="text-align:start;padding:12px;font-weight:600">المدرس الفردي</sc-raw-th><sc-raw-th style="text-align:start;padding:12px;font-weight:600">السنتر</sc-raw-th><sc-raw-th style="text-align:start;padding:12px;font-weight:600">سلسلة سناتر</sc-raw-th></sc-raw-tr></sc-raw-thead>
+                  <sc-raw-tbody>
+                    <sc-for list="{{ compareRows }}" as="r" hint-placeholder-count="6">
+                      <sc-raw-tr style="border-top:1px solid var(--border);font-size:14px"><sc-raw-td style="padding:12px 20px;color:var(--ink-2)">{{ r.label }}</sc-raw-td><sc-raw-td style="padding:12px">{{ r.a }}</sc-raw-td><sc-raw-td style="padding:12px;background:var(--primary-50);font-weight:600">{{ r.b }}</sc-raw-td><sc-raw-td style="padding:12px">{{ r.c }}</sc-raw-td></sc-raw-tr>
+                    </sc-for>
+                  </sc-raw-tbody>
+                </sc-raw-table>
+              </div>
+            </section>
+          </section>
+
+          <section id="md-cform" style="margin-top:40px;scroll-margin-top:90px;background:#fff;border:1px solid var(--border);border-radius:22px;padding:22px;box-shadow:var(--sh-2)">
+            <sc-if value="{{ cf.sent }}">
+              <div style="text-align:center;padding:24px 8px">
+                <div style="width:60px;height:60px;border-radius:999px;background:var(--teal-50);color:var(--teal);display:grid;place-items:center;font-size:26px;margin:0 auto 12px">✓</div>
+                <h2 style="margin:0 0 6px;font-size:22px">وصلنا طلب سنترك</h2>
+                <p style="margin:0;color:var(--muted)">فريق الشراكات هيكلمك على الرقم اللي كتبته خلال يوم عمل.</p>
+              </div>
+            </sc-if>
+            <sc-if value="{{ cf.notSent }}">
+              <form sc-camel-on-submit="{{ cf.send }}">
+                <h2 style="margin:0 0 4px;font-size:22px">سجّل سنترك</h2>
+                <p style="margin:0 0 16px;color:var(--muted);font-size:14px">التسجيل مجاني، والاشتراك بيبدأ بعد ما ترفع أول مادة.</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px">
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">اسم السنتر *<input value="{{ cf.center }}" sc-camel-on-change="{{ cf.setCenter }}" required="" maxlength="100" placeholder="مثال: سنتر الصفوة" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">اسم المسؤول<input value="{{ cf.owner }}" sc-camel-on-change="{{ cf.setOwner }}" maxlength="80" placeholder="الاسم" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">رقم الموبايل / واتساب *<input value="{{ cf.phone }}" sc-camel-on-change="{{ cf.setPhone }}" required="" maxlength="20" inputmode="tel" dir="ltr" placeholder="01xxxxxxxxx" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400;text-align:right"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">المدينة<input value="{{ cf.city }}" sc-camel-on-change="{{ cf.setCity }}" maxlength="60" placeholder="مثال: بنها" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">عدد المدرسين<input value="{{ cf.teachers }}" sc-camel-on-change="{{ cf.setTeachers }}" inputmode="numeric" placeholder="مثال: 6" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">عدد الطلاب تقريبًا<input value="{{ cf.students }}" sc-camel-on-change="{{ cf.setStudents }}" inputmode="numeric" placeholder="مثال: 800" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                </div>
+                <label style="display:grid;gap:6px;font-size:14px;font-weight:600;margin-top:12px">محتاجين إيه؟<textarea rows="3" value="{{ cf.msg }}" sc-camel-on-change="{{ cf.setMsg }}" maxlength="1000" placeholder="مثال: عايزين نبيع حصص التعويض أونلاين" style="padding:12px 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;resize:vertical;font-weight:400"></textarea></label>
+                <button type="submit" style="margin-top:14px;width:100%;height:52px;border:0;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;font-size:16px;cursor:pointer">{{ cf.sendText }}</button>
+              </form>
+            </sc-if>
+          </section>
         </div>
         </sc-if>
 
@@ -924,37 +1223,67 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         </sc-if>
 
         <sc-if value="{{ isCheckout }}">
-        <div style="padding:20px 0 0;max-width:900px">
-          <h1 style="font-size:26px;margin:0 0 18px">إتمام الشراء</h1>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:20px;align-items:start">
-            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
-              <h2 style="margin:0 0 14px;font-size:17px">وسيلة الدفع</h2>
-              <div style="display:grid;gap:10px">
-                <sc-for list="{{ co.methods }}" as="m" hint-placeholder-count="3">
-                  <button type="button" sc-camel-on-click="{{ m.pick }}" style="{{ m.style }}"><span style="{{ m.radio }}"></span>{{ m.label }}</button>
-                </sc-for>
-              </div>
-              <div style="margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:13px;color:var(--muted)">
-                تكامل الدفع غير مكتمل في هذه النسخة: لا يوجد مزود دفع مربوط، والنتيجة محاكاة للعرض. في الإنتاج يُعتمد الدفع من الخادم فقط.
+        <div style="padding:20px 0 0;max-width:980px">
+          <h1 style="font-size:26px;margin:0 0 16px">السلة والدفع</h1>
+          <sc-if value="{{ co.empty }}">
+            <div style="background:#fff;border:1px dashed var(--border-2);border-radius:20px;padding:40px 20px;text-align:center">
+              <h2 style="margin:0 0 6px;font-size:19px">السلة فاضية</h2>
+              <p style="margin:0 0 16px;color:var(--muted)">ضيف حصة أو باب أو مادة — أو اشترك في مدارك بلس.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+                <button type="button" sc-camel-on-click="{{ co.browse }}" style="height:46px;padding:0 20px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:600;cursor:pointer">تصفح المواد</button>
+                <button type="button" sc-camel-on-click="{{ goSubscribe }}" style="height:46px;padding:0 20px;border:1px solid var(--border-2);border-radius:12px;background:#fff;font-weight:600;cursor:pointer">مدارك بلس</button>
               </div>
             </div>
-            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--sh-2)">
+          </sc-if>
+          <sc-if value="{{ co.notEmpty }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:20px;align-items:start">
+            <div style="display:grid;gap:16px">
+              <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px">
+                <h2 style="margin:0 0 10px;font-size:17px">السلة · {{ co.countText }}</h2>
+                <div style="display:grid;gap:10px">
+                  <sc-for list="{{ co.items }}" as="it" hint-placeholder-count="2">
+                    <div style="display:flex;align-items:center;gap:12px;padding:10px;border:1px solid var(--border);border-radius:14px">
+                      <span style="{{ it.thumb }}"></span>
+                      <div style="flex:1;min-width:0">
+                        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px"><span style="padding:2px 8px;border-radius:999px;background:var(--primary-50);color:var(--primary-700);font-size:11px;font-weight:700">{{ it.typeText }}</span><span style="font-weight:600;font-size:14px">{{ it.title }}</span></div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:2px">{{ it.meta }}</div>
+                      </div>
+                      <div style="text-align:end;flex:0 0 auto">
+                        <div style="font-weight:700;font-size:15px;white-space:nowrap">{{ it.priceText }}</div>
+                        <button type="button" sc-camel-on-click="{{ it.remove }}" style="background:none;border:0;color:var(--danger);font-size:12px;font-weight:600;cursor:pointer;padding:4px 0">شيل</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ co.hasNudge }}">
+                  <button type="button" sc-camel-on-click="{{ co.browse }}" style="margin-top:10px;width:100%;padding:12px;border:1px dashed var(--teal);border-radius:12px;background:var(--teal-50);color:var(--teal);font-weight:600;font-size:14px;cursor:pointer">+ {{ co.bundleNudge }}</button>
+                </sc-if>
+              </div>
+              <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px">
+                <h2 style="margin:0 0 12px;font-size:17px">طريقة الدفع</h2>
+                <div style="display:grid;gap:10px">
+                  <sc-for list="{{ co.methods }}" as="m" hint-placeholder-count="4">
+                    <button type="button" sc-camel-on-click="{{ m.pick }}" style="{{ m.style }}"><span style="{{ m.radio }}"></span>{{ m.label }}</button>
+                  </sc-for>
+                </div>
+                <div style="margin-top:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:13px;color:var(--muted)">نسخة تجريبية: مفيش بوابة دفع مربوطة، والنتيجة محاكاة للعرض.</div>
+              </div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--sh-2);position:sticky;top:88px">
               <h2 style="margin:0 0 14px;font-size:17px">ملخص الطلب</h2>
-              <div style="{{ co.cover }}"></div>
-              <div style="font-weight:600;font-size:16px;margin:12px 0 4px;line-height:1.5">{{ co.title }}</div>
-              <div style="font-size:13px;color:var(--muted);margin-bottom:14px">{{ co.teacherName }} · {{ co.accessText }}</div>
-              <div style="display:grid;gap:8px;font-size:15px;padding-top:14px;border-top:1px solid var(--border)">
-                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">سعر الدورة</span><span>{{ co.priceText }}</span></div>
-                <sc-if value="{{ co.hasDisc }}"><div style="display:flex;justify-content:space-between;color:var(--teal)"><span>خصم عرض تمهيدي</span><span>{{ co.discText }}</span></div></sc-if>
-                <div style="display:flex;justify-content:space-between;font-weight:700;font-size:18px;padding-top:8px;border-top:1px solid var(--border)"><span>الإجمالي</span><span>{{ co.totalText }}</span></div>
+              <div style="display:grid;gap:8px;font-size:15px">
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">المجموع</span><span>{{ co.subText }}</span></div>
+                <sc-if value="{{ co.hasDisc }}"><div style="display:flex;justify-content:space-between;color:var(--teal);font-weight:600"><span>{{ co.discLabel }}</span><span>{{ co.discText }}</span></div></sc-if>
+                <div style="display:flex;justify-content:space-between;font-weight:700;font-size:19px;padding-top:10px;border-top:1px solid var(--border)"><span>الإجمالي</span><span>{{ co.totalText }}</span></div>
               </div>
               <button type="button" sc-camel-on-click="{{ co.pay }}" style="{{ co.payStyle }}">
                 <sc-if value="{{ co.processing }}"><span style="width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:999px;animation:spin .8s linear infinite;display:inline-block"></span></sc-if>
                 {{ co.payText }}
               </button>
-              <div style="margin-top:12px;font-size:12px;color:var(--muted);text-align:center">بالمتابعة أنت توافق على <a href="#" sc-camel-on-click="{{ goLegal }}">سياسة الاسترداد</a>. المبالغ توضيحية.</div>
+              <div style="margin-top:12px;font-size:12px;color:var(--muted);text-align:center">بالمتابعة إنت موافق على <a href="#" sc-camel-on-click="{{ goLegal }}">سياسة الاسترجاع</a>.</div>
             </div>
           </div>
+          </sc-if>
         </div>
         </sc-if>
 
@@ -967,7 +1296,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <div style="font-size:14px;font-weight:600;margin:14px 0 22px">{{ pr.courseTitle }}</div>
             <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
               <sc-if value="{{ pr.isSuccess }}">
-                <button type="button" sc-camel-on-click="{{ pr.startLearn }}" style="height:48px;padding:0 22px;border:0;border-radius:12px;background:var(--teal);color:#fff;font-weight:700;cursor:pointer">ابدأ التعلم</button>
+                <button type="button" sc-camel-on-click="{{ pr.startLearn }}" style="height:48px;padding:0 22px;border:0;border-radius:12px;background:var(--teal);color:#fff;font-weight:700;cursor:pointer">ابدأ المذاكرة</button>
               </sc-if>
               <sc-if value="{{ pr.isFailed }}">
                 <button type="button" sc-camel-on-click="{{ pr.retry }}" style="height:48px;padding:0 22px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:700;cursor:pointer">جرّب وسيلة دفع أخرى</button>
@@ -982,7 +1311,11 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <sc-if value="{{ isStudentHome }}">
         <div style="padding:28px 0 0">
           <h1 style="font-size:26px;margin:0 0 4px">أهلًا {{ st.firstName }} 👋</h1>
-          <p style="color:var(--muted);margin:0 0 20px;font-size:15px">{{ st.greetLine }}</p>
+          <p style="color:var(--muted);margin:0 0 14px;font-size:15px">{{ st.greetLine }}</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between;padding:12px 14px;margin-bottom:16px;border-radius:14px;background:var(--primary-50);border:1px solid var(--primary-100)">
+            <span style="font-size:14px;font-weight:600;color:var(--primary-700)">{{ st.subText }}</span>
+            <sc-if value="{{ st.notSub }}"><button type="button" sc-camel-on-click="{{ st.goSub }}" style="height:38px;padding:0 14px;border:0;border-radius:10px;background:var(--primary);color:#fff;font-weight:600;font-size:14px;cursor:pointer">اشترك في مدارك بلس</button></sc-if>
+          </div>
 
           <section style="background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;box-shadow:var(--sh-1)">
             <div style="{{ st.resumeThumb }}"><span style="width:34px;height:34px;border-radius:999px;background:rgba(255,255,255,.9);display:grid;place-items:center;color:var(--primary);font-size:14px">▶</span></div>
@@ -2025,7 +2358,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <span style="width:32px;height:32px;border-radius:9px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700">م</span>
             <span style="font-weight:700;font-size:17px">{{ brand }}</span>
           </div>
-          <p style="margin:0;color:var(--muted);font-size:14px;max-width:34ch">منصة تعليم عربية تجمع الطلاب والمدرسين. نموذج تجريبي لأغراض التصميم.</p>
+          <p style="margin:0;color:var(--muted);font-size:14px;max-width:34ch">منصة السناتر أونلاين لمواد البكالوريا المصرية والثانوية العامة — من أولى لتالتة ثانوي.</p>
         </div>
         <sc-for list="{{ footerCols }}" as="col" hint-placeholder-count="3">
           <div>
@@ -2038,7 +2371,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </div>
         </sc-for>
       </div>
-      <div style="border-top:1px solid var(--border);padding:16px 20px;text-align:center;color:var(--muted);font-size:13px">© 2026 مدارك — نموذج تصميم تجريبي. النصوص القانونية مسودات تحتاج مراجعة قبل الإطلاق.</div>
+      <div style="border-top:1px solid var(--border);padding:16px 20px;text-align:center;color:var(--muted);font-size:13px">© 2026 مدارك — نسخة تجريبية. النصوص القانونية مسودات لازم تتراجع قبل الإطلاق.</div>
     </footer>
   </div>
   </sc-if>
@@ -2258,6 +2591,19 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
     </div>
   </sc-if>
 
+  <sc-if value="{{ cd.mobileBar }}">
+          <div class="md-mbar" style="position:fixed;inset-inline:0;bottom:0;z-index:45;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--border);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;box-shadow:0 -8px 24px rgba(15,23,42,.08)">
+            <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:17px;line-height:1.2">{{ cd.priceText }}</div><div style="font-size:12px;color:var(--muted)">أو باب بـ{{ cd.chapterFrom }}</div></div>
+            <sc-if value="{{ cd.hasCart }}"><button type="button" sc-camel-on-click="{{ cd.goCheckout }}" style="height:46px;padding:0 14px;border:1px solid var(--primary);background:#fff;color:var(--primary-700);border-radius:12px;font-weight:700;cursor:pointer;white-space:nowrap">السلة ({{ cd.cartCount }})</button></sc-if>
+            <button type="button" sc-camel-on-click="{{ cd.buy }}" style="height:46px;padding:0 18px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:700;cursor:pointer;white-space:nowrap">اشتري المادة</button>
+          </div>
+        </sc-if>
+  <sc-if value="{{ co.mobileBar }}">
+    <div style="position:fixed;inset-inline:0;bottom:0;z-index:45;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--border);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;box-shadow:0 -8px 24px rgba(15,23,42,.08)">
+      <div style="flex:1;min-width:0"><div style="font-size:12px;color:var(--muted)">الإجمالي</div><div style="font-weight:700;font-size:18px;line-height:1.2">{{ co.totalText }}</div></div>
+      <button type="button" sc-camel-on-click="{{ co.pay }}" style="height:48px;padding:0 22px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:700;cursor:pointer;white-space:nowrap">{{ co.payText }}</button>
+    </div>
+  </sc-if>
   <div style="position:fixed;bottom:20px;inset-inline-start:20px;z-index:90;display:flex;flex-direction:column;gap:10px">
     <sc-for list="{{ toasts }}" as="t">
       <div role="status" style="{{ t.style }}">
@@ -2272,22 +2618,30 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;platformName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;مدارك&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;startRoute&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;courses&quot;,&quot;course&quot;,&quot;pricing&quot;,&quot;student&quot;,&quot;learn&quot;,&quot;teacher-home&quot;,&quot;admin&quot;,&quot;ds&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;demoMode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 class Component extends DCLogic {
   // ---- data from Supabase (loaded before boot into window.__MDATA) ----
-  db = (function(){ const d=window.__MDATA||{}; const o={}; ['categories','teachers','courses','sections','lessons','files','plans','faqs','students','testimonials','enrollments','payments','refunds','payouts','subscriptions','submissions','questions','coupons','tickets','audit','applications','notifications','stats'].forEach(k=>o[k]=d[k]||[]); return o; })();
+  db = (function(){ const d=window.__MDATA||{}; const o={}; ['categories','centers','studentSubs','teachers','courses','sections','lessons','files','plans','faqs','students','testimonials','enrollments','payments','refunds','payouts','subscriptions','submissions','questions','coupons','tickets','audit','applications','notifications','stats'].forEach(k=>o[k]=d[k]||[]); return o; })();
   cfg = window.MADAREK||{};
   me = this.cfg.demoStudent||'s1';
   meT = this.cfg.demoTeacher||'t1';
   stat = (k,dflt)=>{ const r=this.db.stats.find(x=>x.key===k); return r?r.value:(dflt||''); };
   statJ = (k,dflt)=>{ try{ return JSON.parse(this.stat(k,'')); }catch(e){ return dflt; } };
-  courses = this.db.courses.map(c=>({id:c.id,slug:c.slug,title:c.title,t:c.teacher_id,cat:c.category_id,level:c.level,audience:c.audience||'',price:c.price,old:c.old_price,rating:+c.rating,reviews:c.reviews_count,hours:c.hours,lessons:c.lessons_count,students:c.students_count,status:c.status,access:c.access_months,sum:c.summary||'',outcomes:c.outcomes||[],reqs:c.requirements||[],cover:c.cover,promo:c.promo_video,featured:c.featured,created:c.created_at}));
+  courses = this.db.courses.map(c=>({id:c.id,slug:c.slug,title:c.title,t:c.teacher_id,cat:c.category_id,level:c.level,grade:c.grade,track:c.track,subject:c.subject,center:c.center_id,term:c.term,chapterPrice:c.chapter_price,lessonPrice:c.lesson_price,audience:c.audience||'',price:c.price,old:c.old_price,rating:+c.rating,reviews:c.reviews_count,hours:c.hours,lessons:c.lessons_count,students:c.students_count,status:c.status,access:c.access_months,sum:c.summary||'',outcomes:c.outcomes||[],reqs:c.requirements||[],cover:c.cover,promo:c.promo_video,featured:c.featured,created:c.created_at}));
   cats = this.db.categories.map(c=>({id:c.id,name:c.name,c:c.color,bg:c.bg,art:c.art||c.id,n:this.db.courses.filter(x=>x.category_id===c.id&&x.status==='published').length}));
-  teachers = this.db.teachers.map(t=>({id:t.id,slug:t.slug,name:t.name,title:t.title,cat:t.category_id,rating:+t.rating,students:t.students_count,years:t.years,bio:t.bio||'',city:t.city||''}));
+  GRADES = [{id:1,name:'أولى ثانوي',sub:'سنة تأسيسية — مواد مشتركة'},{id:2,name:'تانية ثانوي',sub:'بكالوريا — مشتركة + مادة المسار'},{id:3,name:'تالتة ثانوي',sub:'بكالوريا — مواد المسار المتقدمة'}];
+  gradeName = (g)=>(this.GRADES.find(x=>x.id===+g)||{name:''}).name;
+  centers = this.db.centers.map(c=>({id:c.id,slug:c.slug,name:c.name,city:c.city,gov:c.governorate,address:c.address||'',since:c.since_year,students:c.students_count,rating:+c.rating,desc:c.description||'',c:c.color,bg:c.bg,featured:c.featured}));
+  centerOf = (id)=>this.centers.find(x=>x.id===id)||{id:'',slug:'',name:'',city:'',gov:'',c:'#4F46E5',bg:'#EEF2FF',rating:0,students:0,desc:'',address:''};
+  bundleRules = (function(self){ try{ return JSON.parse((self.db.stats.find(x=>x.key==='bundle_rules')||{}).value||'[]'); }catch(e){ return []; } })(this);
+  bundlePct = (n)=>this.bundleRules.filter(r=>n>=r.min).reduce((a,r)=>Math.max(a,r.pct),0);
+  studentPlans = this.db.plans.filter(p=>p.audience==='student').map(p=>({id:p.id,name:p.name,price:p.monthly,months:p.months,best:p.is_best,desc:p.description,note:p.note||'',limits:p.limits||[]}));
+  myPaid = this.db.payments.filter(p=>p.student_id===(window.MADAREK&&window.MADAREK.demoStudent||'s1')&&p.status==='مدفوع');
+  teachers = this.db.teachers.map(t=>({id:t.id,slug:t.slug,name:t.name,title:t.title,cat:t.category_id,center:t.center_id,rating:+t.rating,students:t.students_count,years:t.years,bio:t.bio||'',city:t.city||''}));
   studentsById = this.db.students.reduce((a,s)=>(a[s.id]=s,a),{});
   sname = (id)=>(this.studentsById[id]||{name:'طالب'}).name;
-  curOf = (cid)=>this.db.sections.filter(s=>s.course_id===cid).map(s=>({id:s.id,title:s.title,lessons:this.db.lessons.filter(l=>l.section_id===s.id).map(l=>({id:l.id,title:l.title,min:l.minutes,free:l.is_free,video:l.video_url,poster:l.poster,kind:l.kind}))}));
-  plans = this.db.plans.map(p=>({id:p.id,name:p.name,m:p.monthly,y:p.yearly,best:p.is_best,desc:p.description,limits:p.limits||[]}));
+  curOf = (cid)=>this.db.sections.filter(s=>s.course_id===cid).map(s=>({id:s.id,title:s.title,price:s.price,course:cid,lessons:this.db.lessons.filter(l=>l.section_id===s.id).map(l=>({id:l.id,title:l.title,min:l.minutes,free:l.is_free,video:l.video_url,poster:l.poster,kind:l.kind,price:l.price,section:s.id,course:cid}))}));
+  plans = this.db.plans.filter(p=>p.audience!=='student').map(p=>({id:p.id,name:p.name,m:p.monthly,y:p.yearly,best:p.is_best,desc:p.description,limits:p.limits||[]}));
   faqData = this.db.faqs.map(f=>({q:f.q,a:f.a}));
   testimonialData = this.db.testimonials.map(t=>({name:(t.students&&t.students.name)||this.sname(t.student_id),role:t.role,text:t.text,rating:t.rating}));
-  payments = this.db.payments.map(p=>({id:p.id,course:p.course_id,student:this.sname(p.student_id),sid:p.student_id,amount:p.amount,status:p.status,method:p.method,date:(p.paid_at||'').slice(0,10),ts:p.paid_at}));
+  payments = this.db.payments.map(p=>({id:p.id,course:p.course_id,type:p.item_type,ref:p.item_ref,itemTitle:p.item_title,student:this.sname(p.student_id),sid:p.student_id,amount:p.amount,status:p.status,method:p.method,date:(p.paid_at||'').slice(0,10),ts:p.paid_at}));
   payouts = this.db.payouts.map(p=>({id:p.id,t:p.teacher_id,amount:p.amount,status:p.status,date:(p.requested_at||'').slice(0,10),method:p.method}));
   myEnroll = this.db.enrollments.filter(e=>e.student_id===this.me);
   MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
@@ -2303,8 +2657,8 @@ class Component extends DCLogic {
   state = {
     route:'home', p:{}, role:'guest', w:1280, drawer:false, notif:false,
     q:'', cats:[], level:'', priceBand:'', minRating:0, sort:'الأكثر شعبية', filtersOpen:false,
-    purchased:this.myEnroll.map(e=>e.course_id), progress:this.myEnroll.reduce((a,e)=>(a[e.course_id]=e.progress,a),{}), done:this.initLearn.done, lesson:this.initLearn.lesson, learnCourse:this.initLearn.cid, learnTab:'files', noteText:'',
-    openSecs:this.db.sections.filter(x=>x.position===1||x.position===2).map(x=>x.id), faq:null, courseTab:'overview', myTab:'all', payTab:'payments',
+    purchased:Array.from(new Set(this.myPaid.filter(p=>p.item_type==='subject'||p.item_type==='bundle').reduce((a,p)=>a.concat(String(p.item_ref||'').split(',')),[]).filter(Boolean))), ownedChapters:this.myPaid.filter(p=>p.item_type==='chapter').map(p=>p.item_ref), ownedLessons:this.myPaid.filter(p=>p.item_type==='lesson').map(p=>p.item_ref), subActive:this.db.studentSubs.some(x=>x.student_id===this.me&&x.status==='نشط'), subPlan:(this.db.studentSubs.find(x=>x.student_id===this.me&&x.status==='نشط')||{}).plan_id||'', cart:(function(){ try{ return JSON.parse(localStorage.getItem('md-cart')||'[]'); }catch(e){ return []; } })(), gradeF:0, trackF:'', centerF:'', pricingTab:'students', cf:{center:'',owner:'',phone:'',city:'',teachers:'',students:'',msg:''}, cfSent:false, cfSending:false, paidItems:[], progress:this.myEnroll.reduce((a,e)=>(a[e.course_id]=e.progress,a),{}), done:this.initLearn.done, lesson:this.initLearn.lesson, learnCourse:this.initLearn.cid, learnTab:'files', noteText:'',
+    openSecs:this.db.sections.filter(x=>x.position===1||x.position===2).map(x=>x.id), faq:null, courseTab:'curriculum', myTab:'all', payTab:'payments',
     toasts:[], modal:null, refundReason:'', payMethod:'فودافون كاش', payState:'idle', payResult:'success', payCourse:'c2', menuOpen:false,
     teachStep:1, teachDraftSaved:false, editorStep:1, editorSaved:'محفوظ الآن', uploadPct:0, uploading:false, uploadFailed:false,
     yearly:false, adminReview:null, adminReason:'', audit:[], loginErr:false, email:'', pw:''
@@ -2323,7 +2677,7 @@ class Component extends DCLogic {
     const h=(location.hash||'').replace(/^#\/?/,''); if(!h) return {route:'home',p:{}};
     const parts=h.split('/').map(x=>{try{return decodeURIComponent(x)}catch(e){return x}});
     const route=parts[0]; const p={};
-    if((route==='course'||route==='teacher')&&parts[1]) p.slug=parts[1];
+    if((route==='course'||route==='teacher'||route==='center')&&parts[1]) p.slug=parts[1];
     if(route==='learn'&&parts[1]) p.course=parts[1];
     return {route:route,p:p};
   }
@@ -2331,7 +2685,7 @@ class Component extends DCLogic {
   componentWillUnmount(){ window.removeEventListener('resize',this.onR); window.removeEventListener('hashchange',this.onHash); }
 
   go=(route,p)=>{ const h=this.hashFor(route,p); this.setState({route:route,p:p||{},drawer:false,notif:false,modal:null,menuOpen:false}); try{ if(location.hash!==h) history.pushState(null,'',h); window.scrollTo({top:0}); }catch(e){} };
-  toast=(msg,kind)=>{ const id=Math.random(); this.setState(s=>({toasts:[...s.toasts,{id:id,msg:msg,kind:kind||'ok'}]}));
+  toast=(msg,kind)=>{ const id=Math.random(); this.setState(s=>({toasts:[...s.toasts.slice(-1),{id:id,msg:msg,kind:kind||'ok'}]}));
     setTimeout(()=>this.setState(s=>({toasts:s.toasts.filter(t=>t.id!==id)})),3400); };
   money=(n)=>n===0?'مجانًا':(+n).toLocaleString('en-US')+' ج.م';
   cat=(id)=>this.cats.find(c=>c.id===id)||this.cats[0];
@@ -2349,18 +2703,18 @@ class Component extends DCLogic {
   pill=(active)=>'height:34px;padding:0 14px;border-radius:999px;border:1px solid '+(active?'var(--primary)':'var(--border)')+';background:'+(active?'var(--primary-50)':'#fff')+';color:'+(active?'var(--primary-700)':'var(--ink-2)')+';font-size:14px;font-weight:'+(active?'600':'500')+';cursor:pointer';
   tabBtn=(active)=>'padding:10px 4px;margin-inline-end:18px;border:0;border-bottom:2px solid '+(active?'var(--primary)':'transparent')+';background:none;color:'+(active?'var(--primary-700)':'var(--muted)')+';font-weight:600;font-size:15px;cursor:pointer';
   ini=(n)=>String(n||'؟').replace(/^(مستر|أ\.|م\.|د\.)\s*/,'').trim()[0]||'؟';
-  avatar=(seed,size)=>{const c=this.cats[seed%6];return 'width:'+size+'px;height:'+size+'px;border-radius:999px;background:'+c.bg+';color:'+c.c+';display:grid;place-items:center;font-weight:700;font-size:'+Math.round(size/2.4)+'px;flex:0 0 auto';};
+  avatar=(seed,size)=>{const c=this.cats[seed%this.cats.length]||{bg:'#EEF2FF',c:'#4F46E5'};return 'width:'+size+'px;height:'+size+'px;border-radius:999px;background:'+c.bg+';color:'+c.c+';display:grid;place-items:center;font-weight:700;font-size:'+Math.round(size/2.4)+'px;flex:0 0 auto';};
 
-  toggleCat=(id)=>this.setState(s=>({cats:s.cats.indexOf(id)>-1?s.cats.filter(x=>x!==id):[...s.cats,id]}));
-  clearFilters=()=>this.setState({cats:[],level:'',priceBand:'',minRating:0,q:''});
+  toggleCat=(id)=>this.setState(s=>({trackF:s.trackF===id?'':id}));
+  clearFilters=()=>this.setState({cats:[],level:'',priceBand:'',minRating:0,q:'',gradeF:0,trackF:'',centerF:''});
   filteredCourses(){
     const s=this.state; let out=this.courses.filter(c=>c.status==='published');
-    if(s.q.trim()){const q=s.q.trim();out=out.filter(c=>c.title.indexOf(q)>-1||this.teacher(c.t).name.indexOf(q)>-1||c.sum.indexOf(q)>-1);}
-    if(s.cats.length) out=out.filter(c=>s.cats.indexOf(c.cat)>-1);
-    if(s.level) out=out.filter(c=>c.level===s.level);
-    if(s.priceBand==='free') out=out.filter(c=>c.price===0);
-    if(s.priceBand==='low') out=out.filter(c=>c.price>0&&c.price<700);
-    if(s.priceBand==='high') out=out.filter(c=>c.price>=700);
+    if(s.q.trim()){const q=s.q.trim();out=out.filter(c=>c.title.indexOf(q)>-1||this.teacher(c.t).name.indexOf(q)>-1||this.centerOf(c.center).name.indexOf(q)>-1||c.sum.indexOf(q)>-1);}
+    if(s.gradeF) out=out.filter(c=>c.grade===s.gradeF);
+    if(s.trackF) out=out.filter(c=>c.track===s.trackF);
+    if(s.centerF) out=out.filter(c=>c.center===s.centerF);
+    if(s.priceBand==='low') out=out.filter(c=>c.price<1000);
+    if(s.priceBand==='high') out=out.filter(c=>c.price>=1000);
     if(s.minRating) out=out.filter(c=>c.rating>=s.minRating);
     if(s.sort==='الأعلى تقييمًا') out=out.slice().sort((a,b)=>b.rating-a.rating);
     if(s.sort==='الأقل سعرًا') out=out.slice().sort((a,b)=>a.price-b.price);
@@ -2368,32 +2722,75 @@ class Component extends DCLogic {
     if(s.sort==='الأكثر شعبية') out=out.slice().sort((a,b)=>b.students-a.students);
     return out;
   }
+  // ---- ownership ----
+  hasSub=()=>!!this.state.subActive;
+  ownsCourse=(cid)=>this.hasSub()||this.state.purchased.indexOf(cid)>-1;
+  ownsChapter=(sid,cid)=>this.ownsCourse(cid)||this.state.ownedChapters.indexOf(sid)>-1;
+  canWatch=(l)=>!!l&&(l.free||this.ownsChapter(l.section,l.course)||this.state.ownedLessons.indexOf(l.id)>-1);
+  partialCourse=(cid)=>this.state.ownedChapters.some(x=>x.indexOf(cid+'-s')===0)||this.state.ownedLessons.some(x=>x.indexOf(cid+'-l')===0);
+  // ---- cart ----
+  saveCart=(cart)=>{ try{ localStorage.setItem('md-cart',JSON.stringify(cart)); }catch(e){} };
+  addToCart=(item,goCheckout)=>{
+    const s=this.state; let cart=s.cart.filter(x=>x.type!=='subscription');
+    if(item.type==='subscription') cart=[];
+    if(cart.some(x=>x.type===item.type&&x.ref===item.ref)){ this.toast('موجود في السلة بالفعل','warn'); if(goCheckout) this.go('checkout'); return; }
+    if(item.type==='subject') cart=cart.filter(x=>x.course!==item.course);
+    if(item.type==='lesson'&&cart.some(x=>(x.type==='chapter'&&x.ref===item.section)||(x.type==='subject'&&x.course===item.course))){ this.toast('الحصة دي موجودة ضمن باب أو مادة في السلة','warn'); return; }
+    if(item.type==='chapter'){ if(cart.some(x=>x.type==='subject'&&x.course===item.course)){ this.toast('المادة كاملة موجودة في السلة','warn'); return; } cart=cart.filter(x=>!(x.type==='lesson'&&x.section===item.ref)); }
+    cart=[...cart,item]; this.saveCart(cart); this.setState({cart:cart});
+    if(goCheckout) this.go('checkout'); else this.toast('اتضاف للسلة: '+item.title);
+  };
+  removeFromCart=(i)=>{ const cart=this.state.cart.filter((x,j)=>j!==i); this.saveCart(cart); this.setState({cart:cart}); };
+  cartTotals=()=>{
+    const cart=this.state.cart; const sub=cart.reduce((a,x)=>a+x.price,0);
+    const subjects=cart.filter(x=>x.type==='subject'); const pct=this.bundlePct(subjects.length);
+    const disc=Math.round(subjects.reduce((a,x)=>a+x.price,0)*pct/100);
+    return {sub:sub,pct:pct,disc:disc,total:sub-disc,count:cart.length,subjects:subjects.length};
+  };
+  itemSubject=(c)=>({type:'subject',ref:c.id,course:c.id,title:c.title,meta:'المادة كاملة · '+c.lessons+' حصة · وصول '+c.access+' شهور',price:c.price});
+  itemChapter=(sec,c)=>({type:'chapter',ref:sec.id,course:c.id,title:sec.title,meta:c.title+' · '+sec.lessons.length+' حصص',price:sec.price});
+  itemLesson=(l,c)=>({type:'lesson',ref:l.id,course:c.id,section:l.section,title:l.title,meta:c.title+' · حصة واحدة '+l.min+' د',price:l.price});
+  itemPlan=(p)=>({type:'subscription',ref:p.id,course:'',title:p.name,meta:'كل المواد على المنصة لمدة '+(p.months===1?'شهر':p.months+' شهور'),price:p.price});
+  buy=(cid)=>{ this.addToCart(this.itemSubject(this.course(cid)),true); };
+  subscribe=(pid)=>{ const p=this.studentPlans.find(x=>x.id===pid)||this.studentPlans[0]; this.addToCart(this.itemPlan(p),true); };
+  pay=()=>{
+    if(this.state.payState==='processing'||!this.state.cart.length) return;
+    this.setState({payState:'processing'});
+    setTimeout(()=>{
+      const pending=this.state.payMethod==='فوري';
+      const res=pending?'pending':'success';
+      const items=this.state.cart.slice();
+      this.setState(s=>{
+        const n={payState:'idle',payResult:res,route:'payment',paidItems:items,cart:[]};
+        if(res==='success'){
+          n.purchased=Array.from(new Set(s.purchased.concat(items.filter(x=>x.type==='subject').map(x=>x.ref))));
+          n.ownedChapters=s.ownedChapters.concat(items.filter(x=>x.type==='chapter').map(x=>x.ref));
+          n.ownedLessons=s.ownedLessons.concat(items.filter(x=>x.type==='lesson').map(x=>x.ref));
+          const sp=items.find(x=>x.type==='subscription'); if(sp){ n.subActive=true; n.subPlan=sp.ref; }
+        }
+        return n; });
+      this.saveCart([]);
+      try{ history.pushState(null,'','#/payment'); window.scrollTo({top:0}); }catch(e){}
+      this.toast(pending?'اتسجل طلبك — ادفع بكود فوري خلال 48 ساعة':'تم الدفع واتفتح المحتوى',pending?'warn':'ok');
+    },1400);
+  };
   art=(id)=>'background-image:url('+((window.__resources&&window.__resources['art_'+id])||('assets/art-'+id+'.png'))+');background-size:cover;background-position:center;background-repeat:no-repeat';
   card=(c)=>{
-    const cat=this.cat(c.cat), t=this.teacher(c.t), bought=this.state.purchased.indexOf(c.id)>-1;
+    const cat=this.cat(c.cat), t=this.teacher(c.t), ctr=this.centerOf(c.center), bought=this.ownsCourse(c.id), partial=!bought&&this.partialCourse(c.id), pr=this.state.progress[c.id]||0;
     return {
-      id:c.id,slug:c.slug,title:c.title,teacherName:t.name,catName:cat.name,rating:c.rating?c.rating.toFixed(1):'جديدة',reviews:c.reviews,
-      priceText:this.money(c.price),metaText:c.hours+' ساعة · '+c.lessons+' درس',level:c.level,bought:bought,notBought:!bought,
-      progress:this.state.progress[c.id]||0,progressText:(this.state.progress[c.id]||0)+'%',
-      progressBar:'display:block;height:100%;width:'+(this.state.progress[c.id]||0)+'%;background:var(--teal);border-radius:999px',
+      id:c.id,slug:c.slug,title:c.title,teacherName:t.name,centerName:ctr.name,catName:cat.name,rating:c.rating?c.rating.toFixed(1):'جديدة',reviews:c.reviews,
+      priceText:this.money(c.price),metaText:c.lessons+' حصة · '+c.hours+' ساعة',level:this.gradeName(c.grade),bought:bought,notBought:!bought,partial:partial,
+      partsText:c.chapterPrice?('باب بـ'+this.money(c.chapterPrice)+' · حصة بـ'+this.money(c.lessonPrice)):'',
+      progress:pr,progressText:pr+'%',
+      progressBar:'display:block;height:100%;width:'+pr+'%;background:var(--teal);border-radius:999px',
       cover:'position:relative;height:150px;background-image:url('+this.coverUrl(c)+');background-size:cover;background-position:center;border-bottom:1px solid var(--border)',
       catChip:'position:absolute;top:10px;inset-inline-end:10px;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid '+cat.c+'33;color:'+cat.c+';font-size:12px;font-weight:600',
+      gradeChip:'position:absolute;top:10px;inset-inline-start:10px;padding:4px 10px;border-radius:999px;background:rgba(15,23,42,.78);color:#fff;font-size:12px;font-weight:600',
       open:()=>this.go('course',{slug:c.slug}),
       resume:()=>this.startLearn(c.id)
     };
   };
   startLearn=(cid,lid)=>{ const all=this.flatLessons(cid); const keep=all.find(l=>l.id===this.state.lesson); const first=all.find(l=>this.state.done.indexOf(l.id)<0)||all[0]; const target=lid||(keep?keep.id:(first?first.id:'')); this.setState({learnCourse:cid,route:'learn',p:{course:cid},lesson:target,drawer:false,menuOpen:false}); try{ history.pushState(null,'','#/learn/'+cid); window.scrollTo({top:0}); }catch(e){} };
-  buy=(cid)=>{ this.setState({payCourse:cid,payState:'idle',route:'checkout'}); try{window.scrollTo({top:0})}catch(e){} };
-  pay=()=>{
-    if(this.state.payState==='processing') return;
-    this.setState({payState:'processing'});
-    setTimeout(()=>{
-      const pending=this.state.payMethod==='فوري';
-      const res=pending?'pending':'success';
-      this.setState(s=>({payState:'idle',payResult:res,route:'payment',purchased:res==='success'&&s.purchased.indexOf(s.payCourse)<0?[...s.purchased,s.payCourse]:s.purchased}));
-      this.toast(pending?'اتسجل طلبك — ادفع بكود فوري خلال 48 ساعة':'تم تأكيد الدفع وفتح الكورس',pending?'warn':'ok');
-    },1500);
-  };
   completeLesson=()=>{
     const s=this.state, all=this.flatLessons(), i=all.findIndex(l=>l.id===s.lesson);
     const done=s.done.indexOf(s.lesson)>-1?s.done:[...s.done,s.lesson];
@@ -2444,9 +2841,10 @@ class Component extends DCLogic {
       style:'height:26px;padding:0 12px;border:0;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;background:'+(s.role===r[0]?'#fff':'transparent')+';color:'+(s.role===r[0]?'var(--ink)':'#94A3B8')}));
 
     const crumbSpec={
-      course:[['الدورات','courses'],[R==='course'?self.courseBySlug(s.p.slug).title:'','']],
-      teacher:[['المدرسون','teachers'],[R==='teacher'?(self.teachers.find(t=>t.slug===s.p.slug)||self.teachers[0]).name:'','']],
-      checkout:[['الدورة','courses'],['إتمام الشراء','']],
+      course:[['المواد','courses'],[R==='course'?self.courseBySlug(s.p.slug).title:'','']],
+      teacher:[['المدرسين','teachers'],[R==='teacher'?(self.teachers.find(t=>t.slug===s.p.slug)||self.teachers[0]).name:'','']],
+      center:[['السناتر','centers'],[R==='center'?(self.centers.find(x=>x.slug===s.p.slug)||self.centers[0]||{name:''}).name:'','']],
+      checkout:[['المواد','courses'],['السلة والدفع','']],
       'teacher-editor':[['دوراتي','teacher-courses'],['محرر الدورة','']],
       'admin-courses':[['الإدارة','admin'],['مراجعة الدورات','']]
     }[R]||[];
@@ -2468,20 +2866,25 @@ class Component extends DCLogic {
       burger1:'display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:transform var(--dur);transform:'+(s.menuOpen?'translateY(6px) rotate(45deg)':'none'),
       burger2:'display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:opacity var(--dur);opacity:'+(s.menuOpen?'0':'1'),
       burger3:'display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:transform var(--dur);transform:'+(s.menuOpen?'translateY(-6px) rotate(-45deg)':'none'),
-      heroStats:[{v:self.stat('learners','42,000+'),k:'طالب اتعلم معانا'},{v:self.courses.filter(c=>c.status==='published').length+' كورس',k:'في '+self.cats.length+' تخصصات'},{v:self.stat('avg_rating','4.8')+' / 5',k:'متوسط تقييم الطلاب'}],
+      heroStats:[{v:self.stat('learners','58,000+'),k:'طالب بيذاكر معانا'},{v:String(self.centers.length),k:'سناتر من 6 محافظات'},{v:String(self.courses.filter(c=>c.status==='published').length),k:'مادة بكالوريا وثانوي'}],
       heroCourse:(function(){const hc=self.courses.find(c=>c.promo)||self.courses[0]; const ht=self.teacher(hc.t); return {title:'برومو: '+hc.title, meta:ht.name+' · '+self.money(hc.price), open:()=>self.go('course',{slug:hc.slug})};})(),
       spaceLabel:space==='teacher'?'مساحة المدرس':space==='admin'?'لوحة الإدارة':'مساحة الطالب',
       userName:space==='teacher'?self.teacher(self.meT).name:space==='admin'?'سلمى — إدارة المحتوى':self.sname(self.me),
       userInitial:space==='teacher'?self.teacher(self.meT).name.replace(/^(مستر|أ\.|م\.|د\.)\s*/,'')[0]:space==='admin'?'س':self.sname(self.me)[0],
       userAvatarStyle:self.avatar(space==='teacher'?0:space==='admin'?2:3,30),
-      roleSwitch:roleSwitch, publicNav:[mk('الكورسات','courses'),mk('المدرسين','teachers'),mk('باقات المدرسين','pricing'),mk('المساعدة','help')],
+      roleSwitch:roleSwitch, publicNav:[mk('المواد','courses'),mk('السناتر','centers'),mk('المدرسين','teachers'),mk('الاشتراك والأسعار','pricing'),mk('للسناتر','for-centers')],
+      cartCount:s.cart.length, hasCartItems:s.cart.length>0, goCart:()=>self.go('checkout'),
       appNav:appNav, crumbs:crumbs, q:s.q, setQ:e=>self.setState({q:e.target.value}),
       searchKey:e=>{if(e.key==='Enter')self.go('courses');},
       toggleDrawer:()=>self.setState({drawer:!s.drawer}), openNotif:()=>self.go(space==='student'?'student-notifications':'admin-support'),
-      goHome:()=>self.go('home'), goCourses:()=>self.go('courses'), goTeach:()=>self.go('teach'), goPricing:()=>self.go('pricing'),
+      goHome:()=>self.go('home'), goCourses:()=>self.go('courses'), goTeach:()=>self.go('for-centers'), goPricing:()=>self.go('pricing'),
       goLogin:()=>self.go('login'), goSubscription:()=>self.go('teacher-subscription'),
       isHome:R==='home',
-      catCards:self.cats.map(c=>({name:c.name,count:c.n+(c.n>2&&c.n<11?' كورسات':' كورس'),go:()=>{self.setState({cats:[c.id]});self.go('courses');},
+      gradeCards:self.GRADES.map((g,i)=>{ const n=self.courses.filter(c=>c.grade===g.id&&c.status==='published').length; return {name:g.name,sub:g.sub,count:n+(n>2&&n<11?' مواد':' مادة'),go:()=>{self.setState({gradeF:g.id,trackF:'',centerF:''});self.go('courses');},
+        style:'text-align:start;display:flex;flex-direction:column;gap:6px;padding:18px;background:#fff;border:1px solid var(--border);border-radius:18px;cursor:pointer;transition:transform var(--dur),box-shadow var(--dur)',
+        num:'width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:18px;background:'+['var(--amber-50)','var(--primary-50)','var(--teal-50)'][i]+';color:'+['var(--amber)','var(--primary)','var(--teal)'][i], numText:String(g.id)}; }),
+      homeCentersList:self.centers.slice(0,3).map(x=>({name:x.name,city:x.city,rating:x.rating.toFixed(1),n:self.courses.filter(c=>c.center===x.id&&c.status==='published').length+' مواد',initial:x.name.replace(/^(سنتر|أكاديمية)\s*/,'').replace(/^ال/,'')[0],logo:'width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:20px;flex:0 0 auto;background:'+x.bg+';color:'+x.c,open:()=>self.go('center',{slug:x.slug})})),
+      catCards:self.cats.map(c=>({name:c.name,count:c.n+(c.n>2&&c.n<11?' مواد':' مادة'),go:()=>{self.setState({trackF:c.id,gradeF:0,centerF:''});self.go('courses');},
         style:'text-align:start;display:flex;flex-direction:column;gap:6px;padding:16px;background:#fff;border:1px solid var(--border);border-radius:16px;cursor:pointer;transition:transform var(--dur),box-shadow var(--dur)',
         chip:'width:28px;height:28px;border-radius:9px;background:'+c.bg+';border:1px solid '+c.c+'33'})),
       featured:self.courses.filter(c=>c.featured&&c.status==='published').slice(0,4).map(c=>self.card(c)),
@@ -2490,9 +2893,9 @@ class Component extends DCLogic {
       testimonials:self.testimonialData.slice(0,3).map((t,i)=>({text:t.text,name:t.name,role:t.role,initial:self.ini(t.name),avatar:self.avatar(i+2,36)})),
       faqs:faqs,
       footerCols:[
-        {title:'المنصة',links:[mk('الدورات','courses',''),mk('المدرسون','teachers',''),mk('الباقات','pricing',''),mk('من نحن','about','')].map(x=>({label:x.label,go:x.go}))},
-        {title:'المساعدة',links:[{label:'مركز المساعدة',go:()=>self.go('help')},{label:'سياسة الاسترداد',go:()=>self.go('legal')},{label:'الشروط والأحكام',go:()=>self.go('legal')},{label:'الخصوصية',go:()=>self.go('legal')}]},
-        {title:'للمدرسين',links:[{label:'انضم كمدرس',go:()=>self.go('teach')},{label:'باقات المدرسين',go:()=>self.go('pricing')},{label:'لوحة المدرس',go:()=>{self.setState({role:'teacher'});self.go('teacher-home');}},{label:'نظام التصميم',go:()=>self.go('ds')}]}
+        {title:'للطلاب',links:[{label:'المواد',go:()=>self.go('courses')},{label:'السناتر',go:()=>self.go('centers')},{label:'مدارك بلس',go:()=>self.go('pricing')},{label:'مركز المساعدة',go:()=>self.go('help')}]},
+        {title:'للسناتر والمدرسين',links:[{label:'سجّل سنترك',go:()=>self.go('for-centers')},{label:'باقات السناتر',go:()=>self.go('for-centers')},{label:'لوحة المدرس',go:()=>{self.setState({role:'teacher'});self.go('teacher-home');}},{label:'لوحة الإدارة',go:()=>{self.setState({role:'admin'});self.go('admin');}}]},
+        {title:'عن مدارك',links:[{label:'من نحن',go:()=>self.go('about')},{label:'سياسة الاسترجاع',go:()=>self.go('legal')},{label:'الشروط والأحكام',go:()=>self.go('legal')},{label:'الخصوصية',go:()=>self.go('legal')}]}
       ],
       toasts:s.toasts.map(t=>({id:t.id,msg:t.msg,
         style:'display:flex;align-items:center;gap:10px;min-width:260px;max-width:min(92vw,420px);padding:12px 16px;border-radius:14px;background:var(--ink);color:#fff;font-size:14px;box-shadow:var(--sh-3);animation:slideIn var(--dur-2) ease both',
@@ -2515,7 +2918,7 @@ class Component extends DCLogic {
     const settling=+self.stat(self.meT+'_settling','0'), transferred=self.payouts.filter(p=>p.t===self.meT&&p.status==='محوّل').reduce((a,p)=>a+p.amount,0);
     const inTransfer=self.payouts.filter(p=>p.t===self.meT&&p.status!=='محوّل').reduce((a,p)=>a+p.amount,0);
     const available=Math.max(0,net-settling-transferred-inTransfer);
-    const sub=self.db.subscriptions.find(x=>x.teacher_id===self.meT)||{}; const plan=self.plans.find(p=>p.id===sub.plan_id)||self.plans[1]||{name:'',m:0,limits:[]};
+    const sub=self.db.subscriptions.find(x=>x.center_id===T.center)||{}; const plan=self.plans.find(p=>p.id===sub.plan_id)||self.plans[1]||{name:'',m:0,limits:[]}; const TC=self.centerOf(T.center);
     const pendingSubs=self.db.submissions.filter(x=>mineIds.indexOf(x.course_id)>-1&&x.status.indexOf('بانتظار')>-1).length;
     const openQs=self.db.questions.filter(x=>mineIds.indexOf(x.course_id)>-1&&!x.answer).length;
     const inReview=mine.filter(c=>c.status==='review');
@@ -2546,8 +2949,8 @@ class Component extends DCLogic {
         payouts:self.payouts.filter(p=>p.t===self.meT).map(p=>({id:p.id,amountText:self.money(p.amount),date:self.fmtDate(p.date),method:p.method,statusText:p.status,
           badge:'padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:'+(p.status==='محوّل'?'var(--teal-50)':'var(--amber-50)')+';color:'+(p.status==='محوّل'?'var(--teal)':'var(--amber)')})),
         requestPayout:()=>self.toast('طلب التحويل محتاج ربط بوابة الدفع — مش متاح في النسخة التجريبية','warn'),
-        sub:{plan:plan.name,priceText:self.money(plan.m)+' شهريًا',renew:(sub.status==='نشط'?'بيتجدد في ':'انتهى في ')+self.fmtDate(sub.period_end),
-          usage:[{k:'الكورسات',v:mine.length+' من '+(parseInt(plan.limits[0])||'∞'),p:Math.min(100,Math.round(mine.length/(parseInt(plan.limits[0])||100)*100))},{k:'ساعات الفيديو',v:mine.reduce((a,c)=>a+c.hours,0)+' من '+(parseInt(plan.limits[1])||'∞'),p:Math.min(100,Math.round(mine.reduce((a,c)=>a+c.hours,0)/(parseInt(plan.limits[1])||1000)*100))},{k:'المدرسين',v:'1 من 1',p:100}].map(u=>({k:u.k,v:u.v,bar:'display:block;height:100%;width:'+u.p+'%;background:var(--primary);border-radius:999px'})),
+        sub:{plan:plan.name+' — '+TC.name,priceText:self.money(plan.m)+' شهريًا',renew:(sub.status==='نشط'?'بيتجدد في ':'انتهى في ')+self.fmtDate(sub.period_end),
+          usage:[{k:'مدرسين السنتر',v:self.teachers.filter(t=>t.center===T.center).length+' من 10',p:self.teachers.filter(t=>t.center===T.center).length*10},{k:'مواد السنتر',v:String(self.courses.filter(c=>c.center===T.center).length),p:40},{k:'ساعات الفيديو',v:self.courses.filter(c=>c.center===T.center).reduce((a,c)=>a+c.hours,0)+' من 500',p:Math.min(100,Math.round(self.courses.filter(c=>c.center===T.center).reduce((a,c)=>a+c.hours,0)/5))}].map(u=>({k:u.k,v:u.v,bar:'display:block;height:100%;width:'+u.p+'%;background:var(--primary);border-radius:999px'})),
           upgrade:()=>self.go('pricing'), cancel:()=>self.toast('الإلغاء بيوقف البيع الجديد بعد آخر المدة، واللي اشترى قبل كده وصوله مستمر','warn')}
       },
       ed:{
@@ -2588,8 +2991,8 @@ class Component extends DCLogic {
       isAdminHome:R==='admin', isAdminUsers:R==='admin-users', isAdminCourses:R==='admin-courses',
       isAdminPayments:R==='admin-payments', isAdminAudit:R==='admin-audit',
       ad:{
-        stats:[{k:'مستخدمين',v:self.stat('users','0')},{k:'مدرسين نشطين',v:String(self.teachers.length)},{k:'كورسات منشورة',v:String(self.courses.filter(c=>c.status==='published').length)},{k:'إيراد الشهر',v:self.money(+self.stat('month_revenue','0').replace(/,/g,''))}],
-        queues:[{t:q.length+' كورسات مستنية المراجعة',go:()=>self.go('admin-courses')},{t:pendRefunds.length+' طلب استرجاع مستني قرار',go:()=>self.go('admin-payments')},{t:self.db.applications.filter(a=>a.status==='قيد المراجعة').length+' مدرسين مستنيين توثيق الملف',go:()=>self.go('admin-teachers')}],
+        stats:[{k:'مستخدمين',v:self.stat('users','0')},{k:'سناتر نشطة',v:String(self.centers.length)},{k:'مواد منشورة',v:String(self.courses.filter(c=>c.status==='published').length)},{k:'مشتركين مدارك بلس',v:String(self.db.studentSubs.filter(x=>x.status==='نشط').length)},{k:'إيراد الشهر',v:self.money(+self.stat('month_revenue','0').replace(/,/g,''))}],
+        queues:[{t:q.length+' كورسات مستنية المراجعة',go:()=>self.go('admin-courses')},{t:pendRefunds.length+' طلب استرجاع مستني قرار',go:()=>self.go('admin-payments')},{t:'طلبات سناتر جديدة من صفحة «للسناتر»',go:()=>self.go('admin-teachers')}],
         reviewRows:q.map(c=>({title:c.title,teacherName:self.teacher(c.t).name,catName:self.cat(c.cat).name,
           metaText:c.lessons+' درس · '+c.hours+' ساعة · '+self.money(c.price),
           open:()=>self.setState({adminReview:c.id,adminReason:''})})),
@@ -2667,9 +3070,9 @@ class Component extends DCLogic {
           approve:()=>self.toast('المدرس اتوثق وأدوات الإنشاء اتفعلت'),
           reject:()=>self.toast('اتطلبت مستندات إضافية والسبب اتسجل في سجل التدقيق','warn')})),
         plans:self.plans.map(p=>({name:p.name,priceText:self.money(p.m)+' شهريًا',limits:p.limits.join(' · '),
-          subs:self.db.subscriptions.filter(x=>x.plan_id===p.id&&x.status==='نشط').length+' مشتركين',
+          subs:self.db.subscriptions.filter(x=>x.plan_id===p.id&&x.status==='نشط').length+' سناتر مشتركة',
           edit:()=>self.toast('تعديل الباقات يؤثر على المشتركين الحاليين — يحتاج تأكيدًا في الإنتاج','warn')})),
-        subs:self.db.subscriptions.map((x,i)=>({n:self.teacher(x.teacher_id).name,p:(self.plans.find(p=>p.id===x.plan_id)||{}).name,d:(x.status==='نشط'?'بيتجدد ':'انتهى ')+self.fmtDate(x.period_end),stText:x.status,initial:self.ini(self.teacher(x.teacher_id).name),avatar:self.avatar(i,36),
+        subs:self.db.subscriptions.map((x,i)=>({n:x.center_id?self.centerOf(x.center_id).name:self.teacher(x.teacher_id).name,p:(self.plans.find(p=>p.id===x.plan_id)||{}).name,d:(x.status==='نشط'?'بيتجدد ':'انتهى ')+self.fmtDate(x.period_end),stText:x.status,initial:(x.center_id?self.centerOf(x.center_id).name.replace(/^(سنتر|أكاديمية)\s*/,'').replace(/^ال/,''):self.ini(self.teacher(x.teacher_id).name))[0],avatar:self.avatar(i,36),
           badge:'padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:'+(x.status==='نشط'?'var(--teal-50)':'var(--danger-50)')+';color:'+(x.status==='نشط'?'var(--teal)':'var(--danger)'),
           expired:x.status!=='نشط'})),
         payoutReqs:self.payouts.filter(p=>p.status!=='محوّل').map(x=>({id:x.id,n:self.teacher(x.t).name,d:'طلب في '+self.fmtDate(x.date),acc:x.method,amountText:self.money(x.amount),
@@ -2717,9 +3120,10 @@ class Component extends DCLogic {
     const lc=self.course(s.learnCourse);
     const doneHere=s.done.filter(id=>all.some(l=>l.id===id)).length;
     const pct=all.length?Math.round(doneHere/all.length*100):0;
-    const my=s.purchased.map(id=>self.card(self.course(id)));
+    const myIds=Array.from(new Set(s.purchased.concat(self.courses.filter(c=>self.partialCourse(c.id)).map(c=>c.id)))); const my=myIds.map(id=>self.card(self.course(id)));
     const myPays=self.payments.filter(p=>p.sid===self.me);
-    const orders=myPays.map(p=>({id:p.id.replace('PAY','ORD'),cid:p.course,date:self.fmtDate(p.ts),amount:p.amount,status:p.status==='مدفوع'?'مكتمل':p.status,method:p.method}));
+    const tn={subject:'مادة كاملة',chapter:'باب',lesson:'حصة',subscription:'اشتراك',bundle:'باقة مواد'};
+    const orders=myPays.map(p=>({id:p.id.replace('PAY','ORD'),cid:p.course,title:(p.itemTitle||'')+' · '+(tn[p.type]||''),date:self.fmtDate(p.ts),amount:p.amount,status:p.status==='مدفوع'?'مكتمل':p.status,method:p.method}));
     const mySubs=self.db.submissions.filter(x=>x.student_id===self.me);
     const pendingQuizzes=self.db.lessons.filter(l=>s.purchased.indexOf(l.course_id)>-1&&l.kind!=='video'&&!mySubs.some(x=>x.title===l.title)).slice(0,3);
     const certCourses=self.myEnroll.filter(e=>e.progress>=100);
@@ -2737,10 +3141,11 @@ class Component extends DCLogic {
         resumeTitle:lc.title, resumeLesson:cur.sec+' · '+cur.title, pctText:pct+'%',
         bar:'display:block;height:100%;width:'+pct+'%;background:var(--teal);border-radius:999px',
         cont:()=>self.startLearn(lc.id),
-        stats:[{k:'كورساتي',v:String(s.purchased.length)},{k:'ساعات مذاكرة الشهر ده',v:self.stat(self.me+'_hours','0')},{k:'واجبات وامتحانات مطلوبة',v:String(pendingQuizzes.length)},{k:'شهادات',v:String(certCourses.length)}],
+        stats:[{k:'موادي',v:String(myIds.length)},{k:'ساعات مذاكرة الشهر ده',v:self.stat(self.me+'_hours','0')},{k:'واجبات وامتحانات مطلوبة',v:String(pendingQuizzes.length)},{k:'شهادات',v:String(certCourses.length)}],
         courses:my, tabsList:tabs.map(t=>({label:t[1],style:self.tabBtn(s.myTab===t[0]),pick:()=>self.setState({myTab:t[0]})})),
         filtered:myFiltered, noneInTab:myFiltered.length===0,
-        recs:self.courses.filter(c=>c.status==='published'&&s.purchased.indexOf(c.id)<0).slice(0,2).map(c=>self.card(c)),
+        recs:self.courses.filter(c=>c.status==='published'&&myIds.indexOf(c.id)<0&&c.grade===2).slice(0,2).map(c=>self.card(c)),
+        subText:s.subActive?'مشترك في '+((self.studentPlans.find(p=>p.id===s.subPlan)||{}).name||'مدارك بلس')+' — كل المواد مفتوحة':'مش مشترك — افتح كل المواد بـ'+self.money((self.studentPlans[0]||{price:0}).price)+' في الشهر', subActive:!!s.subActive, notSub:!s.subActive, goSub:()=>self.go('pricing'),
         notifs:self.db.notifications.filter(n=>n.student_id===self.me).map(n=>({t:n.title+(n.body?' — '+n.body:''),w:self.ago(n.created_at),dot:'width:8px;height:8px;border-radius:999px;flex:0 0 auto;margin-top:7px;background:'+(n.kind==='warn'?'var(--amber)':n.kind==='ok'?'var(--teal)':'var(--primary)')})),
         assignments:pendingQuizzes.map(l=>({t:l.title,c:self.course(l.course_id).title,due:l.kind==='quiz'?'بابل شيت · 30 دقيقة':'سلّم قبل آخر الأسبوع',st:'مطلوب',k:'warn'}))
           .concat(mySubs.map(x=>({t:x.title,c:self.course(x.course_id).title,due:'اتسلّم '+self.ago(x.submitted_at),st:x.status+(x.grade?' '+x.grade:''),k:x.grade?'ok':'wait'}))).map(a=>({t:a.t,c:a.c,due:a.due,stText:a.st,
@@ -2748,7 +3153,7 @@ class Component extends DCLogic {
           open:()=>a.k==='warn'?self.setState({modal:'submit'}):a.k==='ok'?self.setState({modal:'graded'}):self.toast('التسليم مستني تصحيح المدرس')})),
         certs:certCourses.map(e=>({t:self.course(e.course_id).title,d:'اتصدرت في '+self.fmtDate(e.last_activity),id:'MDK-'+e.course_id.toUpperCase()+'-'+String(e.id).padStart(4,'0')})).map(c=>Object.assign({},c,{download:()=>self.toast('تحميل الشهادة PDF محتاج خدمة على السيرفر — مش متاحة في النسخة التجريبية','warn')})),
         orders:orders.map(o=>{const c=self.course(o.cid),m=stMeta(o.status);return{
-          id:o.id,title:c.title,date:o.date,amountText:self.money(o.amount),method:o.method,statusText:o.status,
+          id:o.id,title:o.title||c.title,date:o.date,amountText:self.money(o.amount),method:o.method,statusText:o.status,
           badge:'padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:'+m.bg+';color:'+m.c,
           canRefund:o.status==='مكتمل', pending:o.status==='معلق',
           refund:()=>self.setState({modal:'refund'}),
@@ -2787,7 +3192,8 @@ class Component extends DCLogic {
 
   authVals(s,R,self){
     const steps=['المعلومات الأساسية','التخصص والخبرة','الملف الشخصي','اختيار الباقة','حالة المراجعة'];
-    const c=self.course(s.payCourse), ct=self.teacher(c.t), disc=c.old?c.old-c.price:0;
+    const T=self.cartTotals(), typeName={subject:'مادة كاملة',chapter:'باب',lesson:'حصة',subscription:'اشتراك',bundle:'باقة'};
+    const firstPaid=(s.paidItems||[])[0]||{};
     const methods=['فودافون كاش','إنستاباي','بطاقة بنكية (ميزة / فيزا)','فوري'];
     const res=s.payResult;
     return {
@@ -2821,24 +3227,29 @@ class Component extends DCLogic {
         toDashboard:()=>{ self.setState({role:'teacher'}); self.go('teacher-home'); }
       },
       co:{
-        title:c.title, teacherName:ct.name, priceText:self.money(c.price), discText:disc?'- '+self.money(disc):'',
-        hasDisc:!!disc, totalText:self.money(c.price), accessText:'وصول '+c.access+' شهور',
-        cover:'height:104px;border-radius:12px;border:1px solid var(--border);background-image:url('+self.coverUrl(c)+');background-size:cover;background-position:center',
+        empty:s.cart.length===0, notEmpty:s.cart.length>0,
+        items:s.cart.map((x,i)=>{ const cc=x.course?self.course(x.course):null; return {title:x.title,meta:x.meta,priceText:self.money(x.price),typeText:typeName[x.type]||'',
+          thumb:'width:64px;height:44px;border-radius:10px;flex:0 0 auto;border:1px solid var(--border);background-size:cover;background-position:center;background-image:url('+(cc?self.coverUrl(cc):'/assets/art-hero.webp')+')',
+          remove:()=>self.removeFromCart(i)}; }),
+        subText:self.money(T.sub), hasDisc:T.disc>0, discText:'- '+self.money(T.disc), discLabel:'خصم '+T.subjects+' مواد ('+T.pct+'%)',
+        totalText:self.money(T.total), countText:T.count+(T.count>2&&T.count<11?' عناصر':' عنصر'),
+        bundleNudge:T.subjects===1?'ضيف مادة كمان وخد خصم '+self.bundlePct(2)+'% على المواد':T.subjects===2?'ضيف مادة تالتة والخصم يبقى '+self.bundlePct(3)+'%':'',
+        hasNudge:T.subjects===1||T.subjects===2, browse:()=>self.go('courses'),
         methods:methods.map(m=>({label:m,style:'display:flex;align-items:center;gap:10px;padding:14px;border:1px solid '+(s.payMethod===m?'var(--primary)':'var(--border)')+';background:'+(s.payMethod===m?'var(--primary-50)':'#fff')+';border-radius:12px;cursor:pointer;text-align:start;width:100%;font-size:15px;font-weight:600;color:var(--ink)',
           radio:'width:18px;height:18px;border-radius:999px;border:'+(s.payMethod===m?'6px solid var(--primary)':'2px solid var(--border-2)')+';flex:0 0 auto',
           pick:()=>self.setState({payMethod:m})})),
-        processing:s.payState==='processing', idle:s.payState!=='processing',
-        pay:self.pay, payText:s.payState==='processing'?'جارٍ معالجة الدفع…':'ادفع '+self.money(c.price),
-        payStyle:'width:100%;height:52px;border:0;border-radius:14px;background:'+(s.payState==='processing'?'#A5B4FC':'var(--primary)')+';color:#fff;font-weight:700;font-size:16px;cursor:'+(s.payState==='processing'?'progress':'pointer')+';display:flex;align-items:center;justify-content:center;gap:10px'
+        processing:s.payState==='processing', idle:s.payState!=='processing', mobileBar:s.w<900&&R==='checkout'&&s.cart.length>0,
+        pay:self.pay, payText:s.payState==='processing'?'جاري تنفيذ الدفع…':'ادفع '+self.money(T.total),
+        payStyle:'width:100%;height:52px;margin-top:16px;border:0;border-radius:14px;background:'+(s.payState==='processing'?'#A5B4FC':'var(--primary)')+';color:#fff;font-weight:700;font-size:16px;cursor:'+(s.payState==='processing'?'progress':'pointer')+';display:flex;align-items:center;justify-content:center;gap:10px'
       },
       pr:{
         isSuccess:res==='success', isPending:res==='pending', isFailed:res==='failed',
-        courseTitle:c.title,
+        courseTitle:(s.paidItems||[]).map(x=>x.title).join(' + '),
         badge:'width:64px;height:64px;border-radius:999px;display:grid;place-items:center;font-size:26px;margin:0 auto 16px;background:'+(res==='success'?'var(--teal-50)':res==='pending'?'var(--amber-50)':'var(--danger-50)')+';color:'+(res==='success'?'var(--teal)':res==='pending'?'var(--amber)':'var(--danger)'),
         badgeText:res==='success'?'✓':res==='pending'?'⋯':'✕',
-        title:res==='success'?'تم الدفع وفتح الكورس':res==='pending'?'مستنيين دفعتك من فوري':'الدفع ما تمش',
-        msg:res==='success'?'الكورس اتضاف لـ«كورساتي». تقدر تبدأ من أول درس دلوقتي.':res==='pending'?'كود فوري بتاعك: 7291 4406 — ادفعه في أي منفذ فوري خلال 48 ساعة، وهيتفتح الكورس أوتوماتيك أول ما الدفع يتأكد.':'مفيش أي مبلغ اتخصم. اتأكد من بيانات الكارت أو جرّب وسيلة دفع تانية.',
-        startLearn:()=>self.startLearn(c.id), toPurchases:()=>{self.setState({role:'student'});self.go('student-purchases');},
+        title:res==='success'?'تم الدفع':res==='pending'?'مستنيين دفعتك من فوري':'الدفع ما تمش',
+        msg:res==='success'?(firstPaid.type==='subscription'?'اشتراك مدارك بلس اتفعّل — كل المواد مفتوحة ليك دلوقتي.':'المحتوى اتضاف لـ«كورساتي». تقدر تبدأ دلوقتي.'):res==='pending'?'كود فوري بتاعك: 7291 4406 — ادفعه في أي منفذ فوري خلال 48 ساعة، وهيتفتح الكورس أوتوماتيك أول ما الدفع يتأكد.':'مفيش أي مبلغ اتخصم. اتأكد من بيانات الكارت أو جرّب وسيلة دفع تانية.',
+        startLearn:()=>{ const f=firstPaid; if(f.type==='subscription'||!f.course){ self.go('courses'); } else if(f.type==='lesson'){ self.startLearn(f.course,f.ref); } else if(f.type==='chapter'){ const l=self.db.lessons.find(x=>x.section_id===f.ref); self.startLearn(f.course,l?l.id:undefined); } else self.startLearn(f.course); }, toPurchases:()=>{self.setState({role:'student'});self.go('student-purchases');},
         retry:()=>self.go('checkout'), toCourses:()=>self.go('courses'),
         note:'في النسخة الحقيقية الدفع بيتأكد من السيرفر عن طريق بوابة الدفع (Paymob / Fawry) بس، والشاشة دي مش بتفتح أي وصول لوحدها.'
       }
@@ -2849,41 +3260,49 @@ class Component extends DCLogic {
     const isMobile=s.w<900;
     const list=self.filteredCourses();
     const chips=[];
-    s.cats.forEach(id=>chips.push({label:self.cat(id).name,clear:()=>self.toggleCat(id)}));
-    if(s.level) chips.push({label:'المستوى: '+s.level,clear:()=>self.setState({level:''})});
-    if(s.priceBand) chips.push({label:{free:'مجاني',low:'أقل من 700 ج.م',high:'700 ج.م وأكتر'}[s.priceBand],clear:()=>self.setState({priceBand:''})});
-    if(s.minRating) chips.push({label:'تقييم 4.5+',clear:()=>self.setState({minRating:0})});
+    if(s.gradeF) chips.push({label:self.gradeName(s.gradeF),clear:()=>self.setState({gradeF:0})});
+    if(s.trackF) chips.push({label:self.cat(s.trackF).name,clear:()=>self.setState({trackF:''})});
+    if(s.centerF) chips.push({label:self.centerOf(s.centerF).name,clear:()=>self.setState({centerF:''})});
+    if(s.priceBand) chips.push({label:{low:'أقل من 1000 ج.م',high:'1000 ج.م وأكتر'}[s.priceBand],clear:()=>self.setState({priceBand:''})});
+    if(s.minRating) chips.push({label:'تقييم 4.8+',clear:()=>self.setState({minRating:0})});
     if(s.q.trim()) chips.push({label:'بحث: '+s.q.trim(),clear:()=>self.setState({q:''})});
 
     const c=R==='course'?self.courseBySlug(s.p.slug):self.course('c1');
-    const ct=self.teacher(c.t), ccat=self.cat(c.cat), bought=s.purchased.indexOf(c.id)>-1;
+    const ct=self.teacher(c.t), ccat=self.cat(c.cat), cctr=self.centerOf(c.center), bought=self.ownsCourse(c.id);
     const cReviews=self.db.testimonials.filter(t=>t.course_id===c.id);
+    const inCart=(type,ref)=>s.cart.some(x=>x.type===type&&x.ref===ref);
     const secs=self.curOf(c.id).map((sec,si)=>{
-      const open=s.openSecs.indexOf(sec.id)>-1;
-      return {title:sec.title,open:open,metaText:sec.lessons.length+' دروس · '+sec.lessons.reduce((a,l)=>a+l.min,0)+' دقيقة',
+      const open=s.openSecs.indexOf(sec.id)>-1, ownSec=self.ownsChapter(sec.id,c.id), secCart=inCart('chapter',sec.id);
+      return {title:sec.title,open:open,metaText:sec.lessons.length+' حصص · '+sec.lessons.reduce((a,l)=>a+l.min,0)+' دقيقة',
+        canBuy:!ownSec&&sec.price>0, owned:ownSec&&!bought, priceText:self.money(sec.price),
+        buyText:secCart?'في السلة ✓':'اشتري الباب · '+self.money(sec.price),
+        buyStyle:'height:34px;padding:0 12px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap;border:1px solid var(--primary);background:'+(secCart?'var(--primary)':'var(--primary-50)')+';color:'+(secCart?'#fff':'var(--primary-700)'),
+        buy:()=>secCart?self.go('checkout'):self.addToCart(self.itemChapter(sec,c)),
         toggle:()=>self.setState(st=>({openSecs:open?st.openSecs.filter(x=>x!==sec.id):[...st.openSecs,sec.id]})),
-        icon:'width:24px;height:24px;border-radius:7px;background:var(--bg);color:var(--primary);display:grid;place-items:center;transform:rotate('+(open?'45deg':'0')+');transition:transform var(--dur)',
-        lessons:sec.lessons.map(l=>({title:l.title,minText:l.min+' د',
-          tagText:l.free?'معاينة مجانية':(bought?'متاح':'مقفل'),
-          tag:'padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;background:'+(l.free?'var(--teal-50)':bought?'var(--primary-50)':'#F1F5F9')+';color:'+(l.free?'var(--teal)':bought?'var(--primary-700)':'var(--muted)'),
-          mark:'width:22px;height:22px;border-radius:999px;flex:0 0 auto;display:grid;place-items:center;font-size:12px;background:'+(l.free||bought?'var(--primary-50)':'#F1F5F9')+';color:'+(l.free||bought?'var(--primary-700)':'var(--muted)'),
-          markText:l.free||bought?'▶':'✕',
-          click:()=>{ if(l.free||bought){ if(!bought){ self.setState({purchased:s.purchased}); } self.startLearn(c.id,l.id); } else { self.toast('هذا الدرس مقفل — اشترِ الدورة للوصول إليه','warn'); } }}))};
+        icon:'width:24px;height:24px;border-radius:7px;background:var(--bg);color:var(--primary);display:grid;place-items:center;flex:0 0 auto;transform:rotate('+(open?'45deg':'0')+');transition:transform var(--dur)',
+        lessons:sec.lessons.map(l=>{ const can=self.canWatch(l), lc=inCart('lesson',l.id); return {title:l.title,minText:l.min+' د',
+          tagText:l.free?'مجانًا':can?'متاحة':lc?'في السلة':'حصة '+self.money(l.price),
+          tag:'padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;background:'+(l.free?'var(--teal-50)':can?'var(--primary-50)':lc?'var(--primary)':'var(--amber-50)')+';color:'+(l.free?'var(--teal)':can?'var(--primary-700)':lc?'#fff':'var(--amber)'),
+          mark:'width:22px;height:22px;border-radius:999px;flex:0 0 auto;display:grid;place-items:center;font-size:11px;background:'+(can?'var(--primary-50)':'#F1F5F9')+';color:'+(can?'var(--primary-700)':'var(--muted)'),
+          markText:can?'▶':'🔒',
+          click:()=>{ if(can){ self.startLearn(c.id,l.id); } else if(lc){ self.go('checkout'); } else { self.addToCart(self.itemLesson(l,c)); } }};})};
     });
     const baseRev=[{n:'سارة إبراهيم',r:5,txt:'الشرح منظم جدًا وكل درس بيبني على اللي قبله. أحسن فلوس صرفتها على كورس.',when:'قبل أسبوعين'},{n:'عمر حسن',r:4,txt:'المحتوى ممتاز، بس كنت أتمنى تمارين أكتر في آخر وحدة.',when:'قبل شهر'},{n:'جنى مصطفى',r:5,txt:'المدرس بيرد على الأسئلة بسرعة والملفات المرفقة مفيدة جدًا.',when:'قبل شهرين'}];
     const reviews=cReviews.map(t=>({n:self.sname(t.student_id),r:t.rating,txt:t.text,when:t.role||''})).concat(baseRev).slice(0,3).map((x,i)=>({name:x.n,text:x.txt,when:x.when,stars:'★★★★★'.slice(0,x.r)+'☆☆☆☆☆'.slice(0,5-x.r),initial:x.n[0],avatar:self.avatar(i+1,38)}));
 
     const tp=R==='teacher'?(self.teachers.find(t=>t.slug===s.p.slug)||self.teachers[0]):self.teachers[0];
+    const ctrP=R==='center'?(self.centers.find(x=>x.slug===s.p.slug)||self.centers[0]):self.centers[0];
     const tpi=self.teachers.indexOf(tp);
 
     const compare=[
-      ['عدد الكورسات','3','20','بلا حدود'],
-      ['ساعات الفيديو','20','200','1000'],
-      ['عمولة المنصة','15%','10%','7%'],
-      ['كوبونات الخصم','—','نعم','نعم'],
-      ['تحليلات متقدمة','—','نعم','نعم'],
-      ['عدة مدرسين','—','—','نعم'],
-      ['الدعم','بالبريد','بأولوية','مدير حساب']
+      ['عدد المدرسين','1','حتى 10','بلا حدود'],
+      ['عدد المواد','5','بلا حدود','بلا حدود'],
+      ['ساعات الفيديو','100','500','2000'],
+      ['عمولة المنصة','12%','8%','5%'],
+      ['أكواد لطلاب السنتر','—','نعم','نعم'],
+      ['تقارير لولي الأمر','—','نعم','نعم'],
+      ['فروع متعددة ودومين خاص','—','—','نعم'],
+      ['الدعم','واتساب','بأولوية','مدير حساب']
     ].map(r=>({label:r[0],a:r[1],b:r[2],c:r[3]}));
 
     const infoPages={
@@ -2906,32 +3325,44 @@ class Component extends DCLogic {
     return {
       isCourses:R==='courses', isCourseDetail:R==='course', isTeachers:R==='teachers', isTeacherProfile:R==='teacher',
       isPricing:R==='pricing', isInfo:R==='help'||R==='about'||R==='legal',
-      resultText:list.length+' دورة مطابقة', hasChips:chips.length>0, noResults:list.length===0,
+      resultText:list.length+(list.length>2&&list.length<11?' مواد':' مادة'), hasChips:chips.length>0, noResults:list.length===0,
       filteredCards:list.map(x=>self.card(x)),
       showFilters:!isMobile||s.filtersOpen, filtersToggleVisible:isMobile,
       toggleFilters:()=>self.setState({filtersOpen:!s.filtersOpen}),
-      filterCatPills:self.cats.map(c=>({label:c.name,style:self.pill(s.cats.indexOf(c.id)>-1),pick:()=>self.toggleCat(c.id)})),
-      levelPills:['ثانوية عامة','مبتدئ','متوسط','متقدم'].map(l=>({label:l,style:self.pill(s.level===l),pick:()=>self.setState({level:s.level===l?'':l})})),
-      pricePills:[['free','مجاني'],['low','أقل من 700'],['high','700 وأكتر']].map(p=>({label:p[1],style:self.pill(s.priceBand===p[0]),pick:()=>self.setState({priceBand:s.priceBand===p[0]?'':p[0]})})),
-      ratingPills:[{label:'4.5 وأعلى',style:self.pill(s.minRating===4.5),pick:()=>self.setState({minRating:s.minRating?0:4.5})}],
+      filterCatPills:self.cats.map(c=>({label:c.name,style:self.pill(s.trackF===c.id),pick:()=>self.toggleCat(c.id)})),
+      gradePills:self.GRADES.map(g=>({label:g.name,style:self.pill(s.gradeF===g.id),pick:()=>self.setState({gradeF:s.gradeF===g.id?0:g.id})})),
+      centerPills:self.centers.map(x=>({label:x.name+' · '+x.city,style:self.pill(s.centerF===x.id),pick:()=>self.setState({centerF:s.centerF===x.id?'':x.id})})),
+
+      pricePills:[['low','أقل من 1000'],['high','1000 وأكتر']].map(p=>({label:p[1],style:self.pill(s.priceBand===p[0]),pick:()=>self.setState({priceBand:s.priceBand===p[0]?'':p[0]})})),
+      ratingPills:[{label:'4.8 وأعلى',style:self.pill(s.minRating===4.8),pick:()=>self.setState({minRating:s.minRating?0:4.8})}],
       activeChips:chips.map(c=>({label:c.label,clear:c.clear})),
       clearFilters:self.clearFilters,
       sortValue:s.sort, setSort:e=>self.setState({sort:e.target.value}),
       sortOptions:['الأكثر شعبية','الأعلى تقييمًا','الأقل سعرًا','الأحدث'],
       cd:{
-        title:c.title, sum:c.sum, level:c.level, catName:ccat.name,
+        title:c.title, sum:c.sum, level:self.gradeName(c.grade)+' · '+c.term, catName:ccat.name,
+        centerName:cctr.name, centerCity:cctr.city, openCenter:()=>self.go('center',{slug:cctr.slug}),
+        chapterFrom:self.money(c.chapterPrice), lessonFrom:self.money(c.lessonPrice), hasParts:c.chapterPrice>0,
+        subFrom:self.money((self.studentPlans[0]||{price:0}).price), hasSub:self.hasSub(),
+        inCartSubject:inCart('subject',c.id), cartCount:s.cart.length, hasCart:s.cart.length>0,
+        addSubject:()=>inCart('subject',c.id)?self.go('checkout'):self.addToCart(self.itemSubject(c)),
+        addSubjectText:inCart('subject',c.id)?'في السلة — كمّل الدفع':'أضف للسلة (وضيف مواد تانية بخصم)',
+        subscribe:()=>self.go('pricing'),
+        goCurriculum:()=>{ self.setState({courseTab:'curriculum'}); try{ const el=document.getElementById('md-curr'); el&&el.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){} },
+        bundleHint:'اشتري مادتين وخد خصم '+self.bundlePct(2)+'% — 3 مواد '+self.bundlePct(3)+'%',
+        mobileBar:isMobile&&!bought&&R==='course', goCheckout:()=>self.go('checkout'),
         catChip:'padding:5px 12px;border-radius:999px;background:'+ccat.bg+';color:'+ccat.c+';font-size:13px;font-weight:600',
         cover:'position:relative;height:clamp(200px,32vw,340px);border-radius:18px;border:1px solid var(--border);background-image:url('+self.coverUrl(c)+');background-size:cover;background-position:center;display:grid;place-items:center;overflow:hidden',
         promo:c.promo||'', hasPromo:!!c.promo, noPromo:!c.promo, promoPoster:'/assets/poster-promo.webp', playPromo:()=>self.setState({promoPlay:true}), promoPlaying:!!s.promoPlay&&!!c.promo, promoIdle:!s.promoPlay&&!!c.promo,
         ratingText:c.rating?c.rating.toFixed(1):'كورس جديد', reviewsText:'('+c.reviews.toLocaleString('en-US')+' تقييم)',
         studentsText:c.students.toLocaleString('en-US')+' طالب', metaText:c.hours+' ساعة · '+c.lessons+' درس',
         priceText:self.money(c.price), oldText:c.old?self.money(c.old):'', hasOld:!!c.old,
-        accessText:'وصول '+c.access+' شهور من تاريخ الشراء',
+        accessText:'المادة كاملة · وصول '+c.access+' شهور',
         bought:bought, notBought:!bought,
         buy:()=>self.buy(c.id), cont:()=>self.startLearn(c.id),
         teacherName:ct.name, teacherTitle:ct.title, teacherBio:ct.bio, teacherInitial:self.ini(ct.name),
         teacherAvatar:self.avatar(self.teachers.indexOf(ct),64),
-        teacherStats:'★ '+ct.rating.toFixed(1)+' · '+ct.students.toLocaleString('en-US')+' طالب · '+ct.years+' سنة خبرة · '+ct.city,
+        teacherStats:'★ '+ct.rating.toFixed(1)+' · '+ct.students.toLocaleString('en-US')+' طالب · '+ct.years+' سنة خبرة · '+cctr.name+' — '+cctr.city,
         openTeacher:()=>self.go('teacher',{slug:ct.slug}),
         outcomes:c.outcomes.map(x=>({t:x})),
         reqs:c.reqs.map(x=>({t:x})),
@@ -2939,17 +3370,17 @@ class Component extends DCLogic {
         sections:secs, reviews:reviews,
         tabs:[['overview','نظرة عامة'],['curriculum','المنهج'],['teacher','المدرس'],['reviews','التقييمات']].map(t=>({label:t[1],style:self.tabBtn(s.courseTab===t[0]),pick:()=>self.setState({courseTab:t[0]})})),
         tabOverview:s.courseTab==='overview', tabCurriculum:s.courseTab==='curriculum', tabTeacher:s.courseTab==='teacher', tabReviews:s.courseTab==='reviews',
-        related:self.courses.filter(x=>x.cat===c.cat&&x.id!==c.id&&x.status==='published').slice(0,3).map(x=>self.card(x))
+        related:self.courses.filter(x=>x.grade===c.grade&&x.id!==c.id&&x.status==='published').slice(0,3).map(x=>self.card(x))
       },
       teacherCards:self.teachers.map((t,i)=>({name:t.name,title:t.title,initial:self.ini(t.name),avatar:self.avatar(i,58),
         rating:t.rating.toFixed(1),studentsText:t.students.toLocaleString('en-US')+' طالب',
-        coursesText:self.courses.filter(c=>c.t===t.id&&c.status==='published').length+' كورس منشور · '+t.city,
+        coursesText:self.courses.filter(c=>c.t===t.id&&c.status==='published').length+' مادة · '+self.centerOf(t.center).name+' — '+t.city,
         catName:self.cat(t.cat).name,catChip:'padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:'+self.cat(t.cat).bg+';color:'+self.cat(t.cat).c,
         open:()=>self.go('teacher',{slug:t.slug})})),
       tp:{name:tp.name,title:tp.title,bio:tp.bio,initial:self.ini(tp.name),avatar:self.avatar(tpi,84),
-        rating:tp.rating.toFixed(1),studentsText:tp.students.toLocaleString('en-US')+' طالب',yearsText:tp.years+' سنة خبرة',
+        rating:tp.rating.toFixed(1),studentsText:tp.students.toLocaleString('en-US')+' طالب',yearsText:tp.years+' سنة خبرة',centerName:self.centerOf(tp.center).name,openCenter:()=>self.go('center',{slug:self.centerOf(tp.center).slug}),
         catName:self.cat(tp.cat).name,
-        specialties:[self.cat(tp.cat).name,tp.cat==='thanaweya'?'نظام البابل شيت':'مشاريع عملية','متابعة الطلاب','مراجعات نهائية'].map(x=>({t:x})),
+        specialties:[self.cat(tp.cat).name,'نظام البكالوريا','متابعة الطلاب','مراجعات نهائية'].map(x=>({t:x})),
         courses:self.courses.filter(c=>c.t===tp.id&&c.status==='published').map(x=>self.card(x)),
         reviews:reviews.slice(0,2)},
       yearly:s.yearly, toggleYearly:()=>self.setState({yearly:!s.yearly}),
@@ -2961,8 +3392,55 @@ class Component extends DCLogic {
         limits:p.limits.map(l=>({t:l})),
         style:'display:flex;flex-direction:column;gap:12px;padding:24px;background:#fff;border:'+(p.best?'2px solid var(--primary)':'1px solid var(--border)')+';border-radius:20px;box-shadow:'+(p.best?'var(--sh-2)':'var(--sh-1)'),
         btnStyle:self.btn(p.best?'primary':'outline','width:100%'),
-        pick:()=>{self.toast('اخترت باقة «'+p.name+'» — كمّل بيانات الانضمام');self.go('teach');}})),
+        pick:()=>{self.setState({cf:Object.assign({},s.cf,{msg:'مهتمين بباقة «'+p.name+'»'})});self.toast('اخترت باقة «'+p.name+'» — كمّل بيانات السنتر');try{const el=document.getElementById('md-cform');el&&el.scrollIntoView({behavior:'smooth'});}catch(e){}}})),
       compareRows:compare,
+      isCenters:R==='centers', isCenter:R==='center', isForCenters:R==='for-centers',
+      studentPlanCards:self.studentPlans.map(p=>({name:p.name,desc:p.desc,note:p.note,best:p.best,priceText:self.money(p.price),cycle:p.months===1?'شهريًا':'لمدة '+p.months+' شهور',
+        limits:p.limits.map(l=>({t:l})), current:s.subActive&&s.subPlan===p.id,
+        style:'display:flex;flex-direction:column;gap:12px;padding:22px;background:#fff;border:'+(p.best?'2px solid var(--primary)':'1px solid var(--border)')+';border-radius:20px;box-shadow:'+(p.best?'var(--sh-2)':'var(--sh-1)'),
+        btnStyle:self.btn(p.best?'primary':'outline','width:100%'), btnText:(s.subActive&&s.subPlan===p.id)?'اشتراكك الحالي':'اشترك دلوقتي',
+        pick:()=>self.subscribe(p.id)})),
+      buyWays:[
+        {k:'حصة واحدة',v:'من '+self.money(Math.min(...self.courses.filter(c=>c.lessonPrice>0).map(c=>c.lessonPrice))),d:'غبت عن حصة في السنتر؟ اشتريها لوحدها وعوّضها.'},
+        {k:'باب (شابتر)',v:'من '+self.money(Math.min(...self.courses.filter(c=>c.chapterPrice>0).map(c=>c.chapterPrice))),d:'قبل الامتحان الشهري: خد الباب اللي محتاجه بس.'},
+        {k:'مادة كاملة',v:'من '+self.money(Math.min(...self.courses.filter(c=>c.status==='published').map(c=>c.price))),d:'المنهج كله مع امتحانات وملفات لآخر السنة.'},
+        {k:'أكتر من مادة',v:'خصم لحد '+Math.max(0,...self.bundleRules.map(r=>r.pct))+'%',d:'حط موادك في السلة والخصم بيتحسب لوحده.'},
+        {k:'اشتراك شهري',v:self.money((self.studentPlans[0]||{price:0}).price)+' / شهر',d:'مدارك بلس بيفتحلك كل المواد من كل السناتر.'}
+      ].map((x,i)=>({k:x.k,v:x.v,d:x.d,num:String(i+1),hl:i===4,style:'display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:16px;border:1px solid '+(i===4?'var(--primary)':'var(--border)')+';background:'+(i===4?'var(--primary-50)':'#fff')})),
+      goSubscribe:()=>self.go('pricing'), goCenters:()=>self.go('centers'), goForCenters:()=>self.go('for-centers'),
+      bundleRows:self.bundleRules.map(r=>({k:r.min+' مواد أو أكتر',v:'خصم '+r.pct+'%'})),
+      centerCards:self.centers.map((x,i)=>{ const tch=self.teachers.filter(t=>t.center===x.id); const subs=self.courses.filter(c=>c.center===x.id&&c.status==='published');
+        return {name:x.name,city:x.city+' — '+x.gov,rating:x.rating.toFixed(1),students:x.students.toLocaleString('en-US')+' طالب',since:'من '+x.since,
+          teachersText:tch.length+' مدرسين',subjectsText:subs.length+' مواد',desc:x.desc,initial:x.name.replace(/^(سنتر|أكاديمية)\s*/,'').replace(/^ال/,'')[0],
+          logo:'width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-weight:700;font-size:22px;flex:0 0 auto;background:'+x.bg+';color:'+x.c+';border:1px solid '+x.c+'33',
+          subjects:Array.from(new Set(subs.map(c=>c.subject))).slice(0,4).map(t=>({t:t})),
+          open:()=>self.go('center',{slug:x.slug})}; }),
+      homeCenters:[],
+      ctr:{name:ctrP?ctrP.name:'',city:ctrP?ctrP.city+' — '+ctrP.gov:'',address:ctrP?ctrP.address:'',desc:ctrP?ctrP.desc:'',rating:ctrP?ctrP.rating.toFixed(1):'',
+        students:ctrP?ctrP.students.toLocaleString('en-US')+' طالب':'',since:ctrP?'شغال من '+ctrP.since:'',
+        initial:ctrP?ctrP.name.replace(/^(سنتر|أكاديمية)\s*/,'').replace(/^ال/,'')[0]:'',
+        logo:ctrP?'box-shadow:var(--sh-2);width:72px;height:72px;border-radius:18px;display:grid;place-items:center;font-weight:700;font-size:30px;flex:0 0 auto;background:'+ctrP.bg+';color:'+ctrP.c+';border:1px solid '+ctrP.c+'33':'',
+        band:ctrP?'height:120px;border-radius:20px;background:linear-gradient(120deg,'+ctrP.bg+','+ctrP.c+'22),url(/assets/art-hero.webp);background-size:cover;background-position:center;border:1px solid var(--border)':'',
+        teachers:ctrP?self.teachers.filter(t=>t.center===ctrP.id).map((t,i)=>({name:t.name,title:t.title,initial:self.ini(t.name),avatar:self.avatar(i,52),rating:t.rating.toFixed(1),open:()=>self.go('teacher',{slug:t.slug})})):[],
+        courses:ctrP?self.courses.filter(c=>c.center===ctrP.id&&c.status==='published').map(x=>self.card(x)):[],
+        filter:()=>{ if(ctrP){ self.setState({centerF:ctrP.id,gradeF:0,trackF:''}); self.go('courses'); } }},
+      cf:{center:s.cf.center,owner:s.cf.owner,phone:s.cf.phone,city:s.cf.city,teachers:s.cf.teachers,students:s.cf.students,msg:s.cf.msg,sent:s.cfSent,notSent:!s.cfSent,
+        sendText:s.cfSending?'جاري الإرسال…':'ابعت الطلب',
+        setCenter:(e)=>self.setState({cf:Object.assign({},self.state.cf,{center:e.target.value})}), setOwner:(e)=>self.setState({cf:Object.assign({},self.state.cf,{owner:e.target.value})}),
+        setPhone:(e)=>self.setState({cf:Object.assign({},self.state.cf,{phone:e.target.value})}), setCity:(e)=>self.setState({cf:Object.assign({},self.state.cf,{city:e.target.value})}),
+        setTeachers:(e)=>self.setState({cf:Object.assign({},self.state.cf,{teachers:e.target.value})}), setStudents:(e)=>self.setState({cf:Object.assign({},self.state.cf,{students:e.target.value})}),
+        setMsg:(e)=>self.setState({cf:Object.assign({},self.state.cf,{msg:e.target.value})}),
+        send:(e)=>{ if(e&&e.preventDefault) e.preventDefault(); const f=self.state.cf;
+          if(!f.center.trim()||!f.phone.trim()){ self.toast('اكتب اسم السنتر ورقم الموبايل','danger'); return; }
+          self.setState({cfSending:true});
+          const row={center_name:f.center.trim().slice(0,100),owner_name:f.owner.trim().slice(0,80)||null,phone:f.phone.trim().slice(0,20),city:f.city.trim().slice(0,60)||null,teachers_count:parseInt(f.teachers)||null,students_count:parseInt(f.students)||null,message:f.msg.trim().slice(0,1000)||null};
+          (window.MadarekInsert?window.MadarekInsert('center_applications',row):Promise.resolve()).then(()=>{ self.setState({cfSent:true,cfSending:false}); self.toast('وصلنا طلبك — فريق الشراكات هيكلمك خلال يوم عمل'); })
+            .catch(()=>{ self.setState({cfSending:false}); self.toast('حصلت مشكلة في الإرسال — جرّب تاني','danger'); }); }},
+      b2b:{
+        stats:[{v:String(self.centers.length),k:'سناتر شغالة على مدارك'},{v:self.stat('learners','58,000+'),k:'طالب بيذاكر أونلاين'},{v:String(self.teachers.length),k:'مدرس موثّق'}],
+        props:[['بيع أونلاين من غير ما تبني منصة','ارفع حصص السنتر المسجلة، ومدارك بتتولى الدفع والتشغيل وحماية الفيديو.'],['كل طريقة شراء','الطالب يشتري حصة أو باب أو مادة، أو يدخل من اشتراك مدارك بلس — وإنت بتاخد نصيبك من كل ده.'],['أكواد لطلاب السنتر','طلابك اللي بيحضروا عندك ياخدوا أكواد تفتحلهم الأونلاين من غير دفع إضافي.'],['حصص التعويض','الطالب اللي غاب يعوّض الحصة أونلاين، وإنت تكسب بدل ما تخسره.'],['تقارير لولي الأمر','حضور ومشاهدة ودرجات الامتحانات بتتبعت أسبوعيًا على واتساب.'],['تحويلات شهرية','مستحقاتك بتتحول أول كل شهر على حسابك البنكي أو إنستاباي.']].map((x,i)=>({h:x[0],p:x[1],num:String(i+1)})),
+        steps:[['سجّل السنتر','ابعت البيانات وفريقنا يكلمك خلال يوم عمل.'],['ضيف المدرسين والمواد','كل مدرس ليه صفحة، وكل مادة مقسمة أبواب وحصص بأسعارك.'],['ارفع الحصص','من الموبايل أو الكمبيوتر، والمنصة بتجهز الفيديو للنت الضعيف.'],['ابدأ البيع','الطلاب بيلاقوا سنترك على مدارك، وإنت بتتابع المبيعات لحظة بلحظة.']].map((x,i)=>({h:x[0],p:x[1],num:String(i+1)}))
+      },
       ip:{title:ip.title,lead:ip.lead,blocks:ip.blocks.map(b=>({h:b.h,p:b.p}))}
     };
   }

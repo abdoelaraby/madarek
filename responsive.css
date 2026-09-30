@@ -22,3 +22,22 @@ video.md-player{background:#000}
 @media (max-width:620px) and (min-width:340px){
   #dc-root div[style*="minmax(min(180px, 100%), 1fr)"],#dc-root div[style*="minmax(min(170px, 100%), 1fr)"],#dc-root div[style*="minmax(min(160px, 100%), 1fr)"],#dc-root div[style*="minmax(min(150px, 100%), 1fr)"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
 }
+/* course detail: two columns on desktop, stacked on tablet/phone */
+@media (max-width:979px){
+  .md-detail{grid-template-columns:minmax(0,1fr) !important}
+  .md-buybox{position:static !important}
+}
+/* filter & chip rows scroll sideways on phones instead of wrapping into tall blocks */
+@media (max-width:620px){
+  .md-scroll{flex-wrap:nowrap !important;overflow-x:auto;scrollbar-width:none;margin-inline:-14px;padding-inline:14px;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+  .md-scroll::-webkit-scrollbar{display:none}
+  .md-scroll > *{flex:0 0 auto !important;white-space:nowrap}
+  #dc-root h1{letter-spacing:-.005em}
+}
+#dc-root label{min-width:0}
+#dc-root label > input,#dc-root label > textarea{width:100%;min-width:0;box-sizing:border-box}
+@media (max-width:620px){
+  #dc-root div[style*="padding: 8px 20px; display: flex; flex-wrap: wrap"]{padding:6px 12px !important;gap:6px !important;justify-content:center !important}
+  .md-demotext{font-size:11px}
+}
+@media (max-width:620px){ #dc-root div[style*="position: fixed; bottom: 20px"]{bottom:84px !important;inset-inline:12px !important} }

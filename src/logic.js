@@ -1,22 +1,30 @@
 
 class Component extends DCLogic {
   // ---- data from Supabase (loaded before boot into window.__MDATA) ----
-  db = (function(){ const d=window.__MDATA||{}; const o={}; ['categories','teachers','courses','sections','lessons','files','plans','faqs','students','testimonials','enrollments','payments','refunds','payouts','subscriptions','submissions','questions','coupons','tickets','audit','applications','notifications','stats'].forEach(k=>o[k]=d[k]||[]); return o; })();
+  db = (function(){ const d=window.__MDATA||{}; const o={}; ['categories','centers','studentSubs','teachers','courses','sections','lessons','files','plans','faqs','students','testimonials','enrollments','payments','refunds','payouts','subscriptions','submissions','questions','coupons','tickets','audit','applications','notifications','stats'].forEach(k=>o[k]=d[k]||[]); return o; })();
   cfg = window.MADAREK||{};
   me = this.cfg.demoStudent||'s1';
   meT = this.cfg.demoTeacher||'t1';
   stat = (k,dflt)=>{ const r=this.db.stats.find(x=>x.key===k); return r?r.value:(dflt||''); };
   statJ = (k,dflt)=>{ try{ return JSON.parse(this.stat(k,'')); }catch(e){ return dflt; } };
-  courses = this.db.courses.map(c=>({id:c.id,slug:c.slug,title:c.title,t:c.teacher_id,cat:c.category_id,level:c.level,audience:c.audience||'',price:c.price,old:c.old_price,rating:+c.rating,reviews:c.reviews_count,hours:c.hours,lessons:c.lessons_count,students:c.students_count,status:c.status,access:c.access_months,sum:c.summary||'',outcomes:c.outcomes||[],reqs:c.requirements||[],cover:c.cover,promo:c.promo_video,featured:c.featured,created:c.created_at}));
+  courses = this.db.courses.map(c=>({id:c.id,slug:c.slug,title:c.title,t:c.teacher_id,cat:c.category_id,level:c.level,grade:c.grade,track:c.track,subject:c.subject,center:c.center_id,term:c.term,chapterPrice:c.chapter_price,lessonPrice:c.lesson_price,audience:c.audience||'',price:c.price,old:c.old_price,rating:+c.rating,reviews:c.reviews_count,hours:c.hours,lessons:c.lessons_count,students:c.students_count,status:c.status,access:c.access_months,sum:c.summary||'',outcomes:c.outcomes||[],reqs:c.requirements||[],cover:c.cover,promo:c.promo_video,featured:c.featured,created:c.created_at}));
   cats = this.db.categories.map(c=>({id:c.id,name:c.name,c:c.color,bg:c.bg,art:c.art||c.id,n:this.db.courses.filter(x=>x.category_id===c.id&&x.status==='published').length}));
-  teachers = this.db.teachers.map(t=>({id:t.id,slug:t.slug,name:t.name,title:t.title,cat:t.category_id,rating:+t.rating,students:t.students_count,years:t.years,bio:t.bio||'',city:t.city||''}));
+  GRADES = [{id:1,name:'أولى ثانوي',sub:'سنة تأسيسية — مواد مشتركة'},{id:2,name:'تانية ثانوي',sub:'بكالوريا — مشتركة + مادة المسار'},{id:3,name:'تالتة ثانوي',sub:'بكالوريا — مواد المسار المتقدمة'}];
+  gradeName = (g)=>(this.GRADES.find(x=>x.id===+g)||{name:''}).name;
+  centers = this.db.centers.map(c=>({id:c.id,slug:c.slug,name:c.name,city:c.city,gov:c.governorate,address:c.address||'',since:c.since_year,students:c.students_count,rating:+c.rating,desc:c.description||'',c:c.color,bg:c.bg,featured:c.featured}));
+  centerOf = (id)=>this.centers.find(x=>x.id===id)||{id:'',slug:'',name:'',city:'',gov:'',c:'#4F46E5',bg:'#EEF2FF',rating:0,students:0,desc:'',address:''};
+  bundleRules = (function(self){ try{ return JSON.parse((self.db.stats.find(x=>x.key==='bundle_rules')||{}).value||'[]'); }catch(e){ return []; } })(this);
+  bundlePct = (n)=>this.bundleRules.filter(r=>n>=r.min).reduce((a,r)=>Math.max(a,r.pct),0);
+  studentPlans = this.db.plans.filter(p=>p.audience==='student').map(p=>({id:p.id,name:p.name,price:p.monthly,months:p.months,best:p.is_best,desc:p.description,note:p.note||'',limits:p.limits||[]}));
+  myPaid = this.db.payments.filter(p=>p.student_id===(window.MADAREK&&window.MADAREK.demoStudent||'s1')&&p.status==='مدفوع');
+  teachers = this.db.teachers.map(t=>({id:t.id,slug:t.slug,name:t.name,title:t.title,cat:t.category_id,center:t.center_id,rating:+t.rating,students:t.students_count,years:t.years,bio:t.bio||'',city:t.city||''}));
   studentsById = this.db.students.reduce((a,s)=>(a[s.id]=s,a),{});
   sname = (id)=>(this.studentsById[id]||{name:'طالب'}).name;
-  curOf = (cid)=>this.db.sections.filter(s=>s.course_id===cid).map(s=>({id:s.id,title:s.title,lessons:this.db.lessons.filter(l=>l.section_id===s.id).map(l=>({id:l.id,title:l.title,min:l.minutes,free:l.is_free,video:l.video_url,poster:l.poster,kind:l.kind}))}));
-  plans = this.db.plans.map(p=>({id:p.id,name:p.name,m:p.monthly,y:p.yearly,best:p.is_best,desc:p.description,limits:p.limits||[]}));
+  curOf = (cid)=>this.db.sections.filter(s=>s.course_id===cid).map(s=>({id:s.id,title:s.title,price:s.price,course:cid,lessons:this.db.lessons.filter(l=>l.section_id===s.id).map(l=>({id:l.id,title:l.title,min:l.minutes,free:l.is_free,video:l.video_url,poster:l.poster,kind:l.kind,price:l.price,section:s.id,course:cid}))}));
+  plans = this.db.plans.filter(p=>p.audience!=='student').map(p=>({id:p.id,name:p.name,m:p.monthly,y:p.yearly,best:p.is_best,desc:p.description,limits:p.limits||[]}));
   faqData = this.db.faqs.map(f=>({q:f.q,a:f.a}));
   testimonialData = this.db.testimonials.map(t=>({name:(t.students&&t.students.name)||this.sname(t.student_id),role:t.role,text:t.text,rating:t.rating}));
-  payments = this.db.payments.map(p=>({id:p.id,course:p.course_id,student:this.sname(p.student_id),sid:p.student_id,amount:p.amount,status:p.status,method:p.method,date:(p.paid_at||'').slice(0,10),ts:p.paid_at}));
+  payments = this.db.payments.map(p=>({id:p.id,course:p.course_id,type:p.item_type,ref:p.item_ref,itemTitle:p.item_title,student:this.sname(p.student_id),sid:p.student_id,amount:p.amount,status:p.status,method:p.method,date:(p.paid_at||'').slice(0,10),ts:p.paid_at}));
   payouts = this.db.payouts.map(p=>({id:p.id,t:p.teacher_id,amount:p.amount,status:p.status,date:(p.requested_at||'').slice(0,10),method:p.method}));
   myEnroll = this.db.enrollments.filter(e=>e.student_id===this.me);
   MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
@@ -32,8 +40,8 @@ class Component extends DCLogic {
   state = {
     route:'home', p:{}, role:'guest', w:1280, drawer:false, notif:false,
     q:'', cats:[], level:'', priceBand:'', minRating:0, sort:'الأكثر شعبية', filtersOpen:false,
-    purchased:this.myEnroll.map(e=>e.course_id), progress:this.myEnroll.reduce((a,e)=>(a[e.course_id]=e.progress,a),{}), done:this.initLearn.done, lesson:this.initLearn.lesson, learnCourse:this.initLearn.cid, learnTab:'files', noteText:'',
-    openSecs:this.db.sections.filter(x=>x.position===1||x.position===2).map(x=>x.id), faq:null, courseTab:'overview', myTab:'all', payTab:'payments',
+    purchased:Array.from(new Set(this.myPaid.filter(p=>p.item_type==='subject'||p.item_type==='bundle').reduce((a,p)=>a.concat(String(p.item_ref||'').split(',')),[]).filter(Boolean))), ownedChapters:this.myPaid.filter(p=>p.item_type==='chapter').map(p=>p.item_ref), ownedLessons:this.myPaid.filter(p=>p.item_type==='lesson').map(p=>p.item_ref), subActive:this.db.studentSubs.some(x=>x.student_id===this.me&&x.status==='نشط'), subPlan:(this.db.studentSubs.find(x=>x.student_id===this.me&&x.status==='نشط')||{}).plan_id||'', cart:(function(){ try{ return JSON.parse(localStorage.getItem('md-cart')||'[]'); }catch(e){ return []; } })(), gradeF:0, trackF:'', centerF:'', pricingTab:'students', cf:{center:'',owner:'',phone:'',city:'',teachers:'',students:'',msg:''}, cfSent:false, cfSending:false, paidItems:[], progress:this.myEnroll.reduce((a,e)=>(a[e.course_id]=e.progress,a),{}), done:this.initLearn.done, lesson:this.initLearn.lesson, learnCourse:this.initLearn.cid, learnTab:'files', noteText:'',
+    openSecs:this.db.sections.filter(x=>x.position===1||x.position===2).map(x=>x.id), faq:null, courseTab:'curriculum', myTab:'all', payTab:'payments',
     toasts:[], modal:null, refundReason:'', payMethod:'فودافون كاش', payState:'idle', payResult:'success', payCourse:'c2', menuOpen:false,
     teachStep:1, teachDraftSaved:false, editorStep:1, editorSaved:'محفوظ الآن', uploadPct:0, uploading:false, uploadFailed:false,
     yearly:false, adminReview:null, adminReason:'', audit:[], loginErr:false, email:'', pw:''
@@ -52,7 +60,7 @@ class Component extends DCLogic {
     const h=(location.hash||'').replace(/^#\/?/,''); if(!h) return {route:'home',p:{}};
     const parts=h.split('/').map(x=>{try{return decodeURIComponent(x)}catch(e){return x}});
     const route=parts[0]; const p={};
-    if((route==='course'||route==='teacher')&&parts[1]) p.slug=parts[1];
+    if((route==='course'||route==='teacher'||route==='center')&&parts[1]) p.slug=parts[1];
     if(route==='learn'&&parts[1]) p.course=parts[1];
     return {route:route,p:p};
   }
@@ -60,7 +68,7 @@ class Component extends DCLogic {
   componentWillUnmount(){ window.removeEventListener('resize',this.onR); window.removeEventListener('hashchange',this.onHash); }
 
   go=(route,p)=>{ const h=this.hashFor(route,p); this.setState({route:route,p:p||{},drawer:false,notif:false,modal:null,menuOpen:false}); try{ if(location.hash!==h) history.pushState(null,'',h); window.scrollTo({top:0}); }catch(e){} };
-  toast=(msg,kind)=>{ const id=Math.random(); this.setState(s=>({toasts:[...s.toasts,{id:id,msg:msg,kind:kind||'ok'}]}));
+  toast=(msg,kind)=>{ const id=Math.random(); this.setState(s=>({toasts:[...s.toasts.slice(-1),{id:id,msg:msg,kind:kind||'ok'}]}));
     setTimeout(()=>this.setState(s=>({toasts:s.toasts.filter(t=>t.id!==id)})),3400); };
   money=(n)=>n===0?'مجانًا':(+n).toLocaleString('en-US')+' ج.م';
   cat=(id)=>this.cats.find(c=>c.id===id)||this.cats[0];
@@ -78,18 +86,18 @@ class Component extends DCLogic {
   pill=(active)=>'height:34px;padding:0 14px;border-radius:999px;border:1px solid '+(active?'var(--primary)':'var(--border)')+';background:'+(active?'var(--primary-50)':'#fff')+';color:'+(active?'var(--primary-700)':'var(--ink-2)')+';font-size:14px;font-weight:'+(active?'600':'500')+';cursor:pointer';
   tabBtn=(active)=>'padding:10px 4px;margin-inline-end:18px;border:0;border-bottom:2px solid '+(active?'var(--primary)':'transparent')+';background:none;color:'+(active?'var(--primary-700)':'var(--muted)')+';font-weight:600;font-size:15px;cursor:pointer';
   ini=(n)=>String(n||'؟').replace(/^(مستر|أ\.|م\.|د\.)\s*/,'').trim()[0]||'؟';
-  avatar=(seed,size)=>{const c=this.cats[seed%6];return 'width:'+size+'px;height:'+size+'px;border-radius:999px;background:'+c.bg+';color:'+c.c+';display:grid;place-items:center;font-weight:700;font-size:'+Math.round(size/2.4)+'px;flex:0 0 auto';};
+  avatar=(seed,size)=>{const c=this.cats[seed%this.cats.length]||{bg:'#EEF2FF',c:'#4F46E5'};return 'width:'+size+'px;height:'+size+'px;border-radius:999px;background:'+c.bg+';color:'+c.c+';display:grid;place-items:center;font-weight:700;font-size:'+Math.round(size/2.4)+'px;flex:0 0 auto';};
 
-  toggleCat=(id)=>this.setState(s=>({cats:s.cats.indexOf(id)>-1?s.cats.filter(x=>x!==id):[...s.cats,id]}));
-  clearFilters=()=>this.setState({cats:[],level:'',priceBand:'',minRating:0,q:''});
+  toggleCat=(id)=>this.setState(s=>({trackF:s.trackF===id?'':id}));
+  clearFilters=()=>this.setState({cats:[],level:'',priceBand:'',minRating:0,q:'',gradeF:0,trackF:'',centerF:''});
   filteredCourses(){
     const s=this.state; let out=this.courses.filter(c=>c.status==='published');
-    if(s.q.trim()){const q=s.q.trim();out=out.filter(c=>c.title.indexOf(q)>-1||this.teacher(c.t).name.indexOf(q)>-1||c.sum.indexOf(q)>-1);}
-    if(s.cats.length) out=out.filter(c=>s.cats.indexOf(c.cat)>-1);
-    if(s.level) out=out.filter(c=>c.level===s.level);
-    if(s.priceBand==='free') out=out.filter(c=>c.price===0);
-    if(s.priceBand==='low') out=out.filter(c=>c.price>0&&c.price<700);
-    if(s.priceBand==='high') out=out.filter(c=>c.price>=700);
+    if(s.q.trim()){const q=s.q.trim();out=out.filter(c=>c.title.indexOf(q)>-1||this.teacher(c.t).name.indexOf(q)>-1||this.centerOf(c.center).name.indexOf(q)>-1||c.sum.indexOf(q)>-1);}
+    if(s.gradeF) out=out.filter(c=>c.grade===s.gradeF);
+    if(s.trackF) out=out.filter(c=>c.track===s.trackF);
+    if(s.centerF) out=out.filter(c=>c.center===s.centerF);
+    if(s.priceBand==='low') out=out.filter(c=>c.price<1000);
+    if(s.priceBand==='high') out=out.filter(c=>c.price>=1000);
     if(s.minRating) out=out.filter(c=>c.rating>=s.minRating);
     if(s.sort==='الأعلى تقييمًا') out=out.slice().sort((a,b)=>b.rating-a.rating);
     if(s.sort==='الأقل سعرًا') out=out.slice().sort((a,b)=>a.price-b.price);
@@ -97,32 +105,75 @@ class Component extends DCLogic {
     if(s.sort==='الأكثر شعبية') out=out.slice().sort((a,b)=>b.students-a.students);
     return out;
   }
+  // ---- ownership ----
+  hasSub=()=>!!this.state.subActive;
+  ownsCourse=(cid)=>this.hasSub()||this.state.purchased.indexOf(cid)>-1;
+  ownsChapter=(sid,cid)=>this.ownsCourse(cid)||this.state.ownedChapters.indexOf(sid)>-1;
+  canWatch=(l)=>!!l&&(l.free||this.ownsChapter(l.section,l.course)||this.state.ownedLessons.indexOf(l.id)>-1);
+  partialCourse=(cid)=>this.state.ownedChapters.some(x=>x.indexOf(cid+'-s')===0)||this.state.ownedLessons.some(x=>x.indexOf(cid+'-l')===0);
+  // ---- cart ----
+  saveCart=(cart)=>{ try{ localStorage.setItem('md-cart',JSON.stringify(cart)); }catch(e){} };
+  addToCart=(item,goCheckout)=>{
+    const s=this.state; let cart=s.cart.filter(x=>x.type!=='subscription');
+    if(item.type==='subscription') cart=[];
+    if(cart.some(x=>x.type===item.type&&x.ref===item.ref)){ this.toast('موجود في السلة بالفعل','warn'); if(goCheckout) this.go('checkout'); return; }
+    if(item.type==='subject') cart=cart.filter(x=>x.course!==item.course);
+    if(item.type==='lesson'&&cart.some(x=>(x.type==='chapter'&&x.ref===item.section)||(x.type==='subject'&&x.course===item.course))){ this.toast('الحصة دي موجودة ضمن باب أو مادة في السلة','warn'); return; }
+    if(item.type==='chapter'){ if(cart.some(x=>x.type==='subject'&&x.course===item.course)){ this.toast('المادة كاملة موجودة في السلة','warn'); return; } cart=cart.filter(x=>!(x.type==='lesson'&&x.section===item.ref)); }
+    cart=[...cart,item]; this.saveCart(cart); this.setState({cart:cart});
+    if(goCheckout) this.go('checkout'); else this.toast('اتضاف للسلة: '+item.title);
+  };
+  removeFromCart=(i)=>{ const cart=this.state.cart.filter((x,j)=>j!==i); this.saveCart(cart); this.setState({cart:cart}); };
+  cartTotals=()=>{
+    const cart=this.state.cart; const sub=cart.reduce((a,x)=>a+x.price,0);
+    const subjects=cart.filter(x=>x.type==='subject'); const pct=this.bundlePct(subjects.length);
+    const disc=Math.round(subjects.reduce((a,x)=>a+x.price,0)*pct/100);
+    return {sub:sub,pct:pct,disc:disc,total:sub-disc,count:cart.length,subjects:subjects.length};
+  };
+  itemSubject=(c)=>({type:'subject',ref:c.id,course:c.id,title:c.title,meta:'المادة كاملة · '+c.lessons+' حصة · وصول '+c.access+' شهور',price:c.price});
+  itemChapter=(sec,c)=>({type:'chapter',ref:sec.id,course:c.id,title:sec.title,meta:c.title+' · '+sec.lessons.length+' حصص',price:sec.price});
+  itemLesson=(l,c)=>({type:'lesson',ref:l.id,course:c.id,section:l.section,title:l.title,meta:c.title+' · حصة واحدة '+l.min+' د',price:l.price});
+  itemPlan=(p)=>({type:'subscription',ref:p.id,course:'',title:p.name,meta:'كل المواد على المنصة لمدة '+(p.months===1?'شهر':p.months+' شهور'),price:p.price});
+  buy=(cid)=>{ this.addToCart(this.itemSubject(this.course(cid)),true); };
+  subscribe=(pid)=>{ const p=this.studentPlans.find(x=>x.id===pid)||this.studentPlans[0]; this.addToCart(this.itemPlan(p),true); };
+  pay=()=>{
+    if(this.state.payState==='processing'||!this.state.cart.length) return;
+    this.setState({payState:'processing'});
+    setTimeout(()=>{
+      const pending=this.state.payMethod==='فوري';
+      const res=pending?'pending':'success';
+      const items=this.state.cart.slice();
+      this.setState(s=>{
+        const n={payState:'idle',payResult:res,route:'payment',paidItems:items,cart:[]};
+        if(res==='success'){
+          n.purchased=Array.from(new Set(s.purchased.concat(items.filter(x=>x.type==='subject').map(x=>x.ref))));
+          n.ownedChapters=s.ownedChapters.concat(items.filter(x=>x.type==='chapter').map(x=>x.ref));
+          n.ownedLessons=s.ownedLessons.concat(items.filter(x=>x.type==='lesson').map(x=>x.ref));
+          const sp=items.find(x=>x.type==='subscription'); if(sp){ n.subActive=true; n.subPlan=sp.ref; }
+        }
+        return n; });
+      this.saveCart([]);
+      try{ history.pushState(null,'','#/payment'); window.scrollTo({top:0}); }catch(e){}
+      this.toast(pending?'اتسجل طلبك — ادفع بكود فوري خلال 48 ساعة':'تم الدفع واتفتح المحتوى',pending?'warn':'ok');
+    },1400);
+  };
   art=(id)=>'background-image:url('+((window.__resources&&window.__resources['art_'+id])||('assets/art-'+id+'.png'))+');background-size:cover;background-position:center;background-repeat:no-repeat';
   card=(c)=>{
-    const cat=this.cat(c.cat), t=this.teacher(c.t), bought=this.state.purchased.indexOf(c.id)>-1;
+    const cat=this.cat(c.cat), t=this.teacher(c.t), ctr=this.centerOf(c.center), bought=this.ownsCourse(c.id), partial=!bought&&this.partialCourse(c.id), pr=this.state.progress[c.id]||0;
     return {
-      id:c.id,slug:c.slug,title:c.title,teacherName:t.name,catName:cat.name,rating:c.rating?c.rating.toFixed(1):'جديدة',reviews:c.reviews,
-      priceText:this.money(c.price),metaText:c.hours+' ساعة · '+c.lessons+' درس',level:c.level,bought:bought,notBought:!bought,
-      progress:this.state.progress[c.id]||0,progressText:(this.state.progress[c.id]||0)+'%',
-      progressBar:'display:block;height:100%;width:'+(this.state.progress[c.id]||0)+'%;background:var(--teal);border-radius:999px',
+      id:c.id,slug:c.slug,title:c.title,teacherName:t.name,centerName:ctr.name,catName:cat.name,rating:c.rating?c.rating.toFixed(1):'جديدة',reviews:c.reviews,
+      priceText:this.money(c.price),metaText:c.lessons+' حصة · '+c.hours+' ساعة',level:this.gradeName(c.grade),bought:bought,notBought:!bought,partial:partial,
+      partsText:c.chapterPrice?('باب بـ'+this.money(c.chapterPrice)+' · حصة بـ'+this.money(c.lessonPrice)):'',
+      progress:pr,progressText:pr+'%',
+      progressBar:'display:block;height:100%;width:'+pr+'%;background:var(--teal);border-radius:999px',
       cover:'position:relative;height:150px;background-image:url('+this.coverUrl(c)+');background-size:cover;background-position:center;border-bottom:1px solid var(--border)',
       catChip:'position:absolute;top:10px;inset-inline-end:10px;padding:4px 10px;border-radius:999px;background:#fff;border:1px solid '+cat.c+'33;color:'+cat.c+';font-size:12px;font-weight:600',
+      gradeChip:'position:absolute;top:10px;inset-inline-start:10px;padding:4px 10px;border-radius:999px;background:rgba(15,23,42,.78);color:#fff;font-size:12px;font-weight:600',
       open:()=>this.go('course',{slug:c.slug}),
       resume:()=>this.startLearn(c.id)
     };
   };
   startLearn=(cid,lid)=>{ const all=this.flatLessons(cid); const keep=all.find(l=>l.id===this.state.lesson); const first=all.find(l=>this.state.done.indexOf(l.id)<0)||all[0]; const target=lid||(keep?keep.id:(first?first.id:'')); this.setState({learnCourse:cid,route:'learn',p:{course:cid},lesson:target,drawer:false,menuOpen:false}); try{ history.pushState(null,'','#/learn/'+cid); window.scrollTo({top:0}); }catch(e){} };
-  buy=(cid)=>{ this.setState({payCourse:cid,payState:'idle',route:'checkout'}); try{window.scrollTo({top:0})}catch(e){} };
-  pay=()=>{
-    if(this.state.payState==='processing') return;
-    this.setState({payState:'processing'});
-    setTimeout(()=>{
-      const pending=this.state.payMethod==='فوري';
-      const res=pending?'pending':'success';
-      this.setState(s=>({payState:'idle',payResult:res,route:'payment',purchased:res==='success'&&s.purchased.indexOf(s.payCourse)<0?[...s.purchased,s.payCourse]:s.purchased}));
-      this.toast(pending?'اتسجل طلبك — ادفع بكود فوري خلال 48 ساعة':'تم تأكيد الدفع وفتح الكورس',pending?'warn':'ok');
-    },1500);
-  };
   completeLesson=()=>{
     const s=this.state, all=this.flatLessons(), i=all.findIndex(l=>l.id===s.lesson);
     const done=s.done.indexOf(s.lesson)>-1?s.done:[...s.done,s.lesson];
@@ -173,9 +224,10 @@ class Component extends DCLogic {
       style:'height:26px;padding:0 12px;border:0;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;background:'+(s.role===r[0]?'#fff':'transparent')+';color:'+(s.role===r[0]?'var(--ink)':'#94A3B8')}));
 
     const crumbSpec={
-      course:[['الدورات','courses'],[R==='course'?self.courseBySlug(s.p.slug).title:'','']],
-      teacher:[['المدرسون','teachers'],[R==='teacher'?(self.teachers.find(t=>t.slug===s.p.slug)||self.teachers[0]).name:'','']],
-      checkout:[['الدورة','courses'],['إتمام الشراء','']],
+      course:[['المواد','courses'],[R==='course'?self.courseBySlug(s.p.slug).title:'','']],
+      teacher:[['المدرسين','teachers'],[R==='teacher'?(self.teachers.find(t=>t.slug===s.p.slug)||self.teachers[0]).name:'','']],
+      center:[['السناتر','centers'],[R==='center'?(self.centers.find(x=>x.slug===s.p.slug)||self.centers[0]||{name:''}).name:'','']],
+      checkout:[['المواد','courses'],['السلة والدفع','']],
       'teacher-editor':[['دوراتي','teacher-courses'],['محرر الدورة','']],
       'admin-courses':[['الإدارة','admin'],['مراجعة الدورات','']]
     }[R]||[];
@@ -197,20 +249,25 @@ class Component extends DCLogic {
       burger1:'display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:transform var(--dur);transform:'+(s.menuOpen?'translateY(6px) rotate(45deg)':'none'),
       burger2:'display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:opacity var(--dur);opacity:'+(s.menuOpen?'0':'1'),
       burger3:'display:block;width:18px;height:2px;background:var(--ink);border-radius:2px;transition:transform var(--dur);transform:'+(s.menuOpen?'translateY(-6px) rotate(-45deg)':'none'),
-      heroStats:[{v:self.stat('learners','42,000+'),k:'طالب اتعلم معانا'},{v:self.courses.filter(c=>c.status==='published').length+' كورس',k:'في '+self.cats.length+' تخصصات'},{v:self.stat('avg_rating','4.8')+' / 5',k:'متوسط تقييم الطلاب'}],
+      heroStats:[{v:self.stat('learners','58,000+'),k:'طالب بيذاكر معانا'},{v:String(self.centers.length),k:'سناتر من 6 محافظات'},{v:String(self.courses.filter(c=>c.status==='published').length),k:'مادة بكالوريا وثانوي'}],
       heroCourse:(function(){const hc=self.courses.find(c=>c.promo)||self.courses[0]; const ht=self.teacher(hc.t); return {title:'برومو: '+hc.title, meta:ht.name+' · '+self.money(hc.price), open:()=>self.go('course',{slug:hc.slug})};})(),
       spaceLabel:space==='teacher'?'مساحة المدرس':space==='admin'?'لوحة الإدارة':'مساحة الطالب',
       userName:space==='teacher'?self.teacher(self.meT).name:space==='admin'?'سلمى — إدارة المحتوى':self.sname(self.me),
       userInitial:space==='teacher'?self.teacher(self.meT).name.replace(/^(مستر|أ\.|م\.|د\.)\s*/,'')[0]:space==='admin'?'س':self.sname(self.me)[0],
       userAvatarStyle:self.avatar(space==='teacher'?0:space==='admin'?2:3,30),
-      roleSwitch:roleSwitch, publicNav:[mk('الكورسات','courses'),mk('المدرسين','teachers'),mk('باقات المدرسين','pricing'),mk('المساعدة','help')],
+      roleSwitch:roleSwitch, publicNav:[mk('المواد','courses'),mk('السناتر','centers'),mk('المدرسين','teachers'),mk('الاشتراك والأسعار','pricing'),mk('للسناتر','for-centers')],
+      cartCount:s.cart.length, hasCartItems:s.cart.length>0, goCart:()=>self.go('checkout'),
       appNav:appNav, crumbs:crumbs, q:s.q, setQ:e=>self.setState({q:e.target.value}),
       searchKey:e=>{if(e.key==='Enter')self.go('courses');},
       toggleDrawer:()=>self.setState({drawer:!s.drawer}), openNotif:()=>self.go(space==='student'?'student-notifications':'admin-support'),
-      goHome:()=>self.go('home'), goCourses:()=>self.go('courses'), goTeach:()=>self.go('teach'), goPricing:()=>self.go('pricing'),
+      goHome:()=>self.go('home'), goCourses:()=>self.go('courses'), goTeach:()=>self.go('for-centers'), goPricing:()=>self.go('pricing'),
       goLogin:()=>self.go('login'), goSubscription:()=>self.go('teacher-subscription'),
       isHome:R==='home',
-      catCards:self.cats.map(c=>({name:c.name,count:c.n+(c.n>2&&c.n<11?' كورسات':' كورس'),go:()=>{self.setState({cats:[c.id]});self.go('courses');},
+      gradeCards:self.GRADES.map((g,i)=>{ const n=self.courses.filter(c=>c.grade===g.id&&c.status==='published').length; return {name:g.name,sub:g.sub,count:n+(n>2&&n<11?' مواد':' مادة'),go:()=>{self.setState({gradeF:g.id,trackF:'',centerF:''});self.go('courses');},
+        style:'text-align:start;display:flex;flex-direction:column;gap:6px;padding:18px;background:#fff;border:1px solid var(--border);border-radius:18px;cursor:pointer;transition:transform var(--dur),box-shadow var(--dur)',
+        num:'width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:18px;background:'+['var(--amber-50)','var(--primary-50)','var(--teal-50)'][i]+';color:'+['var(--amber)','var(--primary)','var(--teal)'][i], numText:String(g.id)}; }),
+      homeCentersList:self.centers.slice(0,3).map(x=>({name:x.name,city:x.city,rating:x.rating.toFixed(1),n:self.courses.filter(c=>c.center===x.id&&c.status==='published').length+' مواد',initial:x.name.replace(/^(سنتر|أكاديمية)\s*/,'').replace(/^ال/,'')[0],logo:'width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:20px;flex:0 0 auto;background:'+x.bg+';color:'+x.c,open:()=>self.go('center',{slug:x.slug})})),
+      catCards:self.cats.map(c=>({name:c.name,count:c.n+(c.n>2&&c.n<11?' مواد':' مادة'),go:()=>{self.setState({trackF:c.id,gradeF:0,centerF:''});self.go('courses');},
         style:'text-align:start;display:flex;flex-direction:column;gap:6px;padding:16px;background:#fff;border:1px solid var(--border);border-radius:16px;cursor:pointer;transition:transform var(--dur),box-shadow var(--dur)',
         chip:'width:28px;height:28px;border-radius:9px;background:'+c.bg+';border:1px solid '+c.c+'33'})),
       featured:self.courses.filter(c=>c.featured&&c.status==='published').slice(0,4).map(c=>self.card(c)),
@@ -219,9 +276,9 @@ class Component extends DCLogic {
       testimonials:self.testimonialData.slice(0,3).map((t,i)=>({text:t.text,name:t.name,role:t.role,initial:self.ini(t.name),avatar:self.avatar(i+2,36)})),
       faqs:faqs,
       footerCols:[
-        {title:'المنصة',links:[mk('الدورات','courses',''),mk('المدرسون','teachers',''),mk('الباقات','pricing',''),mk('من نحن','about','')].map(x=>({label:x.label,go:x.go}))},
-        {title:'المساعدة',links:[{label:'مركز المساعدة',go:()=>self.go('help')},{label:'سياسة الاسترداد',go:()=>self.go('legal')},{label:'الشروط والأحكام',go:()=>self.go('legal')},{label:'الخصوصية',go:()=>self.go('legal')}]},
-        {title:'للمدرسين',links:[{label:'انضم كمدرس',go:()=>self.go('teach')},{label:'باقات المدرسين',go:()=>self.go('pricing')},{label:'لوحة المدرس',go:()=>{self.setState({role:'teacher'});self.go('teacher-home');}},{label:'نظام التصميم',go:()=>self.go('ds')}]}
+        {title:'للطلاب',links:[{label:'المواد',go:()=>self.go('courses')},{label:'السناتر',go:()=>self.go('centers')},{label:'مدارك بلس',go:()=>self.go('pricing')},{label:'مركز المساعدة',go:()=>self.go('help')}]},
+        {title:'للسناتر والمدرسين',links:[{label:'سجّل سنترك',go:()=>self.go('for-centers')},{label:'باقات السناتر',go:()=>self.go('for-centers')},{label:'لوحة المدرس',go:()=>{self.setState({role:'teacher'});self.go('teacher-home');}},{label:'لوحة الإدارة',go:()=>{self.setState({role:'admin'});self.go('admin');}}]},
+        {title:'عن مدارك',links:[{label:'من نحن',go:()=>self.go('about')},{label:'سياسة الاسترجاع',go:()=>self.go('legal')},{label:'الشروط والأحكام',go:()=>self.go('legal')},{label:'الخصوصية',go:()=>self.go('legal')}]}
       ],
       toasts:s.toasts.map(t=>({id:t.id,msg:t.msg,
         style:'display:flex;align-items:center;gap:10px;min-width:260px;max-width:min(92vw,420px);padding:12px 16px;border-radius:14px;background:var(--ink);color:#fff;font-size:14px;box-shadow:var(--sh-3);animation:slideIn var(--dur-2) ease both',
@@ -244,7 +301,7 @@ class Component extends DCLogic {
     const settling=+self.stat(self.meT+'_settling','0'), transferred=self.payouts.filter(p=>p.t===self.meT&&p.status==='محوّل').reduce((a,p)=>a+p.amount,0);
     const inTransfer=self.payouts.filter(p=>p.t===self.meT&&p.status!=='محوّل').reduce((a,p)=>a+p.amount,0);
     const available=Math.max(0,net-settling-transferred-inTransfer);
-    const sub=self.db.subscriptions.find(x=>x.teacher_id===self.meT)||{}; const plan=self.plans.find(p=>p.id===sub.plan_id)||self.plans[1]||{name:'',m:0,limits:[]};
+    const sub=self.db.subscriptions.find(x=>x.center_id===T.center)||{}; const plan=self.plans.find(p=>p.id===sub.plan_id)||self.plans[1]||{name:'',m:0,limits:[]}; const TC=self.centerOf(T.center);
     const pendingSubs=self.db.submissions.filter(x=>mineIds.indexOf(x.course_id)>-1&&x.status.indexOf('بانتظار')>-1).length;
     const openQs=self.db.questions.filter(x=>mineIds.indexOf(x.course_id)>-1&&!x.answer).length;
     const inReview=mine.filter(c=>c.status==='review');
@@ -275,8 +332,8 @@ class Component extends DCLogic {
         payouts:self.payouts.filter(p=>p.t===self.meT).map(p=>({id:p.id,amountText:self.money(p.amount),date:self.fmtDate(p.date),method:p.method,statusText:p.status,
           badge:'padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:'+(p.status==='محوّل'?'var(--teal-50)':'var(--amber-50)')+';color:'+(p.status==='محوّل'?'var(--teal)':'var(--amber)')})),
         requestPayout:()=>self.toast('طلب التحويل محتاج ربط بوابة الدفع — مش متاح في النسخة التجريبية','warn'),
-        sub:{plan:plan.name,priceText:self.money(plan.m)+' شهريًا',renew:(sub.status==='نشط'?'بيتجدد في ':'انتهى في ')+self.fmtDate(sub.period_end),
-          usage:[{k:'الكورسات',v:mine.length+' من '+(parseInt(plan.limits[0])||'∞'),p:Math.min(100,Math.round(mine.length/(parseInt(plan.limits[0])||100)*100))},{k:'ساعات الفيديو',v:mine.reduce((a,c)=>a+c.hours,0)+' من '+(parseInt(plan.limits[1])||'∞'),p:Math.min(100,Math.round(mine.reduce((a,c)=>a+c.hours,0)/(parseInt(plan.limits[1])||1000)*100))},{k:'المدرسين',v:'1 من 1',p:100}].map(u=>({k:u.k,v:u.v,bar:'display:block;height:100%;width:'+u.p+'%;background:var(--primary);border-radius:999px'})),
+        sub:{plan:plan.name+' — '+TC.name,priceText:self.money(plan.m)+' شهريًا',renew:(sub.status==='نشط'?'بيتجدد في ':'انتهى في ')+self.fmtDate(sub.period_end),
+          usage:[{k:'مدرسين السنتر',v:self.teachers.filter(t=>t.center===T.center).length+' من 10',p:self.teachers.filter(t=>t.center===T.center).length*10},{k:'مواد السنتر',v:String(self.courses.filter(c=>c.center===T.center).length),p:40},{k:'ساعات الفيديو',v:self.courses.filter(c=>c.center===T.center).reduce((a,c)=>a+c.hours,0)+' من 500',p:Math.min(100,Math.round(self.courses.filter(c=>c.center===T.center).reduce((a,c)=>a+c.hours,0)/5))}].map(u=>({k:u.k,v:u.v,bar:'display:block;height:100%;width:'+u.p+'%;background:var(--primary);border-radius:999px'})),
           upgrade:()=>self.go('pricing'), cancel:()=>self.toast('الإلغاء بيوقف البيع الجديد بعد آخر المدة، واللي اشترى قبل كده وصوله مستمر','warn')}
       },
       ed:{
@@ -317,8 +374,8 @@ class Component extends DCLogic {
       isAdminHome:R==='admin', isAdminUsers:R==='admin-users', isAdminCourses:R==='admin-courses',
       isAdminPayments:R==='admin-payments', isAdminAudit:R==='admin-audit',
       ad:{
-        stats:[{k:'مستخدمين',v:self.stat('users','0')},{k:'مدرسين نشطين',v:String(self.teachers.length)},{k:'كورسات منشورة',v:String(self.courses.filter(c=>c.status==='published').length)},{k:'إيراد الشهر',v:self.money(+self.stat('month_revenue','0').replace(/,/g,''))}],
-        queues:[{t:q.length+' كورسات مستنية المراجعة',go:()=>self.go('admin-courses')},{t:pendRefunds.length+' طلب استرجاع مستني قرار',go:()=>self.go('admin-payments')},{t:self.db.applications.filter(a=>a.status==='قيد المراجعة').length+' مدرسين مستنيين توثيق الملف',go:()=>self.go('admin-teachers')}],
+        stats:[{k:'مستخدمين',v:self.stat('users','0')},{k:'سناتر نشطة',v:String(self.centers.length)},{k:'مواد منشورة',v:String(self.courses.filter(c=>c.status==='published').length)},{k:'مشتركين مدارك بلس',v:String(self.db.studentSubs.filter(x=>x.status==='نشط').length)},{k:'إيراد الشهر',v:self.money(+self.stat('month_revenue','0').replace(/,/g,''))}],
+        queues:[{t:q.length+' كورسات مستنية المراجعة',go:()=>self.go('admin-courses')},{t:pendRefunds.length+' طلب استرجاع مستني قرار',go:()=>self.go('admin-payments')},{t:'طلبات سناتر جديدة من صفحة «للسناتر»',go:()=>self.go('admin-teachers')}],
         reviewRows:q.map(c=>({title:c.title,teacherName:self.teacher(c.t).name,catName:self.cat(c.cat).name,
           metaText:c.lessons+' درس · '+c.hours+' ساعة · '+self.money(c.price),
           open:()=>self.setState({adminReview:c.id,adminReason:''})})),
@@ -396,9 +453,9 @@ class Component extends DCLogic {
           approve:()=>self.toast('المدرس اتوثق وأدوات الإنشاء اتفعلت'),
           reject:()=>self.toast('اتطلبت مستندات إضافية والسبب اتسجل في سجل التدقيق','warn')})),
         plans:self.plans.map(p=>({name:p.name,priceText:self.money(p.m)+' شهريًا',limits:p.limits.join(' · '),
-          subs:self.db.subscriptions.filter(x=>x.plan_id===p.id&&x.status==='نشط').length+' مشتركين',
+          subs:self.db.subscriptions.filter(x=>x.plan_id===p.id&&x.status==='نشط').length+' سناتر مشتركة',
           edit:()=>self.toast('تعديل الباقات يؤثر على المشتركين الحاليين — يحتاج تأكيدًا في الإنتاج','warn')})),
-        subs:self.db.subscriptions.map((x,i)=>({n:self.teacher(x.teacher_id).name,p:(self.plans.find(p=>p.id===x.plan_id)||{}).name,d:(x.status==='نشط'?'بيتجدد ':'انتهى ')+self.fmtDate(x.period_end),stText:x.status,initial:self.ini(self.teacher(x.teacher_id).name),avatar:self.avatar(i,36),
+        subs:self.db.subscriptions.map((x,i)=>({n:x.center_id?self.centerOf(x.center_id).name:self.teacher(x.teacher_id).name,p:(self.plans.find(p=>p.id===x.plan_id)||{}).name,d:(x.status==='نشط'?'بيتجدد ':'انتهى ')+self.fmtDate(x.period_end),stText:x.status,initial:(x.center_id?self.centerOf(x.center_id).name.replace(/^(سنتر|أكاديمية)\s*/,'').replace(/^ال/,''):self.ini(self.teacher(x.teacher_id).name))[0],avatar:self.avatar(i,36),
           badge:'padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:'+(x.status==='نشط'?'var(--teal-50)':'var(--danger-50)')+';color:'+(x.status==='نشط'?'var(--teal)':'var(--danger)'),
           expired:x.status!=='نشط'})),
         payoutReqs:self.payouts.filter(p=>p.status!=='محوّل').map(x=>({id:x.id,n:self.teacher(x.t).name,d:'طلب في '+self.fmtDate(x.date),acc:x.method,amountText:self.money(x.amount),
@@ -446,9 +503,10 @@ class Component extends DCLogic {
     const lc=self.course(s.learnCourse);
     const doneHere=s.done.filter(id=>all.some(l=>l.id===id)).length;
     const pct=all.length?Math.round(doneHere/all.length*100):0;
-    const my=s.purchased.map(id=>self.card(self.course(id)));
+    const myIds=Array.from(new Set(s.purchased.concat(self.courses.filter(c=>self.partialCourse(c.id)).map(c=>c.id)))); const my=myIds.map(id=>self.card(self.course(id)));
     const myPays=self.payments.filter(p=>p.sid===self.me);
-    const orders=myPays.map(p=>({id:p.id.replace('PAY','ORD'),cid:p.course,date:self.fmtDate(p.ts),amount:p.amount,status:p.status==='مدفوع'?'مكتمل':p.status,method:p.method}));
+    const tn={subject:'مادة كاملة',chapter:'باب',lesson:'حصة',subscription:'اشتراك',bundle:'باقة مواد'};
+    const orders=myPays.map(p=>({id:p.id.replace('PAY','ORD'),cid:p.course,title:(p.itemTitle||'')+' · '+(tn[p.type]||''),date:self.fmtDate(p.ts),amount:p.amount,status:p.status==='مدفوع'?'مكتمل':p.status,method:p.method}));
     const mySubs=self.db.submissions.filter(x=>x.student_id===self.me);
     const pendingQuizzes=self.db.lessons.filter(l=>s.purchased.indexOf(l.course_id)>-1&&l.kind!=='video'&&!mySubs.some(x=>x.title===l.title)).slice(0,3);
     const certCourses=self.myEnroll.filter(e=>e.progress>=100);
@@ -466,10 +524,11 @@ class Component extends DCLogic {
         resumeTitle:lc.title, resumeLesson:cur.sec+' · '+cur.title, pctText:pct+'%',
         bar:'display:block;height:100%;width:'+pct+'%;background:var(--teal);border-radius:999px',
         cont:()=>self.startLearn(lc.id),
-        stats:[{k:'كورساتي',v:String(s.purchased.length)},{k:'ساعات مذاكرة الشهر ده',v:self.stat(self.me+'_hours','0')},{k:'واجبات وامتحانات مطلوبة',v:String(pendingQuizzes.length)},{k:'شهادات',v:String(certCourses.length)}],
+        stats:[{k:'موادي',v:String(myIds.length)},{k:'ساعات مذاكرة الشهر ده',v:self.stat(self.me+'_hours','0')},{k:'واجبات وامتحانات مطلوبة',v:String(pendingQuizzes.length)},{k:'شهادات',v:String(certCourses.length)}],
         courses:my, tabsList:tabs.map(t=>({label:t[1],style:self.tabBtn(s.myTab===t[0]),pick:()=>self.setState({myTab:t[0]})})),
         filtered:myFiltered, noneInTab:myFiltered.length===0,
-        recs:self.courses.filter(c=>c.status==='published'&&s.purchased.indexOf(c.id)<0).slice(0,2).map(c=>self.card(c)),
+        recs:self.courses.filter(c=>c.status==='published'&&myIds.indexOf(c.id)<0&&c.grade===2).slice(0,2).map(c=>self.card(c)),
+        subText:s.subActive?'مشترك في '+((self.studentPlans.find(p=>p.id===s.subPlan)||{}).name||'مدارك بلس')+' — كل المواد مفتوحة':'مش مشترك — افتح كل المواد بـ'+self.money((self.studentPlans[0]||{price:0}).price)+' في الشهر', subActive:!!s.subActive, notSub:!s.subActive, goSub:()=>self.go('pricing'),
         notifs:self.db.notifications.filter(n=>n.student_id===self.me).map(n=>({t:n.title+(n.body?' — '+n.body:''),w:self.ago(n.created_at),dot:'width:8px;height:8px;border-radius:999px;flex:0 0 auto;margin-top:7px;background:'+(n.kind==='warn'?'var(--amber)':n.kind==='ok'?'var(--teal)':'var(--primary)')})),
         assignments:pendingQuizzes.map(l=>({t:l.title,c:self.course(l.course_id).title,due:l.kind==='quiz'?'بابل شيت · 30 دقيقة':'سلّم قبل آخر الأسبوع',st:'مطلوب',k:'warn'}))
           .concat(mySubs.map(x=>({t:x.title,c:self.course(x.course_id).title,due:'اتسلّم '+self.ago(x.submitted_at),st:x.status+(x.grade?' '+x.grade:''),k:x.grade?'ok':'wait'}))).map(a=>({t:a.t,c:a.c,due:a.due,stText:a.st,
@@ -477,7 +536,7 @@ class Component extends DCLogic {
           open:()=>a.k==='warn'?self.setState({modal:'submit'}):a.k==='ok'?self.setState({modal:'graded'}):self.toast('التسليم مستني تصحيح المدرس')})),
         certs:certCourses.map(e=>({t:self.course(e.course_id).title,d:'اتصدرت في '+self.fmtDate(e.last_activity),id:'MDK-'+e.course_id.toUpperCase()+'-'+String(e.id).padStart(4,'0')})).map(c=>Object.assign({},c,{download:()=>self.toast('تحميل الشهادة PDF محتاج خدمة على السيرفر — مش متاحة في النسخة التجريبية','warn')})),
         orders:orders.map(o=>{const c=self.course(o.cid),m=stMeta(o.status);return{
-          id:o.id,title:c.title,date:o.date,amountText:self.money(o.amount),method:o.method,statusText:o.status,
+          id:o.id,title:o.title||c.title,date:o.date,amountText:self.money(o.amount),method:o.method,statusText:o.status,
           badge:'padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:'+m.bg+';color:'+m.c,
           canRefund:o.status==='مكتمل', pending:o.status==='معلق',
           refund:()=>self.setState({modal:'refund'}),
@@ -516,7 +575,8 @@ class Component extends DCLogic {
 
   authVals(s,R,self){
     const steps=['المعلومات الأساسية','التخصص والخبرة','الملف الشخصي','اختيار الباقة','حالة المراجعة'];
-    const c=self.course(s.payCourse), ct=self.teacher(c.t), disc=c.old?c.old-c.price:0;
+    const T=self.cartTotals(), typeName={subject:'مادة كاملة',chapter:'باب',lesson:'حصة',subscription:'اشتراك',bundle:'باقة'};
+    const firstPaid=(s.paidItems||[])[0]||{};
     const methods=['فودافون كاش','إنستاباي','بطاقة بنكية (ميزة / فيزا)','فوري'];
     const res=s.payResult;
     return {
@@ -550,24 +610,29 @@ class Component extends DCLogic {
         toDashboard:()=>{ self.setState({role:'teacher'}); self.go('teacher-home'); }
       },
       co:{
-        title:c.title, teacherName:ct.name, priceText:self.money(c.price), discText:disc?'- '+self.money(disc):'',
-        hasDisc:!!disc, totalText:self.money(c.price), accessText:'وصول '+c.access+' شهور',
-        cover:'height:104px;border-radius:12px;border:1px solid var(--border);background-image:url('+self.coverUrl(c)+');background-size:cover;background-position:center',
+        empty:s.cart.length===0, notEmpty:s.cart.length>0,
+        items:s.cart.map((x,i)=>{ const cc=x.course?self.course(x.course):null; return {title:x.title,meta:x.meta,priceText:self.money(x.price),typeText:typeName[x.type]||'',
+          thumb:'width:64px;height:44px;border-radius:10px;flex:0 0 auto;border:1px solid var(--border);background-size:cover;background-position:center;background-image:url('+(cc?self.coverUrl(cc):'/assets/art-hero.webp')+')',
+          remove:()=>self.removeFromCart(i)}; }),
+        subText:self.money(T.sub), hasDisc:T.disc>0, discText:'- '+self.money(T.disc), discLabel:'خصم '+T.subjects+' مواد ('+T.pct+'%)',
+        totalText:self.money(T.total), countText:T.count+(T.count>2&&T.count<11?' عناصر':' عنصر'),
+        bundleNudge:T.subjects===1?'ضيف مادة كمان وخد خصم '+self.bundlePct(2)+'% على المواد':T.subjects===2?'ضيف مادة تالتة والخصم يبقى '+self.bundlePct(3)+'%':'',
+        hasNudge:T.subjects===1||T.subjects===2, browse:()=>self.go('courses'),
         methods:methods.map(m=>({label:m,style:'display:flex;align-items:center;gap:10px;padding:14px;border:1px solid '+(s.payMethod===m?'var(--primary)':'var(--border)')+';background:'+(s.payMethod===m?'var(--primary-50)':'#fff')+';border-radius:12px;cursor:pointer;text-align:start;width:100%;font-size:15px;font-weight:600;color:var(--ink)',
           radio:'width:18px;height:18px;border-radius:999px;border:'+(s.payMethod===m?'6px solid var(--primary)':'2px solid var(--border-2)')+';flex:0 0 auto',
           pick:()=>self.setState({payMethod:m})})),
-        processing:s.payState==='processing', idle:s.payState!=='processing',
-        pay:self.pay, payText:s.payState==='processing'?'جارٍ معالجة الدفع…':'ادفع '+self.money(c.price),
-        payStyle:'width:100%;height:52px;border:0;border-radius:14px;background:'+(s.payState==='processing'?'#A5B4FC':'var(--primary)')+';color:#fff;font-weight:700;font-size:16px;cursor:'+(s.payState==='processing'?'progress':'pointer')+';display:flex;align-items:center;justify-content:center;gap:10px'
+        processing:s.payState==='processing', idle:s.payState!=='processing', mobileBar:s.w<900&&R==='checkout'&&s.cart.length>0,
+        pay:self.pay, payText:s.payState==='processing'?'جاري تنفيذ الدفع…':'ادفع '+self.money(T.total),
+        payStyle:'width:100%;height:52px;margin-top:16px;border:0;border-radius:14px;background:'+(s.payState==='processing'?'#A5B4FC':'var(--primary)')+';color:#fff;font-weight:700;font-size:16px;cursor:'+(s.payState==='processing'?'progress':'pointer')+';display:flex;align-items:center;justify-content:center;gap:10px'
       },
       pr:{
         isSuccess:res==='success', isPending:res==='pending', isFailed:res==='failed',
-        courseTitle:c.title,
+        courseTitle:(s.paidItems||[]).map(x=>x.title).join(' + '),
         badge:'width:64px;height:64px;border-radius:999px;display:grid;place-items:center;font-size:26px;margin:0 auto 16px;background:'+(res==='success'?'var(--teal-50)':res==='pending'?'var(--amber-50)':'var(--danger-50)')+';color:'+(res==='success'?'var(--teal)':res==='pending'?'var(--amber)':'var(--danger)'),
         badgeText:res==='success'?'✓':res==='pending'?'⋯':'✕',
-        title:res==='success'?'تم الدفع وفتح الكورس':res==='pending'?'مستنيين دفعتك من فوري':'الدفع ما تمش',
-        msg:res==='success'?'الكورس اتضاف لـ«كورساتي». تقدر تبدأ من أول درس دلوقتي.':res==='pending'?'كود فوري بتاعك: 7291 4406 — ادفعه في أي منفذ فوري خلال 48 ساعة، وهيتفتح الكورس أوتوماتيك أول ما الدفع يتأكد.':'مفيش أي مبلغ اتخصم. اتأكد من بيانات الكارت أو جرّب وسيلة دفع تانية.',
-        startLearn:()=>self.startLearn(c.id), toPurchases:()=>{self.setState({role:'student'});self.go('student-purchases');},
+        title:res==='success'?'تم الدفع':res==='pending'?'مستنيين دفعتك من فوري':'الدفع ما تمش',
+        msg:res==='success'?(firstPaid.type==='subscription'?'اشتراك مدارك بلس اتفعّل — كل المواد مفتوحة ليك دلوقتي.':'المحتوى اتضاف لـ«كورساتي». تقدر تبدأ دلوقتي.'):res==='pending'?'كود فوري بتاعك: 7291 4406 — ادفعه في أي منفذ فوري خلال 48 ساعة، وهيتفتح الكورس أوتوماتيك أول ما الدفع يتأكد.':'مفيش أي مبلغ اتخصم. اتأكد من بيانات الكارت أو جرّب وسيلة دفع تانية.',
+        startLearn:()=>{ const f=firstPaid; if(f.type==='subscription'||!f.course){ self.go('courses'); } else if(f.type==='lesson'){ self.startLearn(f.course,f.ref); } else if(f.type==='chapter'){ const l=self.db.lessons.find(x=>x.section_id===f.ref); self.startLearn(f.course,l?l.id:undefined); } else self.startLearn(f.course); }, toPurchases:()=>{self.setState({role:'student'});self.go('student-purchases');},
         retry:()=>self.go('checkout'), toCourses:()=>self.go('courses'),
         note:'في النسخة الحقيقية الدفع بيتأكد من السيرفر عن طريق بوابة الدفع (Paymob / Fawry) بس، والشاشة دي مش بتفتح أي وصول لوحدها.'
       }
@@ -578,41 +643,49 @@ class Component extends DCLogic {
     const isMobile=s.w<900;
     const list=self.filteredCourses();
     const chips=[];
-    s.cats.forEach(id=>chips.push({label:self.cat(id).name,clear:()=>self.toggleCat(id)}));
-    if(s.level) chips.push({label:'المستوى: '+s.level,clear:()=>self.setState({level:''})});
-    if(s.priceBand) chips.push({label:{free:'مجاني',low:'أقل من 700 ج.م',high:'700 ج.م وأكتر'}[s.priceBand],clear:()=>self.setState({priceBand:''})});
-    if(s.minRating) chips.push({label:'تقييم 4.5+',clear:()=>self.setState({minRating:0})});
+    if(s.gradeF) chips.push({label:self.gradeName(s.gradeF),clear:()=>self.setState({gradeF:0})});
+    if(s.trackF) chips.push({label:self.cat(s.trackF).name,clear:()=>self.setState({trackF:''})});
+    if(s.centerF) chips.push({label:self.centerOf(s.centerF).name,clear:()=>self.setState({centerF:''})});
+    if(s.priceBand) chips.push({label:{low:'أقل من 1000 ج.م',high:'1000 ج.م وأكتر'}[s.priceBand],clear:()=>self.setState({priceBand:''})});
+    if(s.minRating) chips.push({label:'تقييم 4.8+',clear:()=>self.setState({minRating:0})});
     if(s.q.trim()) chips.push({label:'بحث: '+s.q.trim(),clear:()=>self.setState({q:''})});
 
     const c=R==='course'?self.courseBySlug(s.p.slug):self.course('c1');
-    const ct=self.teacher(c.t), ccat=self.cat(c.cat), bought=s.purchased.indexOf(c.id)>-1;
+    const ct=self.teacher(c.t), ccat=self.cat(c.cat), cctr=self.centerOf(c.center), bought=self.ownsCourse(c.id);
     const cReviews=self.db.testimonials.filter(t=>t.course_id===c.id);
+    const inCart=(type,ref)=>s.cart.some(x=>x.type===type&&x.ref===ref);
     const secs=self.curOf(c.id).map((sec,si)=>{
-      const open=s.openSecs.indexOf(sec.id)>-1;
-      return {title:sec.title,open:open,metaText:sec.lessons.length+' دروس · '+sec.lessons.reduce((a,l)=>a+l.min,0)+' دقيقة',
+      const open=s.openSecs.indexOf(sec.id)>-1, ownSec=self.ownsChapter(sec.id,c.id), secCart=inCart('chapter',sec.id);
+      return {title:sec.title,open:open,metaText:sec.lessons.length+' حصص · '+sec.lessons.reduce((a,l)=>a+l.min,0)+' دقيقة',
+        canBuy:!ownSec&&sec.price>0, owned:ownSec&&!bought, priceText:self.money(sec.price),
+        buyText:secCart?'في السلة ✓':'اشتري الباب · '+self.money(sec.price),
+        buyStyle:'height:34px;padding:0 12px;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap;border:1px solid var(--primary);background:'+(secCart?'var(--primary)':'var(--primary-50)')+';color:'+(secCart?'#fff':'var(--primary-700)'),
+        buy:()=>secCart?self.go('checkout'):self.addToCart(self.itemChapter(sec,c)),
         toggle:()=>self.setState(st=>({openSecs:open?st.openSecs.filter(x=>x!==sec.id):[...st.openSecs,sec.id]})),
-        icon:'width:24px;height:24px;border-radius:7px;background:var(--bg);color:var(--primary);display:grid;place-items:center;transform:rotate('+(open?'45deg':'0')+');transition:transform var(--dur)',
-        lessons:sec.lessons.map(l=>({title:l.title,minText:l.min+' د',
-          tagText:l.free?'معاينة مجانية':(bought?'متاح':'مقفل'),
-          tag:'padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;background:'+(l.free?'var(--teal-50)':bought?'var(--primary-50)':'#F1F5F9')+';color:'+(l.free?'var(--teal)':bought?'var(--primary-700)':'var(--muted)'),
-          mark:'width:22px;height:22px;border-radius:999px;flex:0 0 auto;display:grid;place-items:center;font-size:12px;background:'+(l.free||bought?'var(--primary-50)':'#F1F5F9')+';color:'+(l.free||bought?'var(--primary-700)':'var(--muted)'),
-          markText:l.free||bought?'▶':'✕',
-          click:()=>{ if(l.free||bought){ if(!bought){ self.setState({purchased:s.purchased}); } self.startLearn(c.id,l.id); } else { self.toast('هذا الدرس مقفل — اشترِ الدورة للوصول إليه','warn'); } }}))};
+        icon:'width:24px;height:24px;border-radius:7px;background:var(--bg);color:var(--primary);display:grid;place-items:center;flex:0 0 auto;transform:rotate('+(open?'45deg':'0')+');transition:transform var(--dur)',
+        lessons:sec.lessons.map(l=>{ const can=self.canWatch(l), lc=inCart('lesson',l.id); return {title:l.title,minText:l.min+' د',
+          tagText:l.free?'مجانًا':can?'متاحة':lc?'في السلة':'حصة '+self.money(l.price),
+          tag:'padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;background:'+(l.free?'var(--teal-50)':can?'var(--primary-50)':lc?'var(--primary)':'var(--amber-50)')+';color:'+(l.free?'var(--teal)':can?'var(--primary-700)':lc?'#fff':'var(--amber)'),
+          mark:'width:22px;height:22px;border-radius:999px;flex:0 0 auto;display:grid;place-items:center;font-size:11px;background:'+(can?'var(--primary-50)':'#F1F5F9')+';color:'+(can?'var(--primary-700)':'var(--muted)'),
+          markText:can?'▶':'🔒',
+          click:()=>{ if(can){ self.startLearn(c.id,l.id); } else if(lc){ self.go('checkout'); } else { self.addToCart(self.itemLesson(l,c)); } }};})};
     });
     const baseRev=[{n:'سارة إبراهيم',r:5,txt:'الشرح منظم جدًا وكل درس بيبني على اللي قبله. أحسن فلوس صرفتها على كورس.',when:'قبل أسبوعين'},{n:'عمر حسن',r:4,txt:'المحتوى ممتاز، بس كنت أتمنى تمارين أكتر في آخر وحدة.',when:'قبل شهر'},{n:'جنى مصطفى',r:5,txt:'المدرس بيرد على الأسئلة بسرعة والملفات المرفقة مفيدة جدًا.',when:'قبل شهرين'}];
     const reviews=cReviews.map(t=>({n:self.sname(t.student_id),r:t.rating,txt:t.text,when:t.role||''})).concat(baseRev).slice(0,3).map((x,i)=>({name:x.n,text:x.txt,when:x.when,stars:'★★★★★'.slice(0,x.r)+'☆☆☆☆☆'.slice(0,5-x.r),initial:x.n[0],avatar:self.avatar(i+1,38)}));
 
     const tp=R==='teacher'?(self.teachers.find(t=>t.slug===s.p.slug)||self.teachers[0]):self.teachers[0];
+    const ctrP=R==='center'?(self.centers.find(x=>x.slug===s.p.slug)||self.centers[0]):self.centers[0];
     const tpi=self.teachers.indexOf(tp);
 
     const compare=[
-      ['عدد الكورسات','3','20','بلا حدود'],
-      ['ساعات الفيديو','20','200','1000'],
-      ['عمولة المنصة','15%','10%','7%'],
-      ['كوبونات الخصم','—','نعم','نعم'],
-      ['تحليلات متقدمة','—','نعم','نعم'],
-      ['عدة مدرسين','—','—','نعم'],
-      ['الدعم','بالبريد','بأولوية','مدير حساب']
+      ['عدد المدرسين','1','حتى 10','بلا حدود'],
+      ['عدد المواد','5','بلا حدود','بلا حدود'],
+      ['ساعات الفيديو','100','500','2000'],
+      ['عمولة المنصة','12%','8%','5%'],
+      ['أكواد لطلاب السنتر','—','نعم','نعم'],
+      ['تقارير لولي الأمر','—','نعم','نعم'],
+      ['فروع متعددة ودومين خاص','—','—','نعم'],
+      ['الدعم','واتساب','بأولوية','مدير حساب']
     ].map(r=>({label:r[0],a:r[1],b:r[2],c:r[3]}));
 
     const infoPages={
@@ -635,32 +708,44 @@ class Component extends DCLogic {
     return {
       isCourses:R==='courses', isCourseDetail:R==='course', isTeachers:R==='teachers', isTeacherProfile:R==='teacher',
       isPricing:R==='pricing', isInfo:R==='help'||R==='about'||R==='legal',
-      resultText:list.length+' دورة مطابقة', hasChips:chips.length>0, noResults:list.length===0,
+      resultText:list.length+(list.length>2&&list.length<11?' مواد':' مادة'), hasChips:chips.length>0, noResults:list.length===0,
       filteredCards:list.map(x=>self.card(x)),
       showFilters:!isMobile||s.filtersOpen, filtersToggleVisible:isMobile,
       toggleFilters:()=>self.setState({filtersOpen:!s.filtersOpen}),
-      filterCatPills:self.cats.map(c=>({label:c.name,style:self.pill(s.cats.indexOf(c.id)>-1),pick:()=>self.toggleCat(c.id)})),
-      levelPills:['ثانوية عامة','مبتدئ','متوسط','متقدم'].map(l=>({label:l,style:self.pill(s.level===l),pick:()=>self.setState({level:s.level===l?'':l})})),
-      pricePills:[['free','مجاني'],['low','أقل من 700'],['high','700 وأكتر']].map(p=>({label:p[1],style:self.pill(s.priceBand===p[0]),pick:()=>self.setState({priceBand:s.priceBand===p[0]?'':p[0]})})),
-      ratingPills:[{label:'4.5 وأعلى',style:self.pill(s.minRating===4.5),pick:()=>self.setState({minRating:s.minRating?0:4.5})}],
+      filterCatPills:self.cats.map(c=>({label:c.name,style:self.pill(s.trackF===c.id),pick:()=>self.toggleCat(c.id)})),
+      gradePills:self.GRADES.map(g=>({label:g.name,style:self.pill(s.gradeF===g.id),pick:()=>self.setState({gradeF:s.gradeF===g.id?0:g.id})})),
+      centerPills:self.centers.map(x=>({label:x.name+' · '+x.city,style:self.pill(s.centerF===x.id),pick:()=>self.setState({centerF:s.centerF===x.id?'':x.id})})),
+
+      pricePills:[['low','أقل من 1000'],['high','1000 وأكتر']].map(p=>({label:p[1],style:self.pill(s.priceBand===p[0]),pick:()=>self.setState({priceBand:s.priceBand===p[0]?'':p[0]})})),
+      ratingPills:[{label:'4.8 وأعلى',style:self.pill(s.minRating===4.8),pick:()=>self.setState({minRating:s.minRating?0:4.8})}],
       activeChips:chips.map(c=>({label:c.label,clear:c.clear})),
       clearFilters:self.clearFilters,
       sortValue:s.sort, setSort:e=>self.setState({sort:e.target.value}),
       sortOptions:['الأكثر شعبية','الأعلى تقييمًا','الأقل سعرًا','الأحدث'],
       cd:{
-        title:c.title, sum:c.sum, level:c.level, catName:ccat.name,
+        title:c.title, sum:c.sum, level:self.gradeName(c.grade)+' · '+c.term, catName:ccat.name,
+        centerName:cctr.name, centerCity:cctr.city, openCenter:()=>self.go('center',{slug:cctr.slug}),
+        chapterFrom:self.money(c.chapterPrice), lessonFrom:self.money(c.lessonPrice), hasParts:c.chapterPrice>0,
+        subFrom:self.money((self.studentPlans[0]||{price:0}).price), hasSub:self.hasSub(),
+        inCartSubject:inCart('subject',c.id), cartCount:s.cart.length, hasCart:s.cart.length>0,
+        addSubject:()=>inCart('subject',c.id)?self.go('checkout'):self.addToCart(self.itemSubject(c)),
+        addSubjectText:inCart('subject',c.id)?'في السلة — كمّل الدفع':'أضف للسلة (وضيف مواد تانية بخصم)',
+        subscribe:()=>self.go('pricing'),
+        goCurriculum:()=>{ self.setState({courseTab:'curriculum'}); try{ const el=document.getElementById('md-curr'); el&&el.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){} },
+        bundleHint:'اشتري مادتين وخد خصم '+self.bundlePct(2)+'% — 3 مواد '+self.bundlePct(3)+'%',
+        mobileBar:isMobile&&!bought&&R==='course', goCheckout:()=>self.go('checkout'),
         catChip:'padding:5px 12px;border-radius:999px;background:'+ccat.bg+';color:'+ccat.c+';font-size:13px;font-weight:600',
         cover:'position:relative;height:clamp(200px,32vw,340px);border-radius:18px;border:1px solid var(--border);background-image:url('+self.coverUrl(c)+');background-size:cover;background-position:center;display:grid;place-items:center;overflow:hidden',
         promo:c.promo||'', hasPromo:!!c.promo, noPromo:!c.promo, promoPoster:'/assets/poster-promo.webp', playPromo:()=>self.setState({promoPlay:true}), promoPlaying:!!s.promoPlay&&!!c.promo, promoIdle:!s.promoPlay&&!!c.promo,
         ratingText:c.rating?c.rating.toFixed(1):'كورس جديد', reviewsText:'('+c.reviews.toLocaleString('en-US')+' تقييم)',
         studentsText:c.students.toLocaleString('en-US')+' طالب', metaText:c.hours+' ساعة · '+c.lessons+' درس',
         priceText:self.money(c.price), oldText:c.old?self.money(c.old):'', hasOld:!!c.old,
-        accessText:'وصول '+c.access+' شهور من تاريخ الشراء',
+        accessText:'المادة كاملة · وصول '+c.access+' شهور',
         bought:bought, notBought:!bought,
         buy:()=>self.buy(c.id), cont:()=>self.startLearn(c.id),
         teacherName:ct.name, teacherTitle:ct.title, teacherBio:ct.bio, teacherInitial:self.ini(ct.name),
         teacherAvatar:self.avatar(self.teachers.indexOf(ct),64),
-        teacherStats:'★ '+ct.rating.toFixed(1)+' · '+ct.students.toLocaleString('en-US')+' طالب · '+ct.years+' سنة خبرة · '+ct.city,
+        teacherStats:'★ '+ct.rating.toFixed(1)+' · '+ct.students.toLocaleString('en-US')+' طالب · '+ct.years+' سنة خبرة · '+cctr.name+' — '+cctr.city,
         openTeacher:()=>self.go('teacher',{slug:ct.slug}),
         outcomes:c.outcomes.map(x=>({t:x})),
         reqs:c.reqs.map(x=>({t:x})),
@@ -668,17 +753,17 @@ class Component extends DCLogic {
         sections:secs, reviews:reviews,
         tabs:[['overview','نظرة عامة'],['curriculum','المنهج'],['teacher','المدرس'],['reviews','التقييمات']].map(t=>({label:t[1],style:self.tabBtn(s.courseTab===t[0]),pick:()=>self.setState({courseTab:t[0]})})),
         tabOverview:s.courseTab==='overview', tabCurriculum:s.courseTab==='curriculum', tabTeacher:s.courseTab==='teacher', tabReviews:s.courseTab==='reviews',
-        related:self.courses.filter(x=>x.cat===c.cat&&x.id!==c.id&&x.status==='published').slice(0,3).map(x=>self.card(x))
+        related:self.courses.filter(x=>x.grade===c.grade&&x.id!==c.id&&x.status==='published').slice(0,3).map(x=>self.card(x))
       },
       teacherCards:self.teachers.map((t,i)=>({name:t.name,title:t.title,initial:self.ini(t.name),avatar:self.avatar(i,58),
         rating:t.rating.toFixed(1),studentsText:t.students.toLocaleString('en-US')+' طالب',
-        coursesText:self.courses.filter(c=>c.t===t.id&&c.status==='published').length+' كورس منشور · '+t.city,
+        coursesText:self.courses.filter(c=>c.t===t.id&&c.status==='published').length+' مادة · '+self.centerOf(t.center).name+' — '+t.city,
         catName:self.cat(t.cat).name,catChip:'padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:'+self.cat(t.cat).bg+';color:'+self.cat(t.cat).c,
         open:()=>self.go('teacher',{slug:t.slug})})),
       tp:{name:tp.name,title:tp.title,bio:tp.bio,initial:self.ini(tp.name),avatar:self.avatar(tpi,84),
-        rating:tp.rating.toFixed(1),studentsText:tp.students.toLocaleString('en-US')+' طالب',yearsText:tp.years+' سنة خبرة',
+        rating:tp.rating.toFixed(1),studentsText:tp.students.toLocaleString('en-US')+' طالب',yearsText:tp.years+' سنة خبرة',centerName:self.centerOf(tp.center).name,openCenter:()=>self.go('center',{slug:self.centerOf(tp.center).slug}),
         catName:self.cat(tp.cat).name,
-        specialties:[self.cat(tp.cat).name,tp.cat==='thanaweya'?'نظام البابل شيت':'مشاريع عملية','متابعة الطلاب','مراجعات نهائية'].map(x=>({t:x})),
+        specialties:[self.cat(tp.cat).name,'نظام البكالوريا','متابعة الطلاب','مراجعات نهائية'].map(x=>({t:x})),
         courses:self.courses.filter(c=>c.t===tp.id&&c.status==='published').map(x=>self.card(x)),
         reviews:reviews.slice(0,2)},
       yearly:s.yearly, toggleYearly:()=>self.setState({yearly:!s.yearly}),
@@ -690,8 +775,55 @@ class Component extends DCLogic {
         limits:p.limits.map(l=>({t:l})),
         style:'display:flex;flex-direction:column;gap:12px;padding:24px;background:#fff;border:'+(p.best?'2px solid var(--primary)':'1px solid var(--border)')+';border-radius:20px;box-shadow:'+(p.best?'var(--sh-2)':'var(--sh-1)'),
         btnStyle:self.btn(p.best?'primary':'outline','width:100%'),
-        pick:()=>{self.toast('اخترت باقة «'+p.name+'» — كمّل بيانات الانضمام');self.go('teach');}})),
+        pick:()=>{self.setState({cf:Object.assign({},s.cf,{msg:'مهتمين بباقة «'+p.name+'»'})});self.toast('اخترت باقة «'+p.name+'» — كمّل بيانات السنتر');try{const el=document.getElementById('md-cform');el&&el.scrollIntoView({behavior:'smooth'});}catch(e){}}})),
       compareRows:compare,
+      isCenters:R==='centers', isCenter:R==='center', isForCenters:R==='for-centers',
+      studentPlanCards:self.studentPlans.map(p=>({name:p.name,desc:p.desc,note:p.note,best:p.best,priceText:self.money(p.price),cycle:p.months===1?'شهريًا':'لمدة '+p.months+' شهور',
+        limits:p.limits.map(l=>({t:l})), current:s.subActive&&s.subPlan===p.id,
+        style:'display:flex;flex-direction:column;gap:12px;padding:22px;background:#fff;border:'+(p.best?'2px solid var(--primary)':'1px solid var(--border)')+';border-radius:20px;box-shadow:'+(p.best?'var(--sh-2)':'var(--sh-1)'),
+        btnStyle:self.btn(p.best?'primary':'outline','width:100%'), btnText:(s.subActive&&s.subPlan===p.id)?'اشتراكك الحالي':'اشترك دلوقتي',
+        pick:()=>self.subscribe(p.id)})),
+      buyWays:[
+        {k:'حصة واحدة',v:'من '+self.money(Math.min(...self.courses.filter(c=>c.lessonPrice>0).map(c=>c.lessonPrice))),d:'غبت عن حصة في السنتر؟ اشتريها لوحدها وعوّضها.'},
+        {k:'باب (شابتر)',v:'من '+self.money(Math.min(...self.courses.filter(c=>c.chapterPrice>0).map(c=>c.chapterPrice))),d:'قبل الامتحان الشهري: خد الباب اللي محتاجه بس.'},
+        {k:'مادة كاملة',v:'من '+self.money(Math.min(...self.courses.filter(c=>c.status==='published').map(c=>c.price))),d:'المنهج كله مع امتحانات وملفات لآخر السنة.'},
+        {k:'أكتر من مادة',v:'خصم لحد '+Math.max(0,...self.bundleRules.map(r=>r.pct))+'%',d:'حط موادك في السلة والخصم بيتحسب لوحده.'},
+        {k:'اشتراك شهري',v:self.money((self.studentPlans[0]||{price:0}).price)+' / شهر',d:'مدارك بلس بيفتحلك كل المواد من كل السناتر.'}
+      ].map((x,i)=>({k:x.k,v:x.v,d:x.d,num:String(i+1),hl:i===4,style:'display:flex;flex-direction:column;gap:6px;padding:16px;border-radius:16px;border:1px solid '+(i===4?'var(--primary)':'var(--border)')+';background:'+(i===4?'var(--primary-50)':'#fff')})),
+      goSubscribe:()=>self.go('pricing'), goCenters:()=>self.go('centers'), goForCenters:()=>self.go('for-centers'),
+      bundleRows:self.bundleRules.map(r=>({k:r.min+' مواد أو أكتر',v:'خصم '+r.pct+'%'})),
+      centerCards:self.centers.map((x,i)=>{ const tch=self.teachers.filter(t=>t.center===x.id); const subs=self.courses.filter(c=>c.center===x.id&&c.status==='published');
+        return {name:x.name,city:x.city+' — '+x.gov,rating:x.rating.toFixed(1),students:x.students.toLocaleString('en-US')+' طالب',since:'من '+x.since,
+          teachersText:tch.length+' مدرسين',subjectsText:subs.length+' مواد',desc:x.desc,initial:x.name.replace(/^(سنتر|أكاديمية)\s*/,'').replace(/^ال/,'')[0],
+          logo:'width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-weight:700;font-size:22px;flex:0 0 auto;background:'+x.bg+';color:'+x.c+';border:1px solid '+x.c+'33',
+          subjects:Array.from(new Set(subs.map(c=>c.subject))).slice(0,4).map(t=>({t:t})),
+          open:()=>self.go('center',{slug:x.slug})}; }),
+      homeCenters:[],
+      ctr:{name:ctrP?ctrP.name:'',city:ctrP?ctrP.city+' — '+ctrP.gov:'',address:ctrP?ctrP.address:'',desc:ctrP?ctrP.desc:'',rating:ctrP?ctrP.rating.toFixed(1):'',
+        students:ctrP?ctrP.students.toLocaleString('en-US')+' طالب':'',since:ctrP?'شغال من '+ctrP.since:'',
+        initial:ctrP?ctrP.name.replace(/^(سنتر|أكاديمية)\s*/,'').replace(/^ال/,'')[0]:'',
+        logo:ctrP?'box-shadow:var(--sh-2);width:72px;height:72px;border-radius:18px;display:grid;place-items:center;font-weight:700;font-size:30px;flex:0 0 auto;background:'+ctrP.bg+';color:'+ctrP.c+';border:1px solid '+ctrP.c+'33':'',
+        band:ctrP?'height:120px;border-radius:20px;background:linear-gradient(120deg,'+ctrP.bg+','+ctrP.c+'22),url(/assets/art-hero.webp);background-size:cover;background-position:center;border:1px solid var(--border)':'',
+        teachers:ctrP?self.teachers.filter(t=>t.center===ctrP.id).map((t,i)=>({name:t.name,title:t.title,initial:self.ini(t.name),avatar:self.avatar(i,52),rating:t.rating.toFixed(1),open:()=>self.go('teacher',{slug:t.slug})})):[],
+        courses:ctrP?self.courses.filter(c=>c.center===ctrP.id&&c.status==='published').map(x=>self.card(x)):[],
+        filter:()=>{ if(ctrP){ self.setState({centerF:ctrP.id,gradeF:0,trackF:''}); self.go('courses'); } }},
+      cf:{center:s.cf.center,owner:s.cf.owner,phone:s.cf.phone,city:s.cf.city,teachers:s.cf.teachers,students:s.cf.students,msg:s.cf.msg,sent:s.cfSent,notSent:!s.cfSent,
+        sendText:s.cfSending?'جاري الإرسال…':'ابعت الطلب',
+        setCenter:(e)=>self.setState({cf:Object.assign({},self.state.cf,{center:e.target.value})}), setOwner:(e)=>self.setState({cf:Object.assign({},self.state.cf,{owner:e.target.value})}),
+        setPhone:(e)=>self.setState({cf:Object.assign({},self.state.cf,{phone:e.target.value})}), setCity:(e)=>self.setState({cf:Object.assign({},self.state.cf,{city:e.target.value})}),
+        setTeachers:(e)=>self.setState({cf:Object.assign({},self.state.cf,{teachers:e.target.value})}), setStudents:(e)=>self.setState({cf:Object.assign({},self.state.cf,{students:e.target.value})}),
+        setMsg:(e)=>self.setState({cf:Object.assign({},self.state.cf,{msg:e.target.value})}),
+        send:(e)=>{ if(e&&e.preventDefault) e.preventDefault(); const f=self.state.cf;
+          if(!f.center.trim()||!f.phone.trim()){ self.toast('اكتب اسم السنتر ورقم الموبايل','danger'); return; }
+          self.setState({cfSending:true});
+          const row={center_name:f.center.trim().slice(0,100),owner_name:f.owner.trim().slice(0,80)||null,phone:f.phone.trim().slice(0,20),city:f.city.trim().slice(0,60)||null,teachers_count:parseInt(f.teachers)||null,students_count:parseInt(f.students)||null,message:f.msg.trim().slice(0,1000)||null};
+          (window.MadarekInsert?window.MadarekInsert('center_applications',row):Promise.resolve()).then(()=>{ self.setState({cfSent:true,cfSending:false}); self.toast('وصلنا طلبك — فريق الشراكات هيكلمك خلال يوم عمل'); })
+            .catch(()=>{ self.setState({cfSending:false}); self.toast('حصلت مشكلة في الإرسال — جرّب تاني','danger'); }); }},
+      b2b:{
+        stats:[{v:String(self.centers.length),k:'سناتر شغالة على مدارك'},{v:self.stat('learners','58,000+'),k:'طالب بيذاكر أونلاين'},{v:String(self.teachers.length),k:'مدرس موثّق'}],
+        props:[['بيع أونلاين من غير ما تبني منصة','ارفع حصص السنتر المسجلة، ومدارك بتتولى الدفع والتشغيل وحماية الفيديو.'],['كل طريقة شراء','الطالب يشتري حصة أو باب أو مادة، أو يدخل من اشتراك مدارك بلس — وإنت بتاخد نصيبك من كل ده.'],['أكواد لطلاب السنتر','طلابك اللي بيحضروا عندك ياخدوا أكواد تفتحلهم الأونلاين من غير دفع إضافي.'],['حصص التعويض','الطالب اللي غاب يعوّض الحصة أونلاين، وإنت تكسب بدل ما تخسره.'],['تقارير لولي الأمر','حضور ومشاهدة ودرجات الامتحانات بتتبعت أسبوعيًا على واتساب.'],['تحويلات شهرية','مستحقاتك بتتحول أول كل شهر على حسابك البنكي أو إنستاباي.']].map((x,i)=>({h:x[0],p:x[1],num:String(i+1)})),
+        steps:[['سجّل السنتر','ابعت البيانات وفريقنا يكلمك خلال يوم عمل.'],['ضيف المدرسين والمواد','كل مدرس ليه صفحة، وكل مادة مقسمة أبواب وحصص بأسعارك.'],['ارفع الحصص','من الموبايل أو الكمبيوتر، والمنصة بتجهز الفيديو للنت الضعيف.'],['ابدأ البيع','الطلاب بيلاقوا سنترك على مدارك، وإنت بتتابع المبيعات لحظة بلحظة.']].map((x,i)=>({h:x[0],p:x[1],num:String(i+1)}))
+      },
       ip:{title:ip.title,lead:ip.lead,blocks:ip.blocks.map(b=>({h:b.h,p:b.p}))}
     };
   }

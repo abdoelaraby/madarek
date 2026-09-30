@@ -69,15 +69,22 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <sc-if value="{{ showHeaderSearch }}">
           <div style="display:flex;align-items:center;gap:8px;height:42px;padding:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:999px;min-width:220px;max-width:340px;flex:1">
             <span style="width:14px;height:14px;border:2px solid var(--muted);border-radius:999px;display:inline-block;flex:0 0 auto"></span>
-            <input aria-label="ابحث في الدورات والمدرسين" placeholder="ابحث عن دورة أو مدرس…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" sc-camel-on-key-down="{{ searchKey }}" style="border:0;background:transparent;outline:none;flex:1;min-width:0;color:var(--ink)">
+            <input aria-label="ابحث في الدورات والمدرسين" placeholder="ابحث عن مادة أو مدرس أو سنتر…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" sc-camel-on-key-down="{{ searchKey }}" style="border:0;background:transparent;outline:none;flex:1;min-width:0;color:var(--ink)">
           </div>
         </sc-if>
 
         <sc-if value="{{ showPublicCtas }}">
           <div style="display:flex;align-items:center;gap:8px">
             <button type="button" sc-camel-on-click="{{ goLogin }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;white-space:nowrap;flex:0 0 auto;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;color:var(--ink-2);cursor:pointer;transition:all var(--dur)" style-hover="border-color:var(--primary);color:var(--primary)">دخول</button>
-            <button type="button" sc-camel-on-click="{{ goTeach }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;white-space:nowrap;flex:0 0 auto;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer;transition:background var(--dur)" style-hover="background:var(--primary-600)" style-focus="outline:3px solid var(--primary-100);outline-offset:2px">ابدأ التدريس</button>
+            <button type="button" sc-camel-on-click="{{ goTeach }}" style="display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 18px;white-space:nowrap;flex:0 0 auto;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer;transition:background var(--dur)" style-hover="background:var(--primary-600)" style-focus="outline:3px solid var(--primary-100);outline-offset:2px">سجّل سنترك</button>
           </div>
+        </sc-if>
+
+        <sc-if value="{{ hasCartItems }}">
+          <button type="button" sc-camel-on-click="{{ goCart }}" aria-label="السلة" style="position:relative;height:44px;padding:0 12px;border:1px solid var(--border);background:#fff;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:14px;color:var(--ink);flex:0 0 auto">
+            <span>السلة</span>
+            <span style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;display:grid;place-items:center">{{ cartCount }}</span>
+          </button>
         </sc-if>
 
         <sc-if value="{{ showPublicBurger }}">
@@ -110,7 +117,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <div style="border-top:1px solid var(--border);background:#fff;padding:12px 16px 16px;animation:fadeUp var(--dur) ease both">
           <div style="display:flex;align-items:center;gap:8px;height:46px;padding:0 14px;background:var(--bg);border:1px solid var(--border);border-radius:12px;margin-bottom:10px">
             <span style="width:14px;height:14px;border:2px solid var(--muted);border-radius:999px;display:inline-block;flex:0 0 auto"></span>
-            <input aria-label="ابحث في الكورسات" placeholder="ابحث عن كورس أو مدرس…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" sc-camel-on-key-down="{{ searchKey }}" style="border:0;background:transparent;outline:none;flex:1;min-width:0;color:var(--ink);font-size:16px">
+            <input aria-label="ابحث في الكورسات" placeholder="ابحث عن مادة أو مدرس أو سنتر…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" sc-camel-on-key-down="{{ searchKey }}" style="border:0;background:transparent;outline:none;flex:1;min-width:0;color:var(--ink);font-size:16px">
           </div>
           <nav style="display:grid;gap:2px">
             <sc-for list="{{ publicNav }}" as="n" hint-placeholder-count="4">
@@ -119,7 +126,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </nav>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
             <button type="button" sc-camel-on-click="{{ goLogin }}" style="height:46px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;color:var(--ink-2);cursor:pointer">دخول</button>
-            <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:46px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer">ابدأ التدريس</button>
+            <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:46px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer">سجّل سنترك</button>
           </div>
         </div>
       </sc-if>
@@ -167,12 +174,12 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <div>
           <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:32px;align-items:center;padding:44px 0 8px">
             <div>
-              <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--teal-50);color:var(--teal);border:1px solid var(--teal-100);border-radius:999px;font-size:13px;font-weight:600">منصة مصرية للتعلّم أونلاين مع مدرسين موثّقين</div>
-              <h1 style="font-size:clamp(30px,4.2vw,46px);line-height:1.25;margin:16px 0 12px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">ذاكر صح واتعلم مهارة جديدة — مع مدرس تثق فيه.</h1>
-              <p style="font-size:17px;color:var(--muted);max-width:52ch;margin:0 0 24px;text-wrap:pretty">من الثانوية العامة لمهارات سوق العمل: اشترِ الكورس اللي محتاجه بس، ادفع بفودافون كاش أو فوري، وتابع تقدمك درس بدرس. ولو إنت مدرس، اعمل كورساتك وبيعها باشتراك شهري واضح.</p>
+              <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--teal-50);color:var(--teal);border:1px solid var(--teal-100);border-radius:999px;font-size:13px;font-weight:600">البكالوريا المصرية والثانوية العامة — من أقوى سناتر مصر</div>
+              <h1 style="font-size:clamp(30px,4.2vw,46px);line-height:1.25;margin:16px 0 12px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">كل سناتر الثانوي في مكان واحد. ذاكر من البيت.</h1>
+              <p style="font-size:17px;color:var(--muted);max-width:52ch;margin:0 0 24px;text-wrap:pretty">حصص مسجلة من سناتر حقيقية لمواد أولى وتانية وتالتة ثانوي. اشتري حصة، أو باب، أو مادة كاملة، أو أكتر من مادة بخصم — أو اشترك في مدارك بلس وافتح كل المواد.</p>
               <div style="display:flex;flex-wrap:wrap;gap:12px">
-                <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:50px;padding:0 26px;border:0;background:var(--primary);color:#fff;border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;box-shadow:var(--sh-2);transition:background var(--dur)" style-hover="background:var(--primary-600)">استكشف الكورسات</button>
-                <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:50px;padding:0 26px;border:1px solid var(--border-2);background:#fff;color:var(--ink);border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;transition:all var(--dur)" style-hover="border-color:var(--primary);color:var(--primary)">انضم كمدرس</button>
+                <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:50px;padding:0 26px;border:0;background:var(--primary);color:#fff;border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;box-shadow:var(--sh-2);transition:background var(--dur)" style-hover="background:var(--primary-600)">تصفح المواد</button>
+                <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:50px;padding:0 26px;border:1px solid var(--border-2);background:#fff;color:var(--ink);border-radius:14px;font-weight:600;font-size:16px;cursor:pointer;transition:all var(--dur)" style-hover="border-color:var(--primary);color:var(--primary)">عندي سنتر</button>
               </div>
               <div style="display:flex;flex-wrap:wrap;gap:24px;margin-top:28px">
                 <sc-for list="{{ heroStats }}" as="h" hint-placeholder-count="3">
@@ -195,56 +202,114 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             </div>
           </section>
 
-          <section style="padding:48px 0 0">
-            <h2 style="font-size:24px;margin:0 0 4px">تصفّح بحسب التخصص</h2>
-            <p style="color:var(--muted);margin:0 0 18px;font-size:15px">اختار المجال وشوف كورساته ومدرسينه.</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:12px">
-              <sc-for list="{{ catCards }}" as="c" hint-placeholder-count="6">
-                <button type="button" sc-camel-on-click="{{ c.go }}" style="{{ c.style }}" style-hover="transform:translateY(-2px);box-shadow:var(--sh-2)">
-                  <span style="{{ c.chip }}"></span>
-                  <span style="font-weight:600;font-size:15px;color:var(--ink)">{{ c.name }}</span>
-                  <span style="font-size:13px;color:var(--muted)">{{ c.count }}</span>
+          <section style="padding:44px 0 0">
+            <h2 style="font-size:24px;margin:0 0 4px">اختار صفّك</h2>
+            <p style="color:var(--muted);margin:0 0 16px;font-size:15px">مواد البكالوريا المصرية والثانوية العامة من أولى لتالتة ثانوي.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px">
+              <sc-for list="{{ gradeCards }}" as="g" hint-placeholder-count="3">
+                <button type="button" sc-camel-on-click="{{ g.go }}" style="{{ g.style }}" style-hover="transform:translateY(-2px);box-shadow:var(--sh-2)">
+                  <span style="display:flex;align-items:center;gap:12px"><span style="{{ g.num }}">{{ g.numText }}</span><span style="font-weight:700;font-size:17px;color:var(--ink)">{{ g.name }}</span></span>
+                  <span style="font-size:13px;color:var(--muted)">{{ g.sub }}</span>
+                  <span style="font-size:13px;font-weight:600;color:var(--primary-700)">{{ g.count }} ←</span>
                 </button>
               </sc-for>
+            </div>
+            <div style="font-size:13px;font-weight:600;color:var(--muted);margin:18px 0 8px">أو اختار مسارك</div>
+            <div class="md-scroll" style="display:flex;gap:8px;flex-wrap:wrap">
+              <sc-for list="{{ catCards }}" as="c" hint-placeholder-count="5">
+                <button type="button" sc-camel-on-click="{{ c.go }}" style="display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border:1px solid var(--border);background:#fff;border-radius:999px;cursor:pointer;white-space:nowrap;flex:0 0 auto" style-hover="border-color:var(--primary)">
+                  <span style="{{ c.chip }}"></span>
+                  <span style="font-weight:600;font-size:14px;color:var(--ink)">{{ c.name }}</span>
+                  <span style="font-size:12px;color:var(--muted)">{{ c.count }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:44px 0 0">
+            <h2 style="font-size:24px;margin:0 0 4px">اشتري بالطريقة اللي تناسبك</h2>
+            <p style="color:var(--muted);margin:0 0 16px;font-size:15px">مش لازم تدفع تمن المادة كلها — ادفع على قد اللي محتاجه.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:12px">
+              <sc-for list="{{ buyWays }}" as="b" hint-placeholder-count="5">
+                <div style="{{ b.style }}">
+                  <span style="font-size:12px;font-weight:700;color:var(--muted)">{{ b.num }}</span>
+                  <span style="font-weight:700;font-size:16px">{{ b.k }}</span>
+                  <span style="font-weight:700;font-size:15px;color:var(--primary-700)">{{ b.v }}</span>
+                  <span style="font-size:13px;color:var(--muted)">{{ b.d }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px">
+              <button type="button" sc-camel-on-click="{{ goSubscribe }}" style="height:46px;padding:0 20px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer">شوف اشتراك مدارك بلس</button>
+              <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:46px;padding:0 20px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;cursor:pointer">تصفح المواد</button>
             </div>
           </section>
 
           <section style="padding:48px 0 0">
             <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:18px">
               <div>
-                <h2 style="font-size:24px;margin:0 0 4px">كورسات مميزة</h2>
+                <h2 style="font-size:24px;margin:0 0 4px">المواد الأكثر طلبًا</h2>
                 <p style="color:var(--muted);margin:0;font-size:15px">الأكثر مبيعًا الشهر ده.</p>
               </div>
-              <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:40px;padding:0 16px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer" style-hover="border-color:var(--primary);color:var(--primary)">كل الكورسات ←</button>
+              <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:40px;padding:0 16px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer" style-hover="border-color:var(--primary);color:var(--primary)">كل المواد ←</button>
             </div>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
               <sc-for list="{{ featured }}" as="c" hint-placeholder-count="4">
                 <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-1);display:flex;flex-direction:column;transition:transform var(--dur),box-shadow var(--dur)" style-hover="transform:translateY(-3px);box-shadow:var(--sh-2)">
-                  <div style="{{ c.cover }}">
-                    <span style="{{ c.catChip }}">{{ c.catName }}</span>
-                  </div>
-                  <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1">
+                  <button type="button" sc-camel-on-click="{{ c.open }}" aria-label="{{ c.title }}" style="display:block;width:100%;border:0;padding:0;background:none;cursor:pointer">
+                    <div style="{{ c.cover }}"><span style="{{ c.gradeChip }}">{{ c.level }}</span><span style="{{ c.catChip }}">{{ c.catName }}</span></div>
+                  </button>
+                  <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1">
                     <h3 style="font-size:16px;margin:0;line-height:1.5;text-wrap:pretty">{{ c.title }}</h3>
-                    <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }}</div>
-                    <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink-2)">
+                    <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }} · <span style="color:var(--ink-2);font-weight:600">{{ c.centerName }}</span></div>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)">
                       <span style="color:var(--amber);font-weight:600">★ {{ c.rating }}</span>
-                      <span style="color:var(--muted)">({{ c.reviews }})</span>
-                      <span style="color:var(--border-2)">·</span>
-                      <span>{{ c.metaText }}</span>
+                      <span style="color:var(--border-2)">·</span><span>{{ c.metaText }}</span>
                     </div>
                     <div style="flex:1"></div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px;border-top:1px solid var(--border)">
-                      <span style="font-weight:700;font-size:17px">{{ c.priceText }}</span>
-                      <button type="button" sc-camel-on-click="{{ c.open }}" style="height:38px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
-                    </div>
+                    <sc-if value="{{ c.bought }}">
+                      <div style="padding-top:6px">
+                        <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px"><span style="{{ c.progressBar }}"></span></div>
+                        <button type="button" sc-camel-on-click="{{ c.resume }}" style="width:100%;height:42px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer">كمّل المذاكرة · {{ c.progressText }}</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ c.notBought }}">
+                      <div style="padding-top:8px;border-top:1px solid var(--border)">
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">{{ c.partsText }}</div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                          <span style="font-weight:700;font-size:17px">{{ c.priceText }} <span style="font-size:12px;font-weight:500;color:var(--muted)">المادة</span></span>
+                          <button type="button" sc-camel-on-click="{{ c.open }}" style="height:40px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;flex:0 0 auto" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
+                        </div>
+                        <sc-if value="{{ c.partial }}"><div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--teal)">✓ عندك أجزاء من المادة دي</div></sc-if>
+                      </div>
+                    </sc-if>
                   </div>
                 </article>
+
               </sc-for>
             </div>
           </section>
 
-          <section style="padding:48px 0 0">
-            <h2 style="font-size:24px;margin:0 0 18px">مدرسون مميزون</h2>
+          <section style="padding:44px 0 0">
+            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:16px">
+              <div>
+                <h2 style="font-size:24px;margin:0 0 4px">سناتر على مدارك</h2>
+                <p style="color:var(--muted);margin:0;font-size:15px">نفس مدرسين السنتر اللي بتحضر عندهم — من البيت.</p>
+              </div>
+              <button type="button" sc-camel-on-click="{{ goCenters }}" style="height:40px;padding:0 16px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer" style-hover="border-color:var(--primary);color:var(--primary)">كل السناتر ←</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:12px">
+              <sc-for list="{{ homeCentersList }}" as="x" hint-placeholder-count="3">
+                <button type="button" sc-camel-on-click="{{ x.open }}" style="display:flex;align-items:center;gap:12px;text-align:start;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer" style-hover="border-color:var(--primary)">
+                  <span style="{{ x.logo }}">{{ x.initial }}</span>
+                  <span style="flex:1;min-width:0"><span style="display:block;font-weight:700;font-size:16px;color:var(--ink)">{{ x.name }}</span><span style="font-size:13px;color:var(--muted)">{{ x.city }} · {{ x.n }} · ★ {{ x.rating }}</span></span>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:44px 0 0">
+            <h2 style="font-size:24px;margin:0 0 18px">مدرسين مميزين</h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:16px">
               <sc-for list="{{ topTeachers }}" as="t" hint-placeholder-count="4">
                 <button type="button" sc-camel-on-click="{{ t.open }}" style="text-align:start;background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;cursor:pointer;display:flex;flex-direction:column;gap:10px;box-shadow:var(--sh-1);transition:transform var(--dur)" style-hover="transform:translateY(-3px)">
@@ -258,45 +323,45 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </section>
 
           <section style="padding:48px 0 0">
-            <h2 style="font-size:24px;margin:0 0 18px">كيف تتعلّم في مدارك؟</h2>
+            <h2 style="font-size:24px;margin:0 0 18px">إزاي بتذاكر على مدارك؟</h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px">
               <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                 <span style="width:34px;height:34px;border-radius:10px;background:var(--primary-50);color:var(--primary-700);display:grid;place-items:center;font-weight:700">1</span>
-                <h3 style="font-size:17px;margin:12px 0 6px">اختر دورة واشترِها</h3>
-                <p style="margin:0;color:var(--muted);font-size:14px">تدفع لدورة واحدة فقط، ولا تحتاج أي اشتراك كطالب.</p>
+                <h3 style="font-size:17px;margin:12px 0 6px">اختار صفّك ومادتك</h3>
+                <p style="margin:0;color:var(--muted);font-size:14px">من السنتر والمدرس اللي بتثق فيه — واشتري الجزء اللي محتاجه بس.</p>
               </div>
               <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                 <span style="width:34px;height:34px;border-radius:10px;background:var(--teal-50);color:var(--teal);display:grid;place-items:center;font-weight:700">2</span>
-                <h3 style="font-size:17px;margin:12px 0 6px">تعلّم بخطة واضحة</h3>
-                <p style="margin:0;color:var(--muted);font-size:14px">دروس مرتبة، ملفات، واجبات، وحفظ لموضع المشاهدة.</p>
+                <h3 style="font-size:17px;margin:12px 0 6px">ذاكر بالحصة والباب</h3>
+                <p style="margin:0;color:var(--muted);font-size:14px">حصص مرتبة، ملخصات PDF، وامتحان بعد كل باب على نظام البكالوريا.</p>
               </div>
               <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                 <span style="width:34px;height:34px;border-radius:10px;background:var(--amber-50);color:var(--amber);display:grid;place-items:center;font-weight:700">3</span>
-                <h3 style="font-size:17px;margin:12px 0 6px">أنهِ واحصل على شهادة</h3>
-                <p style="margin:0;color:var(--muted);font-size:14px">شهادة إتمام قابلة للتحقق عند إكمال متطلبات الدورة.</p>
+                <h3 style="font-size:17px;margin:12px 0 6px">تابع مستواك</h3>
+                <p style="margin:0;color:var(--muted);font-size:14px">درجاتك وتقدمك قدامك، وتقرير أسبوعي لولي الأمر.</p>
               </div>
             </div>
           </section>
 
           <section style="margin:48px 0 0;background:var(--ink);color:#fff;border-radius:24px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:28px;align-items:center">
             <div>
-              <h2 style="font-size:26px;margin:0 0 10px">أنت مدرس؟ ابنِ مصدر دخل من خبرتك.</h2>
-              <p style="margin:0 0 20px;color:#CBD5E1;font-size:15px">أدوات إنشاء الدورات، إدارة الطلاب، والتحصيل المالي — باشتراك شهري واضح وعمولة معلنة.</p>
+              <h2 style="font-size:26px;margin:0 0 10px">عندك سنتر؟ خلّي حصصك تبيع وإنت نايم.</h2>
+              <p style="margin:0 0 20px;color:#CBD5E1;font-size:15px">ارفع حصص السنتر المسجلة، والطلاب من كل المحافظات يشتروا بالحصة أو الباب أو المادة. تحصيل وتحويلات شهرية وتقارير لولي الأمر.</p>
               <div style="display:flex;flex-wrap:wrap;gap:12px">
-                <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:46px;padding:0 22px;border:0;background:#fff;color:var(--ink);border-radius:12px;font-weight:600;cursor:pointer">ابدأ الانضمام</button>
-                <button type="button" sc-camel-on-click="{{ goPricing }}" style="height:46px;padding:0 22px;border:1px solid #475569;background:transparent;color:#fff;border-radius:12px;font-weight:600;cursor:pointer" style-hover="border-color:#fff">شاهد الباقات</button>
+                <button type="button" sc-camel-on-click="{{ goTeach }}" style="height:46px;padding:0 22px;border:0;background:#fff;color:var(--ink);border-radius:12px;font-weight:600;cursor:pointer">سجّل سنترك</button>
+                <button type="button" sc-camel-on-click="{{ goForCenters }}" style="height:46px;padding:0 22px;border:1px solid #475569;background:transparent;color:#fff;border-radius:12px;font-weight:600;cursor:pointer" style-hover="border-color:#fff">باقات السناتر</button>
               </div>
             </div>
             <div style="display:grid;gap:10px">
-              <div style="background:#1E293B;border-radius:14px;padding:14px"><div style="font-size:13px;color:#94A3B8">إجمالي مبيعاتك</div><div style="font-size:22px;font-weight:700">612,450 ج.م</div></div>
-              <div style="background:#1E293B;border-radius:14px;padding:14px"><div style="font-size:13px;color:#94A3B8">صافي مستحقاتك بعد العمولة</div><div style="font-size:22px;font-weight:700;color:#5EEAD4">551,205 ج.م</div></div>
+              <div style="background:#1E293B;border-radius:14px;padding:14px"><div style="font-size:13px;color:#94A3B8">مبيعات سنتر النخبة من أول ما انضم</div><div style="font-size:22px;font-weight:700">612,450 ج.م</div></div>
+              <div style="background:#1E293B;border-radius:14px;padding:14px"><div style="font-size:13px;color:#94A3B8">صافي بعد عمولة 8%</div><div style="font-size:22px;font-weight:700;color:#5EEAD4">563,454 ج.م</div></div>
               <div style="font-size:12px;color:#94A3B8;font-family:'IBM Plex Mono',monospace">أرقام توضيحية للعرض فقط</div>
             </div>
           </section>
 
           <section style="padding:48px 0 0">
-            <h2 style="font-size:24px;margin:0 0 6px">آراء الطلاب</h2>
-            <p style="color:var(--muted);margin:0 0 18px;font-size:14px;font-family:'IBM Plex Mono',monospace">[ بيانات توضيحية — ليست آراء حقيقية ]</p>
+            <h2 style="font-size:24px;margin:0 0 6px">آراء الطلاب وأولياء الأمور</h2>
+            <p style="color:var(--muted);margin:0 0 18px;font-size:14px;font-family:'IBM Plex Mono',monospace">[ بيانات تجريبية ]</p>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px">
               <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
                 <blockquote style="margin:0;background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
@@ -331,13 +396,13 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         </sc-if>
         <sc-if value="{{ isCourses }}">
         <div style="padding:28px 0 0">
-          <h1 style="font-size:28px;margin:0 0 6px">استكشف الدورات</h1>
-          <p style="color:var(--muted);margin:0 0 20px;font-size:15px">اشترِ الدورة التي تحتاجها فقط — لا اشتراك مطلوب على الطالب.</p>
+          <h1 style="font-size:28px;margin:0 0 6px">مواد البكالوريا والثانوية العامة</h1>
+          <p style="color:var(--muted);margin:0 0 20px;font-size:15px">اختار صفّك ومسارك وسنترك. اشتري المادة كاملة أو باب أو حصة — أو افتح كل حاجة بمدارك بلس.</p>
 
           <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px">
             <div style="display:flex;align-items:center;gap:8px;height:46px;padding:0 16px;background:#fff;border:1px solid var(--border);border-radius:14px;flex:1;min-width:220px">
               <span style="width:14px;height:14px;border:2px solid var(--muted);border-radius:999px;flex:0 0 auto"></span>
-              <input aria-label="ابحث في الدورات" placeholder="ابحث باسم الدورة أو المدرس…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" style="border:0;outline:none;background:transparent;flex:1;min-width:0">
+              <input aria-label="ابحث في المواد" placeholder="ابحث باسم المادة أو المدرس أو السنتر…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" style="border:0;outline:none;background:transparent;flex:1;min-width:0">
             </div>
             <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)">
               ترتيب
@@ -351,21 +416,23 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </div>
 
           <sc-if value="{{ showFilters }}">
-            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:16px;display:grid;gap:16px">
+            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:16px;display:grid;gap:14px">
               <div>
-                <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">التخصص</div>
-                <div style="display:flex;flex-wrap:wrap;gap:8px">
-                  <sc-for list="{{ filterCatPills }}" as="f" hint-placeholder-count="6"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for>
-                </div>
+                <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">الصف</div>
+                <div class="md-scroll" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ gradePills }}" as="f" hint-placeholder-count="3"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
               </div>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:16px">
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">المسار</div>
+                <div class="md-scroll" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ filterCatPills }}" as="f" hint-placeholder-count="5"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
+              </div>
+              <div>
+                <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">السنتر</div>
+                <div class="md-scroll" style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ centerPills }}" as="f" hint-placeholder-count="6"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px">
                 <div>
-                  <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">المستوى</div>
-                  <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ levelPills }}" as="f" hint-placeholder-count="3"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
-                </div>
-                <div>
-                  <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">السعر</div>
-                  <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ pricePills }}" as="f" hint-placeholder-count="3"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
+                  <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">سعر المادة</div>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ pricePills }}" as="f" hint-placeholder-count="2"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
                 </div>
                 <div>
                   <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">التقييم</div>
@@ -391,8 +458,8 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           <sc-if value="{{ noResults }}">
             <div style="background:#fff;border:1px dashed var(--border-2);border-radius:20px;padding:48px 24px;text-align:center">
               <div style="width:56px;height:56px;border-radius:16px;background:var(--bg);margin:0 auto 14px;display:grid;place-items:center;color:var(--muted);font-size:22px">؟</div>
-              <h3 style="margin:0 0 6px;font-size:18px">لا توجد دورات مطابقة</h3>
-              <p style="margin:0 0 18px;color:var(--muted);font-size:15px">جرّب توسيع الفلاتر أو البحث بكلمة أعم مثل «تصميم» أو «برمجة».</p>
+              <h3 style="margin:0 0 6px;font-size:18px">مفيش مواد مطابقة</h3>
+              <p style="margin:0 0 18px;color:var(--muted);font-size:15px">جرّب تشيل فلتر أو تدور بكلمة أعم زي «فيزياء» أو «تاريخ».</p>
               <button type="button" sc-camel-on-click="{{ clearFilters }}" style="height:44px;padding:0 20px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:600;cursor:pointer">مسح الفلاتر</button>
             </div>
           </sc-if>
@@ -400,31 +467,36 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
             <sc-for list="{{ filteredCards }}" as="c" hint-placeholder-count="6">
               <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-1);display:flex;flex-direction:column;transition:transform var(--dur),box-shadow var(--dur)" style-hover="transform:translateY(-3px);box-shadow:var(--sh-2)">
-                <div style="{{ c.cover }}">
-                  <span style="{{ c.catChip }}">{{ c.catName }}</span>
-                </div>
-                <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1">
-                  <h3 style="font-size:16px;margin:0;line-height:1.5;text-wrap:pretty">{{ c.title }}</h3>
-                  <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }} · {{ c.level }}</div>
-                  <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)">
-                    <span style="color:var(--amber);font-weight:600">★ {{ c.rating }}</span>
-                    <span style="color:var(--border-2)">·</span><span>{{ c.metaText }}</span>
+                  <button type="button" sc-camel-on-click="{{ c.open }}" aria-label="{{ c.title }}" style="display:block;width:100%;border:0;padding:0;background:none;cursor:pointer">
+                    <div style="{{ c.cover }}"><span style="{{ c.gradeChip }}">{{ c.level }}</span><span style="{{ c.catChip }}">{{ c.catName }}</span></div>
+                  </button>
+                  <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1">
+                    <h3 style="font-size:16px;margin:0;line-height:1.5;text-wrap:pretty">{{ c.title }}</h3>
+                    <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }} · <span style="color:var(--ink-2);font-weight:600">{{ c.centerName }}</span></div>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)">
+                      <span style="color:var(--amber);font-weight:600">★ {{ c.rating }}</span>
+                      <span style="color:var(--border-2)">·</span><span>{{ c.metaText }}</span>
+                    </div>
+                    <div style="flex:1"></div>
+                    <sc-if value="{{ c.bought }}">
+                      <div style="padding-top:6px">
+                        <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px"><span style="{{ c.progressBar }}"></span></div>
+                        <button type="button" sc-camel-on-click="{{ c.resume }}" style="width:100%;height:42px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer">كمّل المذاكرة · {{ c.progressText }}</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ c.notBought }}">
+                      <div style="padding-top:8px;border-top:1px solid var(--border)">
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">{{ c.partsText }}</div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                          <span style="font-weight:700;font-size:17px">{{ c.priceText }} <span style="font-size:12px;font-weight:500;color:var(--muted)">المادة</span></span>
+                          <button type="button" sc-camel-on-click="{{ c.open }}" style="height:40px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;flex:0 0 auto" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
+                        </div>
+                        <sc-if value="{{ c.partial }}"><div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--teal)">✓ عندك أجزاء من المادة دي</div></sc-if>
+                      </div>
+                    </sc-if>
                   </div>
-                  <div style="flex:1"></div>
-                  <sc-if value="{{ c.bought }}">
-                    <div>
-                      <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px"><span style="{{ c.progressBar }}"></span></div>
-                      <button type="button" sc-camel-on-click="{{ c.resume }}" style="width:100%;height:40px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer">متابعة التعلم · {{ c.progressText }}</button>
-                    </div>
-                  </sc-if>
-                  <sc-if value="{{ c.notBought }}">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px;border-top:1px solid var(--border)">
-                      <span style="font-weight:700;font-size:17px">{{ c.priceText }}</span>
-                      <button type="button" sc-camel-on-click="{{ c.open }}" style="height:38px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
-                    </div>
-                  </sc-if>
-                </div>
-              </article>
+                </article>
+
             </sc-for>
           </div>
         </div>
@@ -432,11 +504,12 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
         <sc-if value="{{ isCourseDetail }}">
         <div style="padding:18px 0 0">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px;align-items:start">
+          <div class="md-detail" style="display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start">
             <div style="min-width:0">
               <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">
                 <span style="{{ cd.catChip }}">{{ cd.catName }}</span>
                 <span style="padding:5px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font-size:13px;font-weight:600;color:var(--ink-2)">{{ cd.level }}</span>
+                <button type="button" sc-camel-on-click="{{ cd.openCenter }}" style="padding:5px 12px;border-radius:999px;background:#fff;border:1px solid var(--border-2);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer">🏫 {{ cd.centerName }} — {{ cd.centerCity }}</button>
               </div>
               <h1 style="font-size:clamp(24px,3.4vw,34px);margin:0 0 10px;line-height:1.35;text-wrap:pretty">{{ cd.title }}</h1>
               <p style="color:var(--muted);font-size:16px;margin:0 0 14px;max-width:60ch;text-wrap:pretty">{{ cd.sum }}</p>
@@ -457,15 +530,27 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               <sc-if value="{{ cd.noPromo }}">
                 <div style="{{ cd.cover }}"></div>
               </sc-if>
+              <sc-if value="{{ cd.mobileBar }}">
+                <div style="margin-top:14px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px">
+                  <div style="font-weight:700;font-size:15px;margin-bottom:10px">اشتري بالطريقة اللي تناسبك</div>
+                  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+                    <button type="button" sc-camel-on-click="{{ cd.buy }}" style="text-align:start;padding:10px 12px;border:1px solid var(--primary);background:var(--primary-50);border-radius:12px;cursor:pointer"><span style="display:block;font-size:12px;color:var(--primary-700);font-weight:600">المادة كاملة</span><span style="font-weight:700;font-size:16px;color:var(--ink)">{{ cd.priceText }}</span></button>
+                    <button type="button" sc-camel-on-click="{{ cd.subscribe }}" style="text-align:start;padding:10px 12px;border:1px solid var(--border);background:#fff;border-radius:12px;cursor:pointer"><span style="display:block;font-size:12px;color:var(--muted);font-weight:600">مدارك بلس / شهر</span><span style="font-weight:700;font-size:16px;color:var(--ink)">{{ cd.subFrom }}</span></button>
+                    <button type="button" sc-camel-on-click="{{ cd.goCurriculum }}" style="text-align:start;padding:10px 12px;border:1px solid var(--border);background:#fff;border-radius:12px;cursor:pointer"><span style="display:block;font-size:12px;color:var(--muted);font-weight:600">باب واحد</span><span style="font-weight:700;font-size:16px;color:var(--ink)">{{ cd.chapterFrom }}</span></button>
+                    <button type="button" sc-camel-on-click="{{ cd.goCurriculum }}" style="text-align:start;padding:10px 12px;border:1px solid var(--border);background:#fff;border-radius:12px;cursor:pointer"><span style="display:block;font-size:12px;color:var(--muted);font-weight:600">حصة واحدة</span><span style="font-weight:700;font-size:16px;color:var(--ink)">{{ cd.lessonFrom }}</span></button>
+                  </div>
+                  <div style="font-size:12px;color:var(--teal);font-weight:600;margin-top:8px">{{ cd.bundleHint }}</div>
+                </div>
+              </sc-if>
 
-              <div style="border-bottom:1px solid var(--border);margin:24px 0 20px;display:flex;flex-wrap:wrap">
+              <div id="md-curr" style="border-bottom:1px solid var(--border);margin:24px 0 20px;display:flex;flex-wrap:wrap;scroll-margin-top:84px">
                 <sc-for list="{{ cd.tabs }}" as="t" hint-placeholder-count="4"><button type="button" sc-camel-on-click="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button></sc-for>
               </div>
 
               <sc-if value="{{ cd.tabOverview }}">
                 <div style="display:grid;gap:20px">
                   <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
-                    <h2 style="font-size:18px;margin:0 0 12px">ماذا ستتعلم؟</h2>
+                    <h2 style="font-size:18px;margin:0 0 12px">هتتعلم إيه؟</h2>
                     <ul style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:10px">
                       <sc-for list="{{ cd.outcomes }}" as="o" hint-placeholder-count="4">
                         <li style="display:flex;gap:10px;font-size:15px;color:var(--ink-2)"><span style="color:var(--teal);font-weight:700">✓</span><span>{{ o.t }}</span></li>
@@ -480,7 +565,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
                       </ul>
                     </section>
                     <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
-                      <h2 style="font-size:17px;margin:0 0 10px">لمن هذه الدورة؟</h2>
+                      <h2 style="font-size:17px;margin:0 0 10px">المادة دي لمين؟</h2>
                       <ul style="margin:0;padding-inline-start:18px;color:var(--muted);font-size:15px;display:grid;gap:6px">
                         <sc-for list="{{ cd.audience }}" as="o" hint-placeholder-count="3"><li>{{ o.t }}</li></sc-for>
                       </ul>
@@ -495,15 +580,20 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
                     <div style="background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden">
                       <button type="button" sc-camel-on-click="{{ sec.toggle }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:16px;background:none;border:0;cursor:pointer;text-align:start">
                         <span style="{{ sec.icon }}">+</span>
-                        <span style="flex:1;font-weight:600;font-size:16px;color:var(--ink)">{{ sec.title }}</span>
-                        <span style="font-size:13px;color:var(--muted)">{{ sec.metaText }}</span>
+                        <span style="flex:1;min-width:0"><span style="display:block;font-weight:600;font-size:16px;color:var(--ink)">{{ sec.title }}</span><span style="font-size:13px;color:var(--muted)">{{ sec.metaText }}</span></span>
                       </button>
+                      <sc-if value="{{ sec.canBuy }}">
+                        <div style="display:flex;justify-content:flex-end;padding:0 16px 12px;margin-top:-6px"><button type="button" sc-camel-on-click="{{ sec.buy }}" style="{{ sec.buyStyle }}">{{ sec.buyText }}</button></div>
+                      </sc-if>
+                      <sc-if value="{{ sec.owned }}">
+                        <div style="padding:0 16px 12px;margin-top:-6px;font-size:13px;font-weight:600;color:var(--teal);text-align:end">✓ الباب ده مفتوح ليك</div>
+                      </sc-if>
                       <sc-if value="{{ sec.open }}">
                         <div style="border-top:1px solid var(--border)">
                           <sc-for list="{{ sec.lessons }}" as="l" hint-placeholder-count="3">
                             <button type="button" sc-camel-on-click="{{ l.click }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 16px;background:none;border:0;border-bottom:1px solid var(--bg);cursor:pointer;text-align:start" style-hover="background:var(--bg)">
                               <span style="{{ l.mark }}">{{ l.markText }}</span>
-                              <span style="flex:1;font-size:15px;color:var(--ink-2)">{{ l.title }}</span>
+                              <span style="flex:1;min-width:0;font-size:15px;color:var(--ink-2)">{{ l.title }}</span>
                               <span style="{{ l.tag }}">{{ l.tagText }}</span>
                               <span style="font-size:13px;color:var(--muted);min-width:46px;text-align:end">{{ l.minText }}</span>
                             </button>
@@ -549,7 +639,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </section>
 
               <section style="margin-top:28px">
-                <h2 style="font-size:20px;margin:0 0 14px">دورات ذات صلة</h2>
+                <h2 style="font-size:20px;margin:0 0 14px">مواد تانية لنفس الصف</h2>
                 <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:14px">
                   <sc-for list="{{ cd.related }}" as="c" hint-placeholder-count="3">
                     <button type="button" sc-camel-on-click="{{ c.open }}" style="text-align:start;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:6px" style-hover="border-color:var(--primary)">
@@ -562,29 +652,49 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </section>
             </div>
 
-            <aside style="position:sticky;top:88px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--sh-2);max-width:380px;width:100%">
-              <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
-                <span style="font-size:30px;font-weight:700">{{ cd.priceText }}</span>
-                <sc-if value="{{ cd.hasOld }}"><span style="color:var(--muted);text-decoration:line-through;font-size:16px">{{ cd.oldText }}</span></sc-if>
-              </div>
-              <div style="font-size:13px;color:var(--muted);margin-bottom:16px">{{ cd.accessText }} · سعر توضيحي</div>
-              <sc-if value="{{ cd.notBought }}">
-                <button type="button" sc-camel-on-click="{{ cd.buy }}" style="width:100%;height:50px;border:0;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:background var(--dur)" style-hover="background:var(--primary-600)">اشترِ الدورة الآن</button>
-              </sc-if>
+            <aside class="md-buybox" style="position:sticky;top:88px;background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--sh-2);width:100%">
               <sc-if value="{{ cd.bought }}">
-                <button type="button" sc-camel-on-click="{{ cd.cont }}" style="width:100%;height:50px;border:0;border-radius:14px;background:var(--teal);color:#fff;font-weight:700;font-size:16px;cursor:pointer">متابعة التعلم</button>
+                <div>
+                  <div style="font-weight:700;font-size:18px;margin-bottom:4px">المادة مفتوحة ليك ✓</div>
+                  <div style="font-size:13px;color:var(--muted);margin-bottom:14px">{{ cd.accessText }}</div>
+                  <button type="button" sc-camel-on-click="{{ cd.cont }}" style="width:100%;height:50px;border:0;border-radius:14px;background:var(--teal);color:#fff;font-weight:700;font-size:16px;cursor:pointer">كمّل المذاكرة</button>
+                </div>
               </sc-if>
-              <div style="margin-top:16px;display:grid;gap:10px;font-size:14px;color:var(--ink-2)">
-                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ cd.metaText }} بجودة متعددة</span></div>
-                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>ملفات وتمارين قابلة للتنزيل</span></div>
-                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>شهادة إتمام عند إكمال الدورة</span></div>
-                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>أسئلة وأجوبة مع المدرس</span></div>
+              <sc-if value="{{ cd.notBought }}">
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:4px">المادة كاملة</div>
+                  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px">
+                    <span style="font-size:30px;font-weight:700">{{ cd.priceText }}</span>
+                    <sc-if value="{{ cd.hasOld }}"><span style="color:var(--muted);text-decoration:line-through;font-size:16px">{{ cd.oldText }}</span></sc-if>
+                  </div>
+                  <div style="font-size:13px;color:var(--muted);margin-bottom:14px">{{ cd.accessText }}</div>
+                  <button type="button" sc-camel-on-click="{{ cd.buy }}" style="width:100%;height:50px;border:0;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:background var(--dur)" style-hover="background:var(--primary-600)">اشتري المادة كاملة</button>
+                  <button type="button" sc-camel-on-click="{{ cd.addSubject }}" style="width:100%;min-height:44px;margin-top:8px;border:1px solid var(--primary);border-radius:14px;background:var(--primary-50);color:var(--primary-700);font-weight:600;font-size:14px;cursor:pointer;padding:6px 10px">{{ cd.addSubjectText }}</button>
+                  <div style="font-size:12px;color:var(--teal);font-weight:600;margin-top:8px;text-align:center">{{ cd.bundleHint }}</div>
+
+                  <sc-if value="{{ cd.hasParts }}">
+                    <button type="button" sc-camel-on-click="{{ cd.goCurriculum }}" style="display:flex;width:100%;align-items:center;gap:10px;margin-top:14px;padding:12px;border:1px dashed var(--border-2);border-radius:14px;background:var(--bg);cursor:pointer;text-align:start">
+                      <span style="flex:1"><span style="display:block;font-weight:700;font-size:14px;color:var(--ink)">محتاج جزء بس؟</span><span style="font-size:13px;color:var(--muted)">باب بـ{{ cd.chapterFrom }} · حصة بـ{{ cd.lessonFrom }}</span></span>
+                      <span style="color:var(--primary);font-weight:700">←</span>
+                    </button>
+                  </sc-if>
+
+                  <div style="margin-top:12px;padding:14px;border-radius:14px;background:linear-gradient(135deg,var(--primary-50),#fff);border:1px solid var(--primary-100)">
+                    <div style="font-weight:700;font-size:15px;color:var(--primary-700)">أو كل المواد بـ{{ cd.subFrom }} في الشهر</div>
+                    <div style="font-size:13px;color:var(--ink-2);margin:4px 0 10px">اشتراك مدارك بلس بيفتحلك كل المواد من كل السناتر.</div>
+                    <button type="button" sc-camel-on-click="{{ cd.subscribe }}" style="height:40px;padding:0 16px;border:0;border-radius:10px;background:var(--ink);color:#fff;font-weight:600;font-size:14px;cursor:pointer">شوف الاشتراك</button>
+                  </div>
+                </div>
+              </sc-if>
+              <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:grid;gap:8px;font-size:13px;color:var(--ink-2)">
+                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ cd.metaText }} مسجلة من {{ cd.centerName }}</span></div>
+                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>امتحان بعد كل باب وملخصات PDF</span></div>
+                <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>فودافون كاش · إنستاباي · فوري · كارت</span></div>
               </div>
-              <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)">شراء هذه الدورة لا يمنح وصولًا لبقية الدورات.</div>
             </aside>
           </div>
         </div>
-        </sc-if>
+                </sc-if>
 
         <sc-if value="{{ isTeachers }}">
         <div style="padding:28px 0 0">
@@ -676,70 +786,259 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
         <sc-if value="{{ isPricing }}">
         <div style="padding:28px 0 0">
-          <div style="text-align:center;max-width:640px;margin:0 auto 24px">
-            <h1 style="font-size:30px;margin:0 0 10px">باقات المدرسين</h1>
-            <p style="color:var(--muted);font-size:16px;margin:0 0 18px">الاشتراك للمدرس فقط، ويمنحه أدوات إنشاء الدورات وبيعها وإدارة الطلاب. الطالب لا يحتاج اشتراكًا.</p>
-            <div style="display:inline-flex;align-items:center;gap:12px;padding:8px 14px;background:#fff;border:1px solid var(--border);border-radius:999px">
-              <span style="font-size:14px;font-weight:600">شهري</span>
-              <button type="button" sc-camel-on-click="{{ toggleYearly }}" role="switch" aria-checked="{{ yearly }}" aria-label="التبديل بين الشهري والسنوي" style="{{ yearlyStyle }}"><span style="{{ knobStyle }}"></span></button>
-              <span style="font-size:14px;font-weight:600">سنوي <span style="color:var(--teal)">(شهران مجانًا)</span></span>
-            </div>
+          <div style="text-align:center;max-width:680px;margin:0 auto 22px">
+            <span style="display:inline-flex;padding:6px 14px;background:var(--primary-50);color:var(--primary-700);border-radius:999px;font-size:13px;font-weight:600">للطلاب</span>
+            <h1 style="font-size:clamp(26px,4vw,34px);margin:12px 0 10px">مدارك بلس — كل المواد باشتراك واحد</h1>
+            <p style="color:var(--muted);font-size:16px;margin:0">اشتراك بيفتحلك كل مواد البكالوريا والثانوية العامة من كل السناتر والمدرسين على المنصة. أو اشتري حصة أو باب أو مادة لوحدها.</p>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(268px,100%),1fr));gap:16px;align-items:start">
-            <sc-for list="{{ planCards }}" as="p" hint-placeholder-count="3">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;align-items:start">
+            <sc-for list="{{ studentPlanCards }}" as="p" hint-placeholder-count="3">
               <div style="{{ p.style }}">
-                <sc-if value="{{ p.best }}"><span style="align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;font-weight:600">الأكثر اختيارًا</span></sc-if>
-                <h2 style="margin:0;font-size:21px">{{ p.name }}</h2>
+                <sc-if value="{{ p.best }}"><span style="align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;font-weight:600">الأوفر</span></sc-if>
+                <h2 style="margin:0;font-size:20px">{{ p.name }}</h2>
                 <div style="color:var(--muted);font-size:14px">{{ p.desc }}</div>
-                <div><span style="font-size:30px;font-weight:700">{{ p.priceText }}</span> <span style="color:var(--muted);font-size:14px">/ {{ p.cycleText }}</span></div>
+                <div><span style="font-size:30px;font-weight:700">{{ p.priceText }}</span> <span style="color:var(--muted);font-size:14px">/ {{ p.cycle }}</span></div>
+                <div style="font-size:13px;font-weight:600;color:var(--teal)">{{ p.note }}</div>
                 <div style="display:grid;gap:8px;font-size:14px;color:var(--ink-2)">
-                  <sc-for list="{{ p.limits }}" as="l" hint-placeholder-count="4">
-                    <div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ l.t }}</span></div>
-                  </sc-for>
+                  <sc-for list="{{ p.limits }}" as="l" hint-placeholder-count="4"><div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ l.t }}</span></div></sc-for>
                 </div>
-                <button type="button" sc-camel-on-click="{{ p.pick }}" style="{{ p.btnStyle }}">اختر {{ p.name }}</button>
+                <button type="button" sc-camel-on-click="{{ p.pick }}" style="{{ p.btnStyle }}">{{ p.btnText }}</button>
               </div>
             </sc-for>
           </div>
-          <section style="margin-top:28px;background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden">
-            <div style="padding:18px 20px;border-bottom:1px solid var(--border);font-weight:600;font-size:17px">مقارنة الباقات</div>
-            <div style="overflow-x:auto">
-              <sc-raw-table style="width:100%;border-collapse:collapse;min-width:520px">
-                <sc-raw-thead>
-                  <sc-raw-tr style="background:var(--bg);font-size:13px;color:var(--muted)">
-                    <sc-raw-th style="text-align:start;padding:12px 20px;font-weight:600">الميزة</sc-raw-th>
-                    <sc-raw-th style="text-align:start;padding:12px;font-weight:600">البداية</sc-raw-th>
-                    <sc-raw-th style="text-align:start;padding:12px;font-weight:600">الاحتراف</sc-raw-th>
-                    <sc-raw-th style="text-align:start;padding:12px;font-weight:600">الأكاديمية</sc-raw-th>
-                  </sc-raw-tr>
-                </sc-raw-thead>
-                <sc-raw-tbody>
-                  <sc-for list="{{ compareRows }}" as="r" hint-placeholder-count="6">
-                    <sc-raw-tr style="border-top:1px solid var(--border);font-size:14px">
-                      <sc-raw-td style="padding:12px 20px;color:var(--ink-2)">{{ r.label }}</sc-raw-td>
-                      <sc-raw-td style="padding:12px">{{ r.a }}</sc-raw-td>
-                      <sc-raw-td style="padding:12px;background:var(--primary-50);font-weight:600">{{ r.b }}</sc-raw-td>
-                      <sc-raw-td style="padding:12px">{{ r.c }}</sc-raw-td>
-                    </sc-raw-tr>
-                  </sc-for>
-                </sc-raw-tbody>
-              </sc-raw-table>
+
+          <section style="margin-top:32px">
+            <h2 style="font-size:22px;margin:0 0 4px">مش عايز اشتراك؟ اشتري على قد احتياجك</h2>
+            <p style="color:var(--muted);margin:0 0 16px;font-size:15px">كل مادة مقسمة أبواب وحصص، وكل جزء ليه سعره.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));gap:12px">
+              <sc-for list="{{ buyWays }}" as="b" hint-placeholder-count="5">
+                <div style="{{ b.style }}">
+                  <span style="font-weight:700;font-size:16px">{{ b.k }}</span>
+                  <span style="font-weight:700;font-size:15px;color:var(--primary-700)">{{ b.v }}</span>
+                  <span style="font-size:13px;color:var(--muted)">{{ b.d }}</span>
+                </div>
+              </sc-for>
             </div>
           </section>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px;margin-top:16px">
-            <div style="background:var(--amber-50);border:1px solid #FDE68A;border-radius:16px;padding:18px">
-              <div style="font-weight:600;margin-bottom:6px">العمولة</div>
-              <p style="margin:0;font-size:14px;color:var(--ink-2)">تُحسب العمولة على كل عملية بيع بحسب باقتك، وتظهر مفصّلة في صفحة الأرباح.</p>
+
+          <section style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px">
+            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
+              <h3 style="margin:0 0 12px;font-size:17px">خصم أكتر من مادة</h3>
+              <div style="display:grid;gap:8px">
+                <sc-for list="{{ bundleRows }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg);border-radius:10px;font-size:15px"><span>{{ r.k }}</span><span style="font-weight:700;color:var(--teal)">{{ r.v }}</span></div>
+                </sc-for>
+              </div>
+              <p style="margin:12px 0 0;font-size:13px;color:var(--muted)">الخصم بيتحسب لوحده في السلة على المواد الكاملة.</p>
             </div>
-            <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px">
-              <div style="font-weight:600;margin-bottom:6px">الإلغاء</div>
-              <p style="margin:0;font-size:14px;color:var(--ink-2)">يمكنك الإلغاء في أي وقت. تتوقف المبيعات الجديدة بعد انتهاء المدة، ويستمر وصول من اشترى سابقًا.</p>
+            <div style="background:var(--ink);color:#fff;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px">
+              <h3 style="margin:0;font-size:17px">عندك سنتر أو بتدرّس؟</h3>
+              <p style="margin:0;color:#CBD5E1;font-size:14px">اعرض حصص سنترك على مدارك وبيعها بكل الطرق دي — وخد نصيبك من اشتراك مدارك بلس كمان.</p>
+              <button type="button" sc-camel-on-click="{{ goForCenters }}" style="align-self:flex-start;height:44px;padding:0 18px;border:0;background:#fff;color:var(--ink);border-radius:12px;font-weight:600;cursor:pointer">باقات السناتر ←</button>
             </div>
-            <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px">
-              <div style="font-weight:600;margin-bottom:6px">الأسعار توضيحية</div>
-              <p style="margin:0;font-size:14px;color:var(--ink-2)">أرقام هذه النسخة للعرض فقط، ولا تُنفَّذ أي عملية دفع حقيقية.</p>
-            </div>
+          </section>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isCenters }}">
+        <div style="padding:28px 0 0">
+          <h1 style="font-size:28px;margin:0 0 6px">السناتر على مدارك</h1>
+          <p style="color:var(--muted);margin:0 0 20px;font-size:15px">سناتر موثّقة من محافظات مختلفة — كل سنتر بمدرسينه وحصصه المسجلة.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:16px">
+            <sc-for list="{{ centerCards }}" as="x" hint-placeholder-count="6">
+              <article style="background:#fff;border:1px solid var(--border);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--sh-1)">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <span style="{{ x.logo }}">{{ x.initial }}</span>
+                  <div style="flex:1;min-width:0"><h2 style="margin:0;font-size:18px">{{ x.name }}</h2><div style="font-size:13px;color:var(--muted)">{{ x.city }}</div></div>
+                  <span style="font-weight:700;color:var(--amber);font-size:14px;white-space:nowrap">★ {{ x.rating }}</span>
+                </div>
+                <p style="margin:0;font-size:14px;color:var(--ink-2);text-wrap:pretty">{{ x.desc }}</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <sc-for list="{{ x.subjects }}" as="t"><span style="padding:3px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--ink-2)">{{ t.t }}</span></sc-for>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)"><span>{{ x.teachersText }}</span><span>{{ x.subjectsText }}</span><span>{{ x.students }}</span><span>{{ x.since }}</span></div>
+                <button type="button" sc-camel-on-click="{{ x.open }}" style="height:44px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:12px;font-weight:600;cursor:pointer" style-hover="background:var(--primary);color:#fff">صفحة السنتر</button>
+              </article>
+            </sc-for>
           </div>
+          <section style="margin-top:28px;background:var(--ink);color:#fff;border-radius:22px;padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+            <div style="max-width:560px"><h2 style="margin:0 0 6px;font-size:22px">عندك سنتر؟ خلّيه أونلاين النهارده.</h2><p style="margin:0;color:#CBD5E1;font-size:15px">بيع حصصك المسجلة بالحصة والباب والمادة، وخد نصيبك من الاشتراكات.</p></div>
+            <button type="button" sc-camel-on-click="{{ goForCenters }}" style="height:48px;padding:0 22px;border:0;background:#fff;color:var(--ink);border-radius:12px;font-weight:700;cursor:pointer">سجّل سنترك</button>
+          </section>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isCenter }}">
+        <div style="padding:18px 0 0">
+          <div style="{{ ctr.band }}"></div>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;margin:-36px 0 0;padding:0 16px">
+            <span style="{{ ctr.logo }}">{{ ctr.initial }}</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;justify-content:space-between;margin:12px 0 18px">
+            <div style="min-width:0;flex:1 1 320px">
+              <h1 style="font-size:clamp(24px,4vw,32px);margin:0 0 4px">{{ ctr.name }}</h1>
+              <div style="font-size:14px;color:var(--muted)">{{ ctr.city }} · {{ ctr.address }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:14px;color:var(--ink-2)"><span style="color:var(--amber);font-weight:700">★ {{ ctr.rating }}</span><span>{{ ctr.students }}</span><span>{{ ctr.since }}</span></div>
+              <p style="margin:12px 0 0;color:var(--ink-2);font-size:15px;max-width:70ch;text-wrap:pretty">{{ ctr.desc }}</p>
+            </div>
+            <button type="button" sc-camel-on-click="{{ ctr.filter }}" style="height:46px;padding:0 20px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:600;cursor:pointer">كل مواد السنتر</button>
+          </div>
+          <h2 style="font-size:20px;margin:0 0 12px">مدرسين السنتر</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:12px;margin-bottom:24px">
+            <sc-for list="{{ ctr.teachers }}" as="t" hint-placeholder-count="3">
+              <button type="button" sc-camel-on-click="{{ t.open }}" style="display:flex;align-items:center;gap:12px;text-align:start;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer" style-hover="border-color:var(--primary)">
+                <span style="{{ t.avatar }}">{{ t.initial }}</span>
+                <span style="min-width:0"><span style="display:block;font-weight:700;color:var(--ink)">{{ t.name }}</span><span style="font-size:13px;color:var(--muted)">{{ t.title }} · ★ {{ t.rating }}</span></span>
+              </button>
+            </sc-for>
+          </div>
+          <h2 style="font-size:20px;margin:0 0 12px">مواد السنتر على مدارك</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
+            <sc-for list="{{ ctr.courses }}" as="c" hint-placeholder-count="3">
+<article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-1);display:flex;flex-direction:column;transition:transform var(--dur),box-shadow var(--dur)" style-hover="transform:translateY(-3px);box-shadow:var(--sh-2)">
+                  <button type="button" sc-camel-on-click="{{ c.open }}" aria-label="{{ c.title }}" style="display:block;width:100%;border:0;padding:0;background:none;cursor:pointer">
+                    <div style="{{ c.cover }}"><span style="{{ c.gradeChip }}">{{ c.level }}</span><span style="{{ c.catChip }}">{{ c.catName }}</span></div>
+                  </button>
+                  <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1">
+                    <h3 style="font-size:16px;margin:0;line-height:1.5;text-wrap:pretty">{{ c.title }}</h3>
+                    <div style="font-size:13px;color:var(--muted)">{{ c.teacherName }} · <span style="color:var(--ink-2);font-weight:600">{{ c.centerName }}</span></div>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)">
+                      <span style="color:var(--amber);font-weight:600">★ {{ c.rating }}</span>
+                      <span style="color:var(--border-2)">·</span><span>{{ c.metaText }}</span>
+                    </div>
+                    <div style="flex:1"></div>
+                    <sc-if value="{{ c.bought }}">
+                      <div style="padding-top:6px">
+                        <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;margin-bottom:8px"><span style="{{ c.progressBar }}"></span></div>
+                        <button type="button" sc-camel-on-click="{{ c.resume }}" style="width:100%;height:42px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600;cursor:pointer">كمّل المذاكرة · {{ c.progressText }}</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ c.notBought }}">
+                      <div style="padding-top:8px;border-top:1px solid var(--border)">
+                        <div style="font-size:12px;color:var(--muted);margin-bottom:6px">{{ c.partsText }}</div>
+                        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+                          <span style="font-weight:700;font-size:17px">{{ c.priceText }} <span style="font-size:12px;font-weight:500;color:var(--muted)">المادة</span></span>
+                          <button type="button" sc-camel-on-click="{{ c.open }}" style="height:40px;padding:0 14px;border:1px solid var(--primary);background:var(--primary-50);color:var(--primary-700);border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;flex:0 0 auto" style-hover="background:var(--primary);color:#fff">التفاصيل</button>
+                        </div>
+                        <sc-if value="{{ c.partial }}"><div style="margin-top:8px;font-size:12px;font-weight:600;color:var(--teal)">✓ عندك أجزاء من المادة دي</div></sc-if>
+                      </div>
+                    </sc-if>
+                  </div>
+                </article>
+
+            </sc-for>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isForCenters }}">
+        <div style="padding:28px 0 0">
+          <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:28px;align-items:center">
+            <div>
+              <span style="display:inline-flex;padding:6px 14px;background:var(--amber-50);color:var(--amber);border-radius:999px;font-size:13px;font-weight:600">للسناتر والمدرسين</span>
+              <h1 style="font-size:clamp(28px,4.2vw,42px);line-height:1.3;margin:14px 0 10px">سنترك أونلاين في أسبوع — من غير ما تبني منصة.</h1>
+              <p style="font-size:16px;color:var(--muted);margin:0 0 20px;max-width:56ch">ارفع حصص السنتر المسجلة لمواد البكالوريا والثانوية العامة، والطلاب يشتروا بالحصة أو الباب أو المادة أو من اشتراك مدارك بلس. إنت بتدرّس، وإحنا بنبيع ونحصّل ونحمي الفيديو.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:10px">
+                <a href="#md-cform" style="display:inline-flex;align-items:center;height:50px;padding:0 24px;background:var(--primary);color:#fff;border-radius:14px;font-weight:700;text-decoration:none">سجّل سنترك مجانًا</a>
+                <button type="button" sc-camel-on-click="{{ goCenters }}" style="height:50px;padding:0 22px;border:1px solid var(--border-2);background:#fff;border-radius:14px;font-weight:600;cursor:pointer">شوف السناتر الموجودة</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+              <sc-for list="{{ b2b.stats }}" as="x" hint-placeholder-count="3">
+                <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px 12px;text-align:center"><div style="font-size:clamp(20px,3vw,26px);font-weight:700;color:var(--primary-700)">{{ x.v }}</div><div style="font-size:12px;color:var(--muted);margin-top:4px">{{ x.k }}</div></div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:40px 0 0">
+            <h2 style="font-size:24px;margin:0 0 16px">ليه السناتر بتختار مدارك؟</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:12px">
+              <sc-for list="{{ b2b.props }}" as="x" hint-placeholder-count="6">
+                <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px">
+                  <span style="width:32px;height:32px;border-radius:10px;background:var(--primary-50);color:var(--primary-700);display:grid;place-items:center;font-weight:700;font-size:14px">{{ x.num }}</span>
+                  <h3 style="font-size:16px;margin:10px 0 6px">{{ x.h }}</h3>
+                  <p style="margin:0;color:var(--muted);font-size:14px">{{ x.p }}</p>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:40px 0 0">
+            <h2 style="font-size:24px;margin:0 0 16px">إزاي بتبدأ؟</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px">
+              <sc-for list="{{ b2b.steps }}" as="x" hint-placeholder-count="4">
+                <div style="background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;gap:12px">
+                  <span style="width:32px;height:32px;border-radius:999px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;flex:0 0 auto">{{ x.num }}</span>
+                  <span><span style="display:block;font-weight:700;margin-bottom:4px">{{ x.h }}</span><span style="font-size:14px;color:var(--muted)">{{ x.p }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="padding:40px 0 0">
+            <div style="text-align:center;max-width:640px;margin:0 auto 18px">
+              <h2 style="font-size:26px;margin:0 0 8px">باقات السناتر</h2>
+              <p style="color:var(--muted);font-size:15px;margin:0 0 14px">اشتراك شهري أو سنوي + عمولة معلنة على كل عملية بيع.</p>
+              <div style="display:inline-flex;align-items:center;gap:12px;padding:8px 14px;background:#fff;border:1px solid var(--border);border-radius:999px">
+                <span style="font-size:14px;font-weight:600">شهري</span>
+                <button type="button" sc-camel-on-click="{{ toggleYearly }}" role="switch" aria-checked="{{ yearly }}" aria-label="التبديل بين الشهري والسنوي" style="{{ yearlyStyle }}"><span style="{{ knobStyle }}"></span></button>
+                <span style="font-size:14px;font-weight:600">سنوي <span style="color:var(--teal)">(شهرين هدية)</span></span>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;align-items:start">
+              <sc-for list="{{ planCards }}" as="p" hint-placeholder-count="3">
+                <div style="{{ p.style }}">
+                  <sc-if value="{{ p.best }}"><span style="align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;font-weight:600">الأكثر اختيارًا</span></sc-if>
+                  <h3 style="margin:0;font-size:21px">{{ p.name }}</h3>
+                  <div style="color:var(--muted);font-size:14px">{{ p.desc }}</div>
+                  <div><span style="font-size:30px;font-weight:700">{{ p.priceText }}</span> <span style="color:var(--muted);font-size:14px">/ {{ p.cycleText }}</span></div>
+                  <div style="display:grid;gap:8px;font-size:14px;color:var(--ink-2)">
+                    <sc-for list="{{ p.limits }}" as="l" hint-placeholder-count="4"><div style="display:flex;gap:8px"><span style="color:var(--teal)">✓</span><span>{{ l.t }}</span></div></sc-for>
+                  </div>
+                  <button type="button" sc-camel-on-click="{{ p.pick }}" style="{{ p.btnStyle }}">اختار {{ p.name }}</button>
+                </div>
+              </sc-for>
+            </div>
+            <section style="margin-top:18px;background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid var(--border);font-weight:600;font-size:17px">مقارنة الباقات</div>
+              <div class="md-tablewrap" style="overflow-x:auto">
+                <sc-raw-table style="width:100%;border-collapse:collapse;min-width:520px">
+                  <sc-raw-thead><sc-raw-tr style="background:var(--bg);font-size:13px;color:var(--muted)"><sc-raw-th style="text-align:start;padding:12px 20px;font-weight:600">الميزة</sc-raw-th><sc-raw-th style="text-align:start;padding:12px;font-weight:600">المدرس الفردي</sc-raw-th><sc-raw-th style="text-align:start;padding:12px;font-weight:600">السنتر</sc-raw-th><sc-raw-th style="text-align:start;padding:12px;font-weight:600">سلسلة سناتر</sc-raw-th></sc-raw-tr></sc-raw-thead>
+                  <sc-raw-tbody>
+                    <sc-for list="{{ compareRows }}" as="r" hint-placeholder-count="6">
+                      <sc-raw-tr style="border-top:1px solid var(--border);font-size:14px"><sc-raw-td style="padding:12px 20px;color:var(--ink-2)">{{ r.label }}</sc-raw-td><sc-raw-td style="padding:12px">{{ r.a }}</sc-raw-td><sc-raw-td style="padding:12px;background:var(--primary-50);font-weight:600">{{ r.b }}</sc-raw-td><sc-raw-td style="padding:12px">{{ r.c }}</sc-raw-td></sc-raw-tr>
+                    </sc-for>
+                  </sc-raw-tbody>
+                </sc-raw-table>
+              </div>
+            </section>
+          </section>
+
+          <section id="md-cform" style="margin-top:40px;scroll-margin-top:90px;background:#fff;border:1px solid var(--border);border-radius:22px;padding:22px;box-shadow:var(--sh-2)">
+            <sc-if value="{{ cf.sent }}">
+              <div style="text-align:center;padding:24px 8px">
+                <div style="width:60px;height:60px;border-radius:999px;background:var(--teal-50);color:var(--teal);display:grid;place-items:center;font-size:26px;margin:0 auto 12px">✓</div>
+                <h2 style="margin:0 0 6px;font-size:22px">وصلنا طلب سنترك</h2>
+                <p style="margin:0;color:var(--muted)">فريق الشراكات هيكلمك على الرقم اللي كتبته خلال يوم عمل.</p>
+              </div>
+            </sc-if>
+            <sc-if value="{{ cf.notSent }}">
+              <form sc-camel-on-submit="{{ cf.send }}">
+                <h2 style="margin:0 0 4px;font-size:22px">سجّل سنترك</h2>
+                <p style="margin:0 0 16px;color:var(--muted);font-size:14px">التسجيل مجاني، والاشتراك بيبدأ بعد ما ترفع أول مادة.</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px">
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">اسم السنتر *<input value="{{ cf.center }}" sc-camel-on-change="{{ cf.setCenter }}" required="" maxlength="100" placeholder="مثال: سنتر الصفوة" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">اسم المسؤول<input value="{{ cf.owner }}" sc-camel-on-change="{{ cf.setOwner }}" maxlength="80" placeholder="الاسم" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">رقم الموبايل / واتساب *<input value="{{ cf.phone }}" sc-camel-on-change="{{ cf.setPhone }}" required="" maxlength="20" inputmode="tel" dir="ltr" placeholder="01xxxxxxxxx" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400;text-align:right"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">المدينة<input value="{{ cf.city }}" sc-camel-on-change="{{ cf.setCity }}" maxlength="60" placeholder="مثال: بنها" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">عدد المدرسين<input value="{{ cf.teachers }}" sc-camel-on-change="{{ cf.setTeachers }}" inputmode="numeric" placeholder="مثال: 6" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                  <label style="display:grid;gap:6px;font-size:14px;font-weight:600">عدد الطلاب تقريبًا<input value="{{ cf.students }}" sc-camel-on-change="{{ cf.setStudents }}" inputmode="numeric" placeholder="مثال: 800" style="height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;font-weight:400"></label>
+                </div>
+                <label style="display:grid;gap:6px;font-size:14px;font-weight:600;margin-top:12px">محتاجين إيه؟<textarea rows="3" value="{{ cf.msg }}" sc-camel-on-change="{{ cf.setMsg }}" maxlength="1000" placeholder="مثال: عايزين نبيع حصص التعويض أونلاين" style="padding:12px 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;resize:vertical;font-weight:400"></textarea></label>
+                <button type="submit" style="margin-top:14px;width:100%;height:52px;border:0;border-radius:14px;background:var(--primary);color:#fff;font-weight:700;font-size:16px;cursor:pointer">{{ cf.sendText }}</button>
+              </form>
+            </sc-if>
+          </section>
         </div>
         </sc-if>
 
@@ -895,37 +1194,67 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         </sc-if>
 
         <sc-if value="{{ isCheckout }}">
-        <div style="padding:20px 0 0;max-width:900px">
-          <h1 style="font-size:26px;margin:0 0 18px">إتمام الشراء</h1>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:20px;align-items:start">
-            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
-              <h2 style="margin:0 0 14px;font-size:17px">وسيلة الدفع</h2>
-              <div style="display:grid;gap:10px">
-                <sc-for list="{{ co.methods }}" as="m" hint-placeholder-count="3">
-                  <button type="button" sc-camel-on-click="{{ m.pick }}" style="{{ m.style }}"><span style="{{ m.radio }}"></span>{{ m.label }}</button>
-                </sc-for>
-              </div>
-              <div style="margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:13px;color:var(--muted)">
-                تكامل الدفع غير مكتمل في هذه النسخة: لا يوجد مزود دفع مربوط، والنتيجة محاكاة للعرض. في الإنتاج يُعتمد الدفع من الخادم فقط.
+        <div style="padding:20px 0 0;max-width:980px">
+          <h1 style="font-size:26px;margin:0 0 16px">السلة والدفع</h1>
+          <sc-if value="{{ co.empty }}">
+            <div style="background:#fff;border:1px dashed var(--border-2);border-radius:20px;padding:40px 20px;text-align:center">
+              <h2 style="margin:0 0 6px;font-size:19px">السلة فاضية</h2>
+              <p style="margin:0 0 16px;color:var(--muted)">ضيف حصة أو باب أو مادة — أو اشترك في مدارك بلس.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+                <button type="button" sc-camel-on-click="{{ co.browse }}" style="height:46px;padding:0 20px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:600;cursor:pointer">تصفح المواد</button>
+                <button type="button" sc-camel-on-click="{{ goSubscribe }}" style="height:46px;padding:0 20px;border:1px solid var(--border-2);border-radius:12px;background:#fff;font-weight:600;cursor:pointer">مدارك بلس</button>
               </div>
             </div>
-            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--sh-2)">
+          </sc-if>
+          <sc-if value="{{ co.notEmpty }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:20px;align-items:start">
+            <div style="display:grid;gap:16px">
+              <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px">
+                <h2 style="margin:0 0 10px;font-size:17px">السلة · {{ co.countText }}</h2>
+                <div style="display:grid;gap:10px">
+                  <sc-for list="{{ co.items }}" as="it" hint-placeholder-count="2">
+                    <div style="display:flex;align-items:center;gap:12px;padding:10px;border:1px solid var(--border);border-radius:14px">
+                      <span style="{{ it.thumb }}"></span>
+                      <div style="flex:1;min-width:0">
+                        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px"><span style="padding:2px 8px;border-radius:999px;background:var(--primary-50);color:var(--primary-700);font-size:11px;font-weight:700">{{ it.typeText }}</span><span style="font-weight:600;font-size:14px">{{ it.title }}</span></div>
+                        <div style="font-size:12px;color:var(--muted);margin-top:2px">{{ it.meta }}</div>
+                      </div>
+                      <div style="text-align:end;flex:0 0 auto">
+                        <div style="font-weight:700;font-size:15px;white-space:nowrap">{{ it.priceText }}</div>
+                        <button type="button" sc-camel-on-click="{{ it.remove }}" style="background:none;border:0;color:var(--danger);font-size:12px;font-weight:600;cursor:pointer;padding:4px 0">شيل</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ co.hasNudge }}">
+                  <button type="button" sc-camel-on-click="{{ co.browse }}" style="margin-top:10px;width:100%;padding:12px;border:1px dashed var(--teal);border-radius:12px;background:var(--teal-50);color:var(--teal);font-weight:600;font-size:14px;cursor:pointer">+ {{ co.bundleNudge }}</button>
+                </sc-if>
+              </div>
+              <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px">
+                <h2 style="margin:0 0 12px;font-size:17px">طريقة الدفع</h2>
+                <div style="display:grid;gap:10px">
+                  <sc-for list="{{ co.methods }}" as="m" hint-placeholder-count="4">
+                    <button type="button" sc-camel-on-click="{{ m.pick }}" style="{{ m.style }}"><span style="{{ m.radio }}"></span>{{ m.label }}</button>
+                  </sc-for>
+                </div>
+                <div style="margin-top:12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:13px;color:var(--muted)">نسخة تجريبية: مفيش بوابة دفع مربوطة، والنتيجة محاكاة للعرض.</div>
+              </div>
+            </div>
+            <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--sh-2);position:sticky;top:88px">
               <h2 style="margin:0 0 14px;font-size:17px">ملخص الطلب</h2>
-              <div style="{{ co.cover }}"></div>
-              <div style="font-weight:600;font-size:16px;margin:12px 0 4px;line-height:1.5">{{ co.title }}</div>
-              <div style="font-size:13px;color:var(--muted);margin-bottom:14px">{{ co.teacherName }} · {{ co.accessText }}</div>
-              <div style="display:grid;gap:8px;font-size:15px;padding-top:14px;border-top:1px solid var(--border)">
-                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">سعر الدورة</span><span>{{ co.priceText }}</span></div>
-                <sc-if value="{{ co.hasDisc }}"><div style="display:flex;justify-content:space-between;color:var(--teal)"><span>خصم عرض تمهيدي</span><span>{{ co.discText }}</span></div></sc-if>
-                <div style="display:flex;justify-content:space-between;font-weight:700;font-size:18px;padding-top:8px;border-top:1px solid var(--border)"><span>الإجمالي</span><span>{{ co.totalText }}</span></div>
+              <div style="display:grid;gap:8px;font-size:15px">
+                <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">المجموع</span><span>{{ co.subText }}</span></div>
+                <sc-if value="{{ co.hasDisc }}"><div style="display:flex;justify-content:space-between;color:var(--teal);font-weight:600"><span>{{ co.discLabel }}</span><span>{{ co.discText }}</span></div></sc-if>
+                <div style="display:flex;justify-content:space-between;font-weight:700;font-size:19px;padding-top:10px;border-top:1px solid var(--border)"><span>الإجمالي</span><span>{{ co.totalText }}</span></div>
               </div>
               <button type="button" sc-camel-on-click="{{ co.pay }}" style="{{ co.payStyle }}">
                 <sc-if value="{{ co.processing }}"><span style="width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:999px;animation:spin .8s linear infinite;display:inline-block"></span></sc-if>
                 {{ co.payText }}
               </button>
-              <div style="margin-top:12px;font-size:12px;color:var(--muted);text-align:center">بالمتابعة أنت توافق على <a href="#" sc-camel-on-click="{{ goLegal }}">سياسة الاسترداد</a>. المبالغ توضيحية.</div>
+              <div style="margin-top:12px;font-size:12px;color:var(--muted);text-align:center">بالمتابعة إنت موافق على <a href="#" sc-camel-on-click="{{ goLegal }}">سياسة الاسترجاع</a>.</div>
             </div>
           </div>
+          </sc-if>
         </div>
         </sc-if>
 
@@ -938,7 +1267,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <div style="font-size:14px;font-weight:600;margin:14px 0 22px">{{ pr.courseTitle }}</div>
             <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
               <sc-if value="{{ pr.isSuccess }}">
-                <button type="button" sc-camel-on-click="{{ pr.startLearn }}" style="height:48px;padding:0 22px;border:0;border-radius:12px;background:var(--teal);color:#fff;font-weight:700;cursor:pointer">ابدأ التعلم</button>
+                <button type="button" sc-camel-on-click="{{ pr.startLearn }}" style="height:48px;padding:0 22px;border:0;border-radius:12px;background:var(--teal);color:#fff;font-weight:700;cursor:pointer">ابدأ المذاكرة</button>
               </sc-if>
               <sc-if value="{{ pr.isFailed }}">
                 <button type="button" sc-camel-on-click="{{ pr.retry }}" style="height:48px;padding:0 22px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:700;cursor:pointer">جرّب وسيلة دفع أخرى</button>
@@ -953,7 +1282,11 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <sc-if value="{{ isStudentHome }}">
         <div style="padding:28px 0 0">
           <h1 style="font-size:26px;margin:0 0 4px">أهلًا {{ st.firstName }} 👋</h1>
-          <p style="color:var(--muted);margin:0 0 20px;font-size:15px">{{ st.greetLine }}</p>
+          <p style="color:var(--muted);margin:0 0 14px;font-size:15px">{{ st.greetLine }}</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between;padding:12px 14px;margin-bottom:16px;border-radius:14px;background:var(--primary-50);border:1px solid var(--primary-100)">
+            <span style="font-size:14px;font-weight:600;color:var(--primary-700)">{{ st.subText }}</span>
+            <sc-if value="{{ st.notSub }}"><button type="button" sc-camel-on-click="{{ st.goSub }}" style="height:38px;padding:0 14px;border:0;border-radius:10px;background:var(--primary);color:#fff;font-weight:600;font-size:14px;cursor:pointer">اشترك في مدارك بلس</button></sc-if>
+          </div>
 
           <section style="background:#fff;border:1px solid var(--border);border-radius:20px;padding:20px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;box-shadow:var(--sh-1)">
             <div style="{{ st.resumeThumb }}"><span style="width:34px;height:34px;border-radius:999px;background:rgba(255,255,255,.9);display:grid;place-items:center;color:var(--primary);font-size:14px">▶</span></div>
@@ -1996,7 +2329,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <span style="width:32px;height:32px;border-radius:9px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700">م</span>
             <span style="font-weight:700;font-size:17px">{{ brand }}</span>
           </div>
-          <p style="margin:0;color:var(--muted);font-size:14px;max-width:34ch">منصة تعليم عربية تجمع الطلاب والمدرسين. نموذج تجريبي لأغراض التصميم.</p>
+          <p style="margin:0;color:var(--muted);font-size:14px;max-width:34ch">منصة السناتر أونلاين لمواد البكالوريا المصرية والثانوية العامة — من أولى لتالتة ثانوي.</p>
         </div>
         <sc-for list="{{ footerCols }}" as="col" hint-placeholder-count="3">
           <div>
@@ -2009,7 +2342,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </div>
         </sc-for>
       </div>
-      <div style="border-top:1px solid var(--border);padding:16px 20px;text-align:center;color:var(--muted);font-size:13px">© 2026 مدارك — نموذج تصميم تجريبي. النصوص القانونية مسودات تحتاج مراجعة قبل الإطلاق.</div>
+      <div style="border-top:1px solid var(--border);padding:16px 20px;text-align:center;color:var(--muted);font-size:13px">© 2026 مدارك — نسخة تجريبية. النصوص القانونية مسودات لازم تتراجع قبل الإطلاق.</div>
     </footer>
   </div>
   </sc-if>
@@ -2229,6 +2562,19 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
     </div>
   </sc-if>
 
+  <sc-if value="{{ cd.mobileBar }}">
+          <div class="md-mbar" style="position:fixed;inset-inline:0;bottom:0;z-index:45;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--border);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;box-shadow:0 -8px 24px rgba(15,23,42,.08)">
+            <div style="flex:1;min-width:0"><div style="font-weight:700;font-size:17px;line-height:1.2">{{ cd.priceText }}</div><div style="font-size:12px;color:var(--muted)">أو باب بـ{{ cd.chapterFrom }}</div></div>
+            <sc-if value="{{ cd.hasCart }}"><button type="button" sc-camel-on-click="{{ cd.goCheckout }}" style="height:46px;padding:0 14px;border:1px solid var(--primary);background:#fff;color:var(--primary-700);border-radius:12px;font-weight:700;cursor:pointer;white-space:nowrap">السلة ({{ cd.cartCount }})</button></sc-if>
+            <button type="button" sc-camel-on-click="{{ cd.buy }}" style="height:46px;padding:0 18px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:700;cursor:pointer;white-space:nowrap">اشتري المادة</button>
+          </div>
+        </sc-if>
+  <sc-if value="{{ co.mobileBar }}">
+    <div style="position:fixed;inset-inline:0;bottom:0;z-index:45;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-top:1px solid var(--border);padding:10px 14px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;box-shadow:0 -8px 24px rgba(15,23,42,.08)">
+      <div style="flex:1;min-width:0"><div style="font-size:12px;color:var(--muted)">الإجمالي</div><div style="font-weight:700;font-size:18px;line-height:1.2">{{ co.totalText }}</div></div>
+      <button type="button" sc-camel-on-click="{{ co.pay }}" style="height:48px;padding:0 22px;border:0;background:var(--primary);color:#fff;border-radius:12px;font-weight:700;cursor:pointer;white-space:nowrap">{{ co.payText }}</button>
+    </div>
+  </sc-if>
   <div style="position:fixed;bottom:20px;inset-inline-start:20px;z-index:90;display:flex;flex-direction:column;gap:10px">
     <sc-for list="{{ toasts }}" as="t">
       <div role="status" style="{{ t.style }}">
