@@ -165,7 +165,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <!-- SCREENS -->
         <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
         <div>
-          <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;align-items:center;padding:44px 0 8px">
+          <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:32px;align-items:center;padding:44px 0 8px">
             <div>
               <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;background:var(--teal-50);color:var(--teal);border:1px solid var(--teal-100);border-radius:999px;font-size:13px;font-weight:600">منصة مصرية للتعلّم أونلاين مع مدرسين موثّقين</div>
               <h1 style="font-size:clamp(30px,4.2vw,46px);line-height:1.25;margin:16px 0 12px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">ذاكر صح واتعلم مهارة جديدة — مع مدرس تثق فيه.</h1>
@@ -198,7 +198,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           <section style="padding:48px 0 0">
             <h2 style="font-size:24px;margin:0 0 4px">تصفّح بحسب التخصص</h2>
             <p style="color:var(--muted);margin:0 0 18px;font-size:15px">اختار المجال وشوف كورساته ومدرسينه.</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:12px">
               <sc-for list="{{ catCards }}" as="c" hint-placeholder-count="6">
                 <button type="button" sc-camel-on-click="{{ c.go }}" style="{{ c.style }}" style-hover="transform:translateY(-2px);box-shadow:var(--sh-2)">
                   <span style="{{ c.chip }}"></span>
@@ -217,7 +217,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </div>
               <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:40px;padding:0 16px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer" style-hover="border-color:var(--primary);color:var(--primary)">كل الكورسات ←</button>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:16px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
               <sc-for list="{{ featured }}" as="c" hint-placeholder-count="4">
                 <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-1);display:flex;flex-direction:column;transition:transform var(--dur),box-shadow var(--dur)" style-hover="transform:translateY(-3px);box-shadow:var(--sh-2)">
                   <div style="{{ c.cover }}">
@@ -245,7 +245,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
           <section style="padding:48px 0 0">
             <h2 style="font-size:24px;margin:0 0 18px">مدرسون مميزون</h2>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:16px">
               <sc-for list="{{ topTeachers }}" as="t" hint-placeholder-count="4">
                 <button type="button" sc-camel-on-click="{{ t.open }}" style="text-align:start;background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;cursor:pointer;display:flex;flex-direction:column;gap:10px;box-shadow:var(--sh-1);transition:transform var(--dur)" style-hover="transform:translateY(-3px)">
                   <span style="{{ t.avatar }}">{{ t.initial }}</span>
@@ -259,7 +259,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
           <section style="padding:48px 0 0">
             <h2 style="font-size:24px;margin:0 0 18px">كيف تتعلّم في مدارك؟</h2>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px">
               <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                 <span style="width:34px;height:34px;border-radius:10px;background:var(--primary-50);color:var(--primary-700);display:grid;place-items:center;font-weight:700">1</span>
                 <h3 style="font-size:17px;margin:12px 0 6px">اختر دورة واشترِها</h3>
@@ -278,7 +278,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             </div>
           </section>
 
-          <section style="margin:48px 0 0;background:var(--ink);color:#fff;border-radius:24px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;align-items:center">
+          <section style="margin:48px 0 0;background:var(--ink);color:#fff;border-radius:24px;padding:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:28px;align-items:center">
             <div>
               <h2 style="font-size:26px;margin:0 0 10px">أنت مدرس؟ ابنِ مصدر دخل من خبرتك.</h2>
               <p style="margin:0 0 20px;color:#CBD5E1;font-size:15px">أدوات إنشاء الدورات، إدارة الطلاب، والتحصيل المالي — باشتراك شهري واضح وعمولة معلنة.</p>
@@ -297,7 +297,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           <section style="padding:48px 0 0">
             <h2 style="font-size:24px;margin:0 0 6px">آراء الطلاب</h2>
             <p style="color:var(--muted);margin:0 0 18px;font-size:14px;font-family:'IBM Plex Mono',monospace">[ بيانات توضيحية — ليست آراء حقيقية ]</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px">
               <sc-for list="{{ testimonials }}" as="t" hint-placeholder-count="3">
                 <blockquote style="margin:0;background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                   <div style="color:var(--amber);font-weight:600;margin-bottom:8px">★★★★★</div>
@@ -358,7 +358,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
                   <sc-for list="{{ filterCatPills }}" as="f" hint-placeholder-count="6"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for>
                 </div>
               </div>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:16px">
                 <div>
                   <div style="font-size:13px;font-weight:600;color:var(--muted);margin-bottom:8px">المستوى</div>
                   <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ levelPills }}" as="f" hint-placeholder-count="3"><button type="button" sc-camel-on-click="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div>
@@ -397,7 +397,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             </div>
           </sc-if>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:16px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
             <sc-for list="{{ filteredCards }}" as="c" hint-placeholder-count="6">
               <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh-1);display:flex;flex-direction:column;transition:transform var(--dur),box-shadow var(--dur)" style-hover="transform:translateY(-3px);box-shadow:var(--sh-2)">
                 <div style="{{ c.cover }}">
@@ -432,7 +432,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
         <sc-if value="{{ isCourseDetail }}">
         <div style="padding:18px 0 0">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;align-items:start">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px;align-items:start">
             <div style="min-width:0">
               <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:12px">
                 <span style="{{ cd.catChip }}">{{ cd.catName }}</span>
@@ -466,13 +466,13 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
                 <div style="display:grid;gap:20px">
                   <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                     <h2 style="font-size:18px;margin:0 0 12px">ماذا ستتعلم؟</h2>
-                    <ul style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+                    <ul style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:10px">
                       <sc-for list="{{ cd.outcomes }}" as="o" hint-placeholder-count="4">
                         <li style="display:flex;gap:10px;font-size:15px;color:var(--ink-2)"><span style="color:var(--teal);font-weight:700">✓</span><span>{{ o.t }}</span></li>
                       </sc-for>
                     </ul>
                   </section>
-                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px">
                     <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
                       <h2 style="font-size:17px;margin:0 0 10px">المتطلبات</h2>
                       <ul style="margin:0;padding-inline-start:18px;color:var(--muted);font-size:15px;display:grid;gap:6px">
@@ -550,7 +550,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
               <section style="margin-top:28px">
                 <h2 style="font-size:20px;margin:0 0 14px">دورات ذات صلة</h2>
-                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:14px">
                   <sc-for list="{{ cd.related }}" as="c" hint-placeholder-count="3">
                     <button type="button" sc-camel-on-click="{{ c.open }}" style="text-align:start;background:#fff;border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:6px" style-hover="border-color:var(--primary)">
                       <span style="font-weight:600;font-size:15px;color:var(--ink)">{{ c.title }}</span>
@@ -594,7 +594,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <span style="width:14px;height:14px;border:2px solid var(--muted);border-radius:999px;flex:0 0 auto"></span>
             <input aria-label="ابحث عن مدرس" placeholder="ابحث باسم المدرس أو التخصص…" value="{{ q }}" sc-camel-on-change="{{ setQ }}" style="border:0;outline:none;background:transparent;flex:1;min-width:0">
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:16px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(248px,100%),1fr));gap:16px">
             <sc-for list="{{ teacherCards }}" as="t" hint-placeholder-count="6">
               <button type="button" sc-camel-on-click="{{ t.open }}" style="text-align:start;background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px;cursor:pointer;display:flex;flex-direction:column;gap:10px;box-shadow:var(--sh-1);transition:transform var(--dur)" style-hover="transform:translateY(-3px)">
                 <span style="{{ t.avatar }}">{{ t.initial }}</span>
@@ -623,7 +623,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </div>
             </div>
           </section>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:16px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;margin-top:16px">
             <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
               <h2 style="font-size:17px;margin:0 0 10px">نبذة</h2>
               <p style="margin:0;color:var(--muted);font-size:15px;text-wrap:pretty">{{ tp.bio }}</p>
@@ -639,7 +639,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           </div>
           <section style="margin-top:24px">
             <h2 style="font-size:20px;margin:0 0 14px">دورات المدرس</h2>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:16px">
               <sc-for list="{{ tp.courses }}" as="c" hint-placeholder-count="3">
                 <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;display:flex;flex-direction:column">
                   <div style="{{ c.cover }}"></div>
@@ -685,7 +685,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               <span style="font-size:14px;font-weight:600">سنوي <span style="color:var(--teal)">(شهران مجانًا)</span></span>
             </div>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:16px;align-items:start">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(268px,100%),1fr));gap:16px;align-items:start">
             <sc-for list="{{ planCards }}" as="p" hint-placeholder-count="3">
               <div style="{{ p.style }}">
                 <sc-if value="{{ p.best }}"><span style="align-self:flex-start;padding:4px 12px;border-radius:999px;background:var(--primary);color:#fff;font-size:12px;font-weight:600">الأكثر اختيارًا</span></sc-if>
@@ -726,7 +726,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </sc-raw-table>
             </div>
           </section>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:16px;margin-top:16px">
             <div style="background:var(--amber-50);border:1px solid #FDE68A;border-radius:16px;padding:18px">
               <div style="font-weight:600;margin-bottom:6px">العمولة</div>
               <p style="margin:0;font-size:14px;color:var(--ink-2)">تُحسب العمولة على كل عملية بيع بحسب باقتك، وتظهر مفصّلة في صفحة الأرباح.</p>
@@ -837,7 +837,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <sc-if value="{{ teach.is1 }}">
               <div style="display:grid;gap:16px">
                 <h2 style="margin:0;font-size:19px">المعلومات الأساسية</h2>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:16px">
                   <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">الاسم الكامل</label><input placeholder="مثال: أ. محمد عبد الله" style="width:100%;height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"></div>
                   <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">رقم الجوال</label><input placeholder="05xxxxxxxx" style="width:100%;height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"><div style="font-size:12px;color:var(--muted);margin-top:6px">للتحقق فقط، ولا يظهر للطلاب.</div></div>
                 </div>
@@ -897,7 +897,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <sc-if value="{{ isCheckout }}">
         <div style="padding:20px 0 0;max-width:900px">
           <h1 style="font-size:26px;margin:0 0 18px">إتمام الشراء</h1>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:start">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:20px;align-items:start">
             <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
               <h2 style="margin:0 0 14px;font-size:17px">وسيلة الدفع</h2>
               <div style="display:grid;gap:10px">
@@ -969,7 +969,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <button type="button" sc-camel-on-click="{{ st.cont }}" style="height:48px;padding:0 22px;border:0;border-radius:12px;background:var(--teal);color:#fff;font-weight:700;font-size:15px;cursor:pointer">متابعة التعلم</button>
           </section>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:16px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr));gap:12px;margin-top:16px">
             <sc-for list="{{ st.stats }}" as="x" hint-placeholder-count="4">
               <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px">
                 <div style="font-size:13px;color:var(--muted);margin-bottom:6px">{{ x.k }}</div>
@@ -978,7 +978,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             </sc-for>
           </div>
 
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin-top:24px;align-items:start">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px;margin-top:24px;align-items:start">
             <section>
               <h2 style="font-size:19px;margin:0 0 12px">دوراتي الحالية</h2>
               <div style="display:grid;gap:12px">
@@ -1034,7 +1034,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               <button type="button" sc-camel-on-click="{{ goCourses }}" style="height:44px;padding:0 20px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:600;cursor:pointer">استكشف الدورات</button>
             </div>
           </sc-if>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:16px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(268px,100%),1fr));gap:16px">
             <sc-for list="{{ st.filtered }}" as="c" hint-placeholder-count="2">
               <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;display:flex;flex-direction:column">
                 <div style="{{ c.cover }}"></div>
@@ -1075,7 +1075,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <sc-if value="{{ isCertificates }}">
         <div style="padding:28px 0 0">
           <h1 style="font-size:26px;margin:0 0 20px">شهاداتي</h1>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:16px">
             <sc-for list="{{ st.certs }}" as="c" hint-placeholder-count="1">
               <article style="background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden">
                 <div style="height:150px;background-image:url(&quot;/assets/art-biz.webp&quot;);background-size:cover;background-position:center;display:grid;place-items:center;border-bottom:1px solid var(--border)">
@@ -1148,7 +1148,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           <div style="display:grid;gap:16px">
             <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
               <h2 style="margin:0 0 14px;font-size:17px">المعلومات الشخصية</h2>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px">
                 <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">الاسم</label><input value="ريم السالم" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"></div>
                 <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">البريد</label><input value="reem@example.com" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;background:var(--bg);color:var(--muted)" disabled=""></div>
               </div>
@@ -1198,7 +1198,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             </div>
             <button type="button" sc-camel-on-click="{{ tc.newCourse }}" style="height:46px;padding:0 20px;border:0;border-radius:12px;background:var(--primary);color:#fff;font-weight:600;cursor:pointer">+ إنشاء دورة</button>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(170px,100%),1fr));gap:12px">
             <sc-for list="{{ tc.stats }}" as="x" hint-placeholder-count="4">
               <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px">
                 <div style="font-size:13px;color:var(--muted);margin-bottom:6px">{{ x.k }}</div>
@@ -1206,7 +1206,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </div>
             </sc-for>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px;align-items:start">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px;margin-top:20px;align-items:start">
             <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px">
               <h2 style="margin:0 0 12px;font-size:17px">مهام تحتاج إجراء</h2>
               <div style="display:grid;gap:8px">
@@ -1270,7 +1270,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <span style="font-size:13px;color:var(--teal);font-weight:600">✓ {{ ed.savedText }}</span>
             <button type="button" sc-camel-on-click="{{ ed.preview }}" style="height:42px;padding:0 16px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer">معاينة</button>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;align-items:start">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:18px;align-items:start">
             <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:14px;max-width:300px">
               <div style="display:grid;gap:6px">
                 <sc-for list="{{ ed.steps }}" as="st" hint-placeholder-count="7">
@@ -1284,7 +1284,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
                 <div style="display:grid;gap:14px">
                   <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">عنوان الدورة</label><input value="إتقان React وNext.js من الصفر" style="width:100%;height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"></div>
                   <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">الوصف</label><textarea rows="4" style="width:100%;padding:12px 14px;border:1px solid var(--border-2);border-radius:12px;outline:none;resize:vertical">دورة عملية تبني فيها تطبيقًا كاملًا بـReact وNext.js.</textarea></div>
-                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:14px">
                     <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">التخصص</label><sc-raw-select style="width:100%;height:46px;padding:0 12px;border:1px solid var(--border-2);border-radius:12px;background:#fff"><option>تطوير الويب</option><option>تصميم واجهات</option></sc-raw-select></div>
                     <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">المستوى</label><sc-raw-select style="width:100%;height:46px;padding:0 12px;border:1px solid var(--border-2);border-radius:12px;background:#fff"><option>متوسط</option><option>مبتدئ</option><option>متقدم</option></sc-raw-select></div>
                   </div>
@@ -1335,7 +1335,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </sc-if>
               <sc-if value="{{ ed.is6 }}">
                 <div style="display:grid;gap:14px">
-                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:14px">
                     <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">السعر (ج.م)</label><input type="number" value="450" style="width:100%;height:46px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"></div>
                     <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">مدة الوصول</label><sc-raw-select style="width:100%;height:46px;padding:0 12px;border:1px solid var(--border-2);border-radius:12px;background:#fff"><option>12 شهرًا</option><option>24 شهرًا</option><option>وصول دائم</option></sc-raw-select></div>
                   </div>
@@ -1398,7 +1398,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <div style="padding:28px 0 0">
           <h1 style="font-size:26px;margin:0 0 6px">الأرباح</h1>
           <p style="color:var(--muted);margin:0 0 18px;font-size:15px">تفصيل واضح بين المبيعات والعمولة والمستحقات — أرقام توضيحية.</p>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:12px">
             <sc-for list="{{ tc.fin }}" as="f" hint-placeholder-count="6">
               <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px">
                 <div style="font-size:13px;color:var(--muted);margin-bottom:6px">{{ f.k }}</div>
@@ -1466,7 +1466,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <div style="padding:28px 0 0">
           <h1 style="font-size:26px;margin:0 0 6px">لوحة الإدارة</h1>
           <p style="color:var(--muted);margin:0 0 18px;font-size:15px">صلاحيتك: مراجعة المحتوى — بعض الأقسام المالية للقراءة فقط.</p>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(170px,100%),1fr));gap:12px">
             <sc-for list="{{ ad.stats }}" as="x" hint-placeholder-count="4">
               <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px">
                 <div style="font-size:13px;color:var(--muted);margin-bottom:6px">{{ x.k }}</div>
@@ -1474,7 +1474,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               </div>
             </sc-for>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:20px;align-items:start">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px;margin-top:20px;align-items:start">
             <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px">
               <h2 style="margin:0 0 12px;font-size:17px">طوابير العمل</h2>
               <div style="display:grid;gap:8px">
@@ -1622,7 +1622,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
           <section style="margin-bottom:28px">
             <h2 style="font-size:20px;margin:0 0 12px">الألوان الدلالية</h2>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(150px,100%),1fr));gap:12px">
               <sc-for list="{{ ds.colors }}" as="c" hint-placeholder-count="12">
                 <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px">
                   <div style="{{ c.box }}"></div>
@@ -1657,7 +1657,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
 
           <section style="margin-bottom:28px">
             <h2 style="font-size:20px;margin:0 0 12px">الحقول والتحقق</h2>
-            <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+            <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:16px">
               <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">حقل عادي</label><input placeholder="اكتب هنا" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none" style-focus="border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-100)"><div style="font-size:12px;color:var(--muted);margin-top:6px">وصف مساعد للحقل</div></div>
               <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">حقل بخطأ</label><input value="بريد غير صحيح" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--danger);border-radius:12px;outline:none"><div style="font-size:12px;color:var(--danger);margin-top:6px">✕ أدخل بريدًا بالصيغة name@example.com</div></div>
               <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">حقل معطّل</label><input value="غير قابل للتعديل" disabled="" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--muted)"></div>
@@ -1670,7 +1670,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
               <div style="display:flex;flex-wrap:wrap;gap:10px">
                 <sc-for list="{{ ds.badges }}" as="b" hint-placeholder-count="4"><span style="{{ b.st }}">{{ b.l }}</span></sc-for>
               </div>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:12px">
                 <div style="border:1px dashed var(--border-2);border-radius:14px;padding:18px;text-align:center;font-size:14px;color:var(--muted)">حالة فارغة: تشرح الخطوة التالية</div>
                 <div style="border:1px solid var(--danger-50);background:var(--danger-50);border-radius:14px;padding:18px;text-align:center;font-size:14px;color:var(--danger)">حالة خطأ: مع طريقة الإصلاح</div>
                 <div style="border:1px solid var(--border);border-radius:14px;padding:18px;display:grid;gap:8px">
@@ -1746,7 +1746,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <div style="padding:28px 0 0">
           <h1 style="font-size:26px;margin:0 0 6px">التحليلات</h1>
           <p style="color:var(--muted);margin:0 0 18px;font-size:15px">أرقام توضيحية لآخر 6 أشهر.</p>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(170px,100%),1fr));gap:12px">
             <sc-for list="{{ ex.kpis }}" as="k" hint-placeholder-count="4">
               <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px">
                 <div style="font-size:13px;color:var(--muted);margin-bottom:6px">{{ k.k }}</div>
@@ -1824,7 +1824,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
           <div style="display:grid;gap:16px">
             <section style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px">
               <h2 style="margin:0 0 12px;font-size:17px">حساب التحويل البنكي</h2>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px">
                 <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">اسم صاحب الحساب</label><input value="{{ userName }}" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"></div>
                 <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">IBAN</label><input value="SA00 0000 0000 0000 4417" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"></div>
               </div>
@@ -1925,7 +1925,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
             <h1 style="font-size:26px;margin:0;flex:1;min-width:180px">التقارير</h1>
             <button type="button" sc-camel-on-click="{{ ex.exportReport }}" style="height:44px;padding:0 18px;border:1px solid var(--border-2);background:#fff;border-radius:12px;font-weight:600;cursor:pointer">تصدير CSV</button>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(180px,100%),1fr));gap:12px">
             <sc-for list="{{ ex.reportKpis }}" as="k" hint-placeholder-count="4">
               <div style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:16px">
                 <div style="font-size:13px;color:var(--muted);margin-bottom:6px">{{ k.k }}</div>
@@ -1968,7 +1968,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
         <div style="padding:28px 0 0;max-width:680px">
           <h1 style="font-size:26px;margin:0 0 18px">إعدادات المنصة</h1>
           <div style="background:#fff;border:1px solid var(--border);border-radius:18px;padding:20px;display:grid;gap:16px">
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px">
               <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">عمولة المنصة الافتراضية (%)</label><input type="number" value="10" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"></div>
               <div><label style="display:block;font-size:14px;font-weight:600;margin-bottom:6px">نافذة الاسترداد (يوم)</label><input type="number" value="14" style="width:100%;height:44px;padding:0 14px;border:1px solid var(--border-2);border-radius:12px;outline:none"></div>
             </div>
@@ -1990,7 +1990,7 @@ input,select,textarea,button{font-family:inherit;font-size:inherit}
     </div>
 
     <footer style="border-top:1px solid var(--border);background:#fff;margin-top:24px">
-      <div style="max-width:1280px;margin:0 auto;padding:36px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px">
+      <div style="max-width:1280px;margin:0 auto;padding:36px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:28px">
         <div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
             <span style="width:32px;height:32px;border-radius:9px;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700">م</span>

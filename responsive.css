@@ -20,5 +20,5 @@ video.md-player{background:#000}
 }
 /* two-up small tiles on phones */
 @media (max-width:620px) and (min-width:340px){
-  #dc-root div[style*="minmax(180px, 1fr)"],#dc-root div[style*="minmax(170px, 1fr)"],#dc-root div[style*="minmax(160px, 1fr)"],#dc-root div[style*="minmax(150px, 1fr)"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  #dc-root div[style*="minmax(min(180px, 100%), 1fr)"],#dc-root div[style*="minmax(min(170px, 100%), 1fr)"],#dc-root div[style*="minmax(min(160px, 100%), 1fr)"],#dc-root div[style*="minmax(min(150px, 100%), 1fr)"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
 }
