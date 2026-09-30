@@ -1,0 +1,24 @@
+/* Mobile-first safety layer on top of the design's inline styles */
+html{-webkit-text-size-adjust:100%}
+body{overflow-x:clip}
+img,video{max-width:100%}
+video.md-player{background:#000}
+@media (max-width:899px){
+  header > div{padding:10px 14px !important;gap:10px !important}
+  #dc-root main{padding-bottom:88px !important}
+  #dc-root div[style*="max-width: 1280px; margin: 0px auto; display: flex"]{padding:0 14px !important}
+}
+@media (max-width:620px){
+  input,select,textarea{font-size:16px !important}
+  .md-uname{max-width:96px}
+}
+@media (max-width:620px){
+  .md-demotext{font-size:12px}
+  .md-rolelabel{display:none}
+  .md-learnprog{min-width:64px !important}
+  .md-learnprog > div{display:none}
+}
+/* two-up small tiles on phones */
+@media (max-width:620px) and (min-width:340px){
+  #dc-root div[style*="minmax(180px, 1fr)"],#dc-root div[style*="minmax(170px, 1fr)"],#dc-root div[style*="minmax(160px, 1fr)"],#dc-root div[style*="minmax(150px, 1fr)"]{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+}
